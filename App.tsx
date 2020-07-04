@@ -9,12 +9,14 @@ import Navigation from './src/config/Navigation';
 export default function App(): ReactElement {
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
+  const statusBarBackgroundColor = themes[isDark ? 'dark' : 'light'].colors.background;
+  const statusBarStyle = isDark ? 'light-content' : 'dark-content';
 
   return (
     <AppearanceProvider>
       <StatusBar
-        backgroundColor={themes[isDark ? 'dark' : 'light'].colors.background}
-        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={statusBarBackgroundColor}
+        barStyle={statusBarStyle}
       />
       <ThemeProvider theme={isDark ? themes.dark : themes.light}>
         <Navigation />
