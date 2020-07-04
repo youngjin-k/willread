@@ -8,11 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
-  TouchableHighlight,
-  TouchableNativeFeedback,
 } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -23,7 +19,6 @@ const Container = styled.SafeAreaView`
 const Header = styled.View`
   height: 56px;
   padding: 0 16px;
-  flex: 0 1 auto;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -43,20 +38,19 @@ const BackIcon = styled(Feather)`
   color: ${(props) => props.theme.colors.typography.title};
 `;
 
-const Title = styled.Text`
+const Title = styled(Text)`
   font-size: 18px;
   color: ${(props) => props.theme.colors.typography.title};
 `;
 
 const Content = styled.View`
-  flex: 1 0 auto;
   justify-content: center;
   padding: 16px;
 `;
 
 const Actions = styled.View`
-  flex: 0 1 auto;
   padding: 16px;
+  height: ${56 + 16 + 16}px;
 `;
 
 const styles = StyleSheet.create({
@@ -89,8 +83,8 @@ function CreateNewLinkScreen({ navigation }): React.ReactElement {
   return (
     <Container>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1, justifyContent: 'space-between' }}
       >
         <Header>
           <BackButton onPress={() => navigation.pop()}>

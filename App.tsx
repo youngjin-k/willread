@@ -12,7 +12,10 @@ export default function App(): ReactElement {
 
   return (
     <AppearanceProvider>
-      <StatusBar backgroundColor={themes[isDark ? 'dark' : 'light'].colors.background} />
+      <StatusBar
+        backgroundColor={themes[isDark ? 'dark' : 'light'].colors.background}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+      />
       <ThemeProvider theme={isDark ? themes.dark : themes.light}>
         <Navigation />
       </ThemeProvider>
