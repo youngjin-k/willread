@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import { useColorScheme } from 'react-native-appearance';
 import { DefaultTheme, DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
 import { View } from 'react-native';
 import themes from '../../src/lib/styles/themes';
@@ -39,7 +39,10 @@ const willreadDarkTheme = {
 
 const CreateNewLinkScreenPlaceholder = () => null;
 
-const AppTabsScreen = () => (
+function AppTabsScreen() {
+  const scheme = useColorScheme();
+
+  return (
   <Tab.Navigator tabBarOptions={{
     showLabel: false,
   }}
@@ -73,11 +76,11 @@ const AppTabsScreen = () => (
           <View style={{
             width: size,
             height: size,
-            backgroundColor: '#5484FF',
+              backgroundColor: themes[scheme === 'dark' ? 'dark' : 'light'].colors.primary,
             borderRadius: 6,
           }}
           >
-            <Feather name="plus" size={size} color="#FFFFFF" />
+              <Feather name="plus" size={size} color={themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary} />
           </View>
         ),
       }}
