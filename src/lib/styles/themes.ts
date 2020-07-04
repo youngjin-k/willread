@@ -6,12 +6,12 @@ const light = {
   ...base,
   colors: {
     background: '#ffffff',
-    primary: '#332FFF',
+    primary: '#4B2FFF',
     secondary: '#EDEFF4',
     border: '#DCDCDC',
     typography: {
       title: '#333333',
-      primary: '#332FFF',
+      primary: '#4B2FFF',
       secondary: '#888888',
     },
     category: {
@@ -30,12 +30,12 @@ const dark = {
   ...base,
   colors: {
     background: '#000000',
-    primary: '#5484FF',
+    primary: '#4B2FFF',
     secondary: '#111111',
     border: '#232323',
     typography: {
       title: 'rgba(255, 255, 255, 0.8)',
-      primary: '#5484FF',
+      primary: '#4B2FFF',
       secondary: 'rgba(255, 255, 255, 0.4)',
     },
     category: {
