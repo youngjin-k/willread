@@ -5,50 +5,59 @@ import {
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { Feather } from '@expo/vector-icons';
+import Line from './Line';
 
 export enum CategoryColors {
-    default = 'default',
-    red = 'red',
-    blue = 'blue',
-    orange = 'orange',
-    green = 'green',
-    yellow = 'yellow',
-    purple = 'purple',
+    DEFAULT = 'default',
+    RED = 'red',
+    BLUE = 'blue',
+    ORANGE = 'orange',
+    GREEN = 'green',
+    YELLOW = 'yellow',
+    PURPLE = 'purple',
 }
 
 function CategoryFilter(): ReactElement {
-  const [selected, setSelected] = useState<CategoryColors>(CategoryColors.default);
+  const [selected, setSelected] = useState<CategoryColors>(CategoryColors.DEFAULT);
 
   return (
-    <Container
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
-      {Object.values(CategoryColors).map((color) => (
-        <CategoryItemWrapper
-          key={color}
-          onPress={() => setSelected(color)}
-        >
-          <CategoryItem
-            color={color}
-            active={color === selected}
+    <Container>
+      <Line />
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        {Object.values(CategoryColors).map((color) => (
+          <CategoryItemWrapper
+            key={color}
+            onPress={() => setSelected(color)}
           >
-            {color === 'default' && <CategoryItemLabel>All</CategoryItemLabel>}
-          </CategoryItem>
-        </CategoryItemWrapper>
-      ))}
+            <CategoryItem
+              color={color}
+              active={color === selected}
+            >
+              {color === 'default' && <CategoryItemLabel>All</CategoryItemLabel>}
+            </CategoryItem>
+          </CategoryItemWrapper>
+        ))}
+      </ScrollView>
     </Container>
   );
 }
 
-const Container = styled.ScrollView`
+const Container = styled.View`
+    flex: 1;
+    margin-top: 32px;
+`;
+
+const ScrollView = styled.ScrollView`
     flex-direction: row;
-    padding: 16px 8px;
+    padding: 0 8px 8px 8px;
 `;
 
 const CategoryItemWrapper = styled(TouchableOpacity)`
     min-width: 48px;
-    height: 48px;
+    height: ${32 + 16 + 16}px;
     padding: 8px;
     align-items: center;
     justify-content: center;

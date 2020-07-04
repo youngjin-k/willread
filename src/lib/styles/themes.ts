@@ -8,6 +8,7 @@ const light = {
     background: '#ffffff',
     primary: '#332FFF',
     secondary: '#EDEFF4',
+    border: '#DCDCDC',
     typography: {
       title: '#333333',
       primary: '#332FFF',
@@ -31,6 +32,7 @@ const dark = {
     background: '#000000',
     primary: '#5484FF',
     secondary: '#111111',
+    border: '#232323',
     typography: {
       title: 'rgba(255, 255, 255, 0.8)',
       primary: '#5484FF',
