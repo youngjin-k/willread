@@ -12,6 +12,8 @@ import SearchScreen from '../../src/screens/SearchScreen';
 import HistoryScreen from '../../src/screens/HistoryScreen';
 import MyScreen from '../../src/screens/MyScreen';
 import CreateNewLinkScreen from '../../src/screens/CreateNewLinkScreen';
+import ViewerScreen from '../screens/ViewerScreen';
+import { WillreadItem } from '../components/RecommendCard';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,78 +45,87 @@ function AppTabsScreen() {
   const scheme = useColorScheme();
 
   return (
-  <Tab.Navigator tabBarOptions={{
-    showLabel: false,
-  }}
-  >
-    <Tab.Screen
-      name="Home"
-      component={HomeScreen}
-      options={{
-        tabBarLabel: '홈',
-        tabBarIcon: ({ color, size }) => (
-          <Feather name="home" size={size} color={color} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Search"
-      component={SearchScreen}
-      options={{
-        tabBarLabel: '검색',
-        tabBarIcon: ({ color, size }) => (
-          <Feather name="search" size={size} color={color} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="add"
-      component={CreateNewLinkScreenPlaceholder}
-      options={{
-        tabBarLabel: '추가',
-        tabBarIcon: ({ size }) => (
-          <View style={{
-            width: size,
-            height: size,
+    <Tab.Navigator tabBarOptions={{
+      showLabel: false,
+    }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: '홈',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          tabBarLabel: '검색',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="search" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="add"
+        component={CreateNewLinkScreenPlaceholder}
+        options={{
+          tabBarLabel: '추가',
+          tabBarIcon: ({ size }) => (
+            <View style={{
+              width: size,
+              height: size,
               backgroundColor: themes[scheme === 'dark' ? 'dark' : 'light'].colors.primary,
-            borderRadius: 6,
-          }}
-          >
+              borderRadius: 6,
+            }}
+            >
               <Feather name="plus" size={size} color={themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary} />
-          </View>
-        ),
-      }}
-      listeners={({ navigation }) => ({
-        tabPress: (event) => {
-          event.preventDefault();
-          navigation.navigate('CreateNewLink');
-        },
-      })}
-    />
-    <Tab.Screen
-      name="history"
-      component={HistoryScreen}
-      options={{
-        tabBarLabel: '기록',
-        tabBarIcon: ({ color, size }) => (
-          <Feather name="archive" size={size} color={color} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="My"
-      component={MyScreen}
-      options={{
-        tabBarLabel: '더보기',
-        tabBarIcon: ({ color, size }) => (
-          <Feather name="menu" size={size} color={color} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+            </View>
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (event) => {
+            event.preventDefault();
+            navigation.navigate('CreateNewLink');
+          },
+        })}
+      />
+      <Tab.Screen
+        name="history"
+        component={HistoryScreen}
+        options={{
+          tabBarLabel: '기록',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="archive" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="My"
+        component={MyScreen}
+        options={{
+          tabBarLabel: '더보기',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="menu" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
-const RootStack = createStackNavigator();
+export type RootStackParamList = {
+  AppTabsScreen: undefined;
+  CreateNewLink: undefined;
+  Viewer: {
+    item: WillreadItem
+  };
+}
+
+const RootStack = createStackNavigator<RootStackParamList>();
 
 export default function App(): ReactElement {
   const scheme = useColorScheme();
@@ -132,6 +143,17 @@ export default function App(): ReactElement {
         <RootStack.Screen
           name="CreateNewLink"
           component={CreateNewLinkScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          }}
+        />
+        <RootStack.Screen
+          name="Viewer"
+          component={ViewerScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            gestureDirection: 'horizontal',
+          }}
         />
       </RootStack.Navigator>
     </NavigationContainer>

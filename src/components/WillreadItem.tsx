@@ -4,24 +4,36 @@ import {
 } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import { WillreadItem as IWillreadItem } from './RecommendCard';
+import { RootStackParamList } from '../config/Navigation';
 
 export interface WillreadItemProps {
-    item: IWillreadItem
+    item: IWillreadItem;
 }
 
 function WillreadItem({
-  item: {
+  item,
+}: WillreadItemProps): ReactElement {
+  const scheme = useColorScheme();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const handlePress = () => {
+    navigation.navigate('Viewer', {
+      item,
+    });
+  };
+
+  const {
     URI,
     title,
     imageURI,
     minutesToRead,
-  },
-}: WillreadItemProps): ReactElement {
-  const scheme = useColorScheme();
+  } = item;
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={handlePress}>
       <WillreadItemBlock>
         <ThumbnailWrapper>
           <Thumbnail
@@ -43,9 +55,6 @@ function WillreadItem({
     </TouchableWithoutFeedback>
   );
 }
-
-const Container = styled(TouchableWithoutFeedback)`
-`;
 
 const WillreadItemBlock = styled.View`
     padding: 0 16px 16px 16px;

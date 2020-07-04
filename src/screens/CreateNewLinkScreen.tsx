@@ -12,6 +12,42 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 
+function CreateNewLinkScreen({ navigation }): React.ReactElement {
+  const insets = useSafeArea();
+  return (
+    <Container>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ flex: 1, justifyContent: 'space-between' }}
+      >
+        <Header>
+          <BackButton onPress={() => navigation.pop()}>
+            <BackIcon name="chevron-left" />
+          </BackButton>
+          <Title>윌리드할 링크를 입력하세요</Title>
+        </Header>
+
+        <Content>
+          <TextInput style={styles.linkInput} />
+        </Content>
+
+        <Actions>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              onPress={() => alert('test')}
+              activeOpacity={0.8}
+            >
+              <View style={styles.nextButton}>
+                <Text style={styles.nextButtonText}>다음</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Actions>
+      </KeyboardAvoidingView>
+    </Container>
+  );
+}
+
 const Container = styled.SafeAreaView`
   flex: 1;
 `;
@@ -77,41 +113,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
-
-function CreateNewLinkScreen({ navigation }): React.ReactElement {
-  const insets = useSafeArea();
-  return (
-    <Container>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{ flex: 1, justifyContent: 'space-between' }}
-      >
-        <Header>
-          <BackButton onPress={() => navigation.pop()}>
-            <BackIcon name="chevron-left" />
-          </BackButton>
-          <Title>윌리드할 링크를 입력하세요</Title>
-        </Header>
-
-        <Content>
-          <TextInput style={styles.linkInput} />
-        </Content>
-
-        <Actions>
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={() => alert('test')}
-              activeOpacity={0.8}
-            >
-              <View style={styles.nextButton}>
-                <Text style={styles.nextButtonText}>다음</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Actions>
-      </KeyboardAvoidingView>
-    </Container>
-  );
-}
 
 export default CreateNewLinkScreen;
