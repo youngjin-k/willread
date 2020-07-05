@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
-  useColorScheme, TouchableOpacity, ProgressBarAndroid, ProgressViewIOS, Platform,
+  useColorScheme, TouchableOpacity,
 } from 'react-native';
 import styled from 'styled-components/native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
+import { WebViewProgressEvent } from 'react-native-webview/lib/WebViewTypes';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../config/Navigation';
 import ProgressBar from '../components/ProgressBar';
 
 function ViewerScreen(): React.ReactElement {
-  const scheme = useColorScheme();
-  const route = useRoute<StackNavigationProp<RootStackParamList>>();
+  const route = useRoute<RouteProp<RootStackParamList, 'Viewer'>>();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [progress, setProgress] = useState(0);
+  const [loadEnd, setLoadEnd] = useState(false);
+  const [loadStart, setLoadStart] = useState(false);
+  const webViewRef = useRef(null);
 
-  const handleLoadProgress = ({ nativeEvent }) => {
+  const handleLoadProgress = ({ nativeEvent }: WebViewProgressEvent) => {
     setProgress(nativeEvent.progress);
+  };
+
+  const handleLoadEnd = () => {
+    setLoadEnd(true);
+  };
+
+  const handleLoadStart = () => {
+    setLoadStart(true);
   };
 
   return (
@@ -25,23 +37,23 @@ function ViewerScreen(): React.ReactElement {
         <HeaderButton onPress={() => navigation.pop()}>
           <HeaderIcon name="chevron-left" />
         </HeaderButton>
-        <Title
-          numberOfLines={1}
-        >
+        <Title numberOfLines={1}>
           {route.params.item.title}
         </Title>
         <HeaderButton>
           <HeaderIcon name="more-vertical" />
         </HeaderButton>
         <ProgressBarWrapper>
-          {progress < 1
-      && <ProgressBar progress={progress} />}
+          {(loadStart && !loadEnd) && <ProgressBar progress={progress} />}
         </ProgressBarWrapper>
       </Header>
       <WebView
+        ref={webViewRef}
         originWhitelist={['*']}
-        source={{ uri: route.params.item.URI }}
+        source={{ uri: route.params.item.uri }}
         onLoadProgress={handleLoadProgress}
+        onLoadStart={handleLoadStart}
+        onLoadEnd={handleLoadEnd}
       />
     </Container>
   );

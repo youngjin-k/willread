@@ -8,12 +8,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { WillreadItem as IWillreadItem } from './RecommendCard';
 import { RootStackParamList } from '../config/Navigation';
+import WillreadCardDescription from './WillreadCardDescription';
 
 export interface WillreadItemProps {
     item: IWillreadItem;
 }
 
-function WillreadItem({
+function WillreadCard({
   item,
 }: WillreadItemProps): ReactElement {
   const scheme = useColorScheme();
@@ -26,9 +27,9 @@ function WillreadItem({
   };
 
   const {
-    URI,
+    uri,
     title,
-    imageURI,
+    imageUri,
     minutesToRead,
   } = item;
 
@@ -38,18 +39,16 @@ function WillreadItem({
         <ThumbnailWrapper>
           <Thumbnail
             source={{
-              uri: imageURI,
+              uri: imageUri,
             }}
             scheme={scheme}
           />
         </ThumbnailWrapper>
         <Content>
-          <Title
-            numberOfLines={2}
-          >
+          <Title numberOfLines={2}>
             {title}
           </Title>
-          <SubTitle>{`${URI} • ${minutesToRead}min read`}</SubTitle>
+          <WillreadCardDescription uri={uri} minutesToRead={minutesToRead} />
         </Content>
       </WillreadItemBlock>
     </TouchableWithoutFeedback>
@@ -78,20 +77,13 @@ const Thumbnail = styled.Image<{scheme: ColorSchemeName}>`
 
 const Content = styled.View`
     flex: 1;
-    padding-left: 8px;
+    padding-left: 16px;
 `;
 
 const Title = styled.Text`
     font-size: 16px;
     color: ${(props) => props.theme.colors.typography.title};
-    margin: 0 0 0 8px;
     font-weight: bold;
 `;
 
-const SubTitle = styled.Text`
-    font-size: 12px;
-    color: ${(props) => props.theme.colors.typography.secondary};
-    margin: 4px 0 0 8px;
-`;
-
-export default WillreadItem;
+export default WillreadCard;

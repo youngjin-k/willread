@@ -4,7 +4,11 @@ import {
 } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { CategoryColors } from './CategoryFilter';
+import { RootStackParamList } from '../config/Navigation';
+import WillreadCardDescription from './WillreadCardDescription';
 
 export interface Category {
     color: CategoryColors;
@@ -13,44 +17,51 @@ export interface Category {
 
 export interface WillreadItem {
     id: string;
-    URI: string;
+    uri: string;
     title: string;
     description?: string;
-    imageURI?: string;
+    imageUri?: string;
     categoryColor?: CategoryColors;
-    minutesToRead?: number;
+    minutesToRead: number;
 }
 
 export interface RecommendCardProps {
     item: WillreadItem
 }
 
-function RecommendCard({
-  item: {
-    URI,
-    title,
-    imageURI,
-    minutesToRead,
-  },
-}: RecommendCardProps): ReactElement {
+function RecommendCard({ item }: RecommendCardProps): ReactElement {
   const scheme = useColorScheme();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const {
+    uri,
+    title,
+    imageUri,
+    minutesToRead,
+  } = item;
+
+  const handlePress = () => {
+    navigation.navigate('Viewer', {
+      item,
+    });
+  };
 
   return (
-    <Container>
+    <TouchableWithoutFeedback onPress={handlePress}>
       <RecommendCardBlock>
         <ReccomendTitle>추천</ReccomendTitle>
         <ThumbnailWrapper>
           <Thumbnail
             source={{
-              uri: imageURI,
+              uri: imageUri,
             }}
             scheme={scheme}
           />
         </ThumbnailWrapper>
         <Title>{title}</Title>
-        <SubTitle>{`${URI} • ${minutesToRead}min read`}</SubTitle>
+        <WillreadCardDescription uri={uri} minutesToRead={minutesToRead} />
       </RecommendCardBlock>
-    </Container>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -64,8 +75,8 @@ const RecommendCardBlock = styled.View`
 const ReccomendTitle = styled.Text`
     font-weight: bold;
     font-size: 14px;
-    color: ${(props) => props.theme.colors.typography.primary};
-    margin: 0 0 8px 8px;
+    color: ${(props) => props.theme.colors.primary};
+    margin: 0 0 12px 16px;
     font-weight: bold;
 `;
 
@@ -87,14 +98,8 @@ const Thumbnail = styled.Image<{scheme: ColorSchemeName}>`
 const Title = styled.Text`
     font-size: 18px;
     color: ${(props) => props.theme.colors.typography.title};
-    margin: 16px 0 0 8px;
+    margin: 16px 0 0 0;
     font-weight: bold;
-`;
-
-const SubTitle = styled.Text`
-    font-size: 12px;
-    color: ${(props) => props.theme.colors.typography.secondary};
-    margin: 4px 0 0 8px;
 `;
 
 export default RecommendCard;

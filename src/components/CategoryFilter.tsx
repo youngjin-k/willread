@@ -14,7 +14,7 @@ export enum CategoryColors {
     ORANGE = 'orange',
     GREEN = 'green',
     YELLOW = 'yellow',
-    PURPLE = 'purple',
+    PINK = 'pink',
 }
 
 function CategoryFilter(): ReactElement {
