@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { WillreadItem as IWillreadItem } from './RecommendCard';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
+import CategoryBar from './CategoryBar';
 
 export interface WillreadItemProps {
     item: IWillreadItem;
@@ -31,6 +32,7 @@ function WillreadCard({
     title,
     imageUri,
     minutesToRead,
+    categoryColor,
   } = item;
 
   return (
@@ -45,6 +47,7 @@ function WillreadCard({
           />
         </ThumbnailWrapper>
         <Content>
+          <CategoryBar categoryColor={categoryColor} />
           <Title numberOfLines={2}>
             {title}
           </Title>

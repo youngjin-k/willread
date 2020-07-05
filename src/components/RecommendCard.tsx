@@ -9,6 +9,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { CategoryColors } from './CategoryFilter';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
+import CategoryBar from './CategoryBar';
 
 export interface Category {
     color: CategoryColors;
@@ -21,7 +22,7 @@ export interface WillreadItem {
     title: string;
     description?: string;
     imageUri?: string;
-    categoryColor?: CategoryColors;
+    categoryColor: CategoryColors;
     minutesToRead: number;
 }
 
@@ -38,6 +39,7 @@ function RecommendCard({ item }: RecommendCardProps): ReactElement {
     title,
     imageUri,
     minutesToRead,
+    categoryColor,
   } = item;
 
   const handlePress = () => {
@@ -58,8 +60,11 @@ function RecommendCard({ item }: RecommendCardProps): ReactElement {
             scheme={scheme}
           />
         </ThumbnailWrapper>
-        <Title>{title}</Title>
-        <WillreadCardDescription uri={uri} minutesToRead={minutesToRead} />
+        <Content>
+          <CategoryBar categoryColor={categoryColor} />
+          <Title numberOfLines={2}>{title}</Title>
+          <WillreadCardDescription uri={uri} minutesToRead={minutesToRead} />
+        </Content>
       </RecommendCardBlock>
     </TouchableWithoutFeedback>
   );
@@ -76,13 +81,18 @@ const ReccomendTitle = styled.Text`
     font-weight: bold;
     font-size: 14px;
     color: ${(props) => props.theme.colors.primary};
-    margin: 0 0 12px 16px;
+    margin: 0 0 12px 8px;
     font-weight: bold;
 `;
 
 const ThumbnailWrapper = styled.View`
     border-radius: 16px;
     background-color: ${(props) => props.theme.colors.secondary};
+`;
+
+const Content = styled.View`
+    padding: 0 0 0 8px;
+    margin: 16px 0 0 0;
 `;
 
 const Thumbnail = styled.Image<{scheme: ColorSchemeName}>`
@@ -98,7 +108,6 @@ const Thumbnail = styled.Image<{scheme: ColorSchemeName}>`
 const Title = styled.Text`
     font-size: 18px;
     color: ${(props) => props.theme.colors.typography.title};
-    margin: 16px 0 0 0;
     font-weight: bold;
 `;
 
