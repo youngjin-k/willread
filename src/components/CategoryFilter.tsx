@@ -36,7 +36,7 @@ function CategoryFilter(): ReactElement {
               color={color}
               active={color === selected}
             >
-              {color === 'default' && <CategoryItemLabel>All</CategoryItemLabel>}
+              {color === 'default' && <CategoryItemLabel>ALL</CategoryItemLabel>}
             </CategoryItem>
           </CategoryItemWrapper>
         ))}
@@ -66,7 +66,7 @@ const CategoryItemWrapper = styled(TouchableOpacity)`
 const CategoryItem = styled.View<{color: CategoryColors, active: boolean}>`
     min-width: 32px;
     height: 32px;
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 0 16px;
     align-items: center;
     flex-direction: row;
