@@ -16,7 +16,7 @@ function ProgressBar({ progress = 0 }: ProgressProps): ReactElement {
 const ProgressBarBlock = styled.View`
     width: 100%;
     height: 2px;
-    background-color: ${(props) => props.theme.colors.secondary};
+    background-color: #C0B6FF;
 `;
 
 const Bar = styled.View<ProgressProps>`
