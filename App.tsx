@@ -3,9 +3,10 @@ import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ThemeProvider } from 'styled-components/native';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import themes from './src/lib/styles/themes';
 import Navigation from './src/config/Navigation';
-import store from './src/features/store';
+import store, { persistor } from './src/features/store';
 
 export default function App(): ReactElement {
   const scheme = useColorScheme();
@@ -15,15 +16,17 @@ export default function App(): ReactElement {
 
   return (
     <Provider store={store}>
-      <AppearanceProvider>
-        <StatusBar
-          backgroundColor={statusBarBackgroundColor}
-          barStyle={statusBarStyle}
-        />
-        <ThemeProvider theme={isDark ? themes.dark : themes.light}>
-          <Navigation />
-        </ThemeProvider>
-      </AppearanceProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <AppearanceProvider>
+          <StatusBar
+            backgroundColor={statusBarBackgroundColor}
+            barStyle={statusBarStyle}
+          />
+          <ThemeProvider theme={isDark ? themes.dark : themes.light}>
+            <Navigation />
+          </ThemeProvider>
+        </AppearanceProvider>
+      </PersistGate>
     </Provider>
   );
 }

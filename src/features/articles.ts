@@ -8,7 +8,7 @@ export interface InitialState {
 }
 
 const initialState: InitialState = {
-  articles,
+  articles: [],
 };
 
 const slice = createSlice({
