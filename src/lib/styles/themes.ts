@@ -50,7 +50,7 @@ const dark: DefaultTheme = {
   colors: {
     background: '#121214',
     primary: '#4B2FFF',
-    secondary: '#111111',
+    secondary: '#212126',
     border: '#232323',
     typography: {
       title: '#F9F9FD',

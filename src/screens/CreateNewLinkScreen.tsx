@@ -1,19 +1,26 @@
-import * as React from 'react';
-import { useSafeArea } from 'react-native-safe-area-context';
+import React, { useState, useCallback } from 'react';
 import { Feather } from '@expo/vector-icons';
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
 } from 'react-native';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../config/Navigation';
 
-function CreateNewLinkScreen({ navigation }): React.ReactElement {
-  const insets = useSafeArea();
+function CreateNewLinkScreen(): React.ReactElement {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const [uri, setUri] = useState('');
+
+  const fetchUri = useCallback(() => {
+    alert(uri);
+  }, [uri]);
+
   return (
     <Container>
       <KeyboardAvoidingView
@@ -28,20 +35,18 @@ function CreateNewLinkScreen({ navigation }): React.ReactElement {
         </Header>
 
         <Content>
-          <TextInput style={styles.linkInput} />
+          <Input
+            defaultValue={uri}
+            onChangeText={(text) => setUri(text)}
+          />
         </Content>
 
         <Actions>
-          <View style={styles.buttonWrapper}>
-            <TouchableOpacity
-              onPress={() => alert('test')}
-              activeOpacity={0.8}
-            >
-              <View style={styles.nextButton}>
-                <Text style={styles.nextButtonText}>다음</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity activeOpacity={0.9}>
+            <Button onPress={fetchUri}>
+              <ButtonText>다음</ButtonText>
+            </Button>
+          </TouchableOpacity>
         </Actions>
       </KeyboardAvoidingView>
     </Container>
@@ -84,34 +89,32 @@ const Content = styled.View`
   padding: 16px;
 `;
 
+const Input = styled.TextInput`
+  height: 56px;
+  background-color: ${(props) => props.theme.colors.secondary};
+  color: ${(props) => props.theme.colors.typography.title};
+  border-radius: 16px;
+  padding: 0 16px;
+  font-size: 18px;
+`;
+
 const Actions = styled.View`
   padding: 16px;
   height: ${56 + 16 + 16}px;
 `;
 
-const styles = StyleSheet.create({
-  linkInput: {
-    height: 56,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    fontSize: 18,
-  },
-  buttonWrapper: {
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  nextButton: {
-    height: 56,
-    backgroundColor: '#5484FF',
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  nextButtonText: {
-    fontSize: 22,
-    color: '#fff',
-  },
-});
+const Button = styled(TouchableOpacity)`
+  height: 56px;
+  background-color: ${(props) => props.theme.colors.primary};
+  border-radius: 16px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 18px;
+  color: #F9F9FD;
+  font-weight: bold;
+`;
 
 export default CreateNewLinkScreen;
