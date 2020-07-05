@@ -1,9 +1,30 @@
-const base = {
+import { DefaultTheme } from 'styled-components/native';
 
-};
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    colors: {
+      background: string;
+      primary: string;
+      secondary: string;
+      border: string;
+      typography: {
+        title: string;
+        secondary: string;
+      },
+      category: {
+        default: string;
+        red: string;
+        blue: string;
+        orange: string;
+        green: string;
+        yellow: string;
+        pink: string;
+      },
+    },
+  }
+}
 
-const light = {
-  ...base,
+const light: DefaultTheme = {
   colors: {
     background: '#ffffff',
     primary: '#4B2FFF',
@@ -25,8 +46,7 @@ const light = {
   },
 };
 
-const dark = {
-  ...base,
+const dark: DefaultTheme = {
   colors: {
     background: '#121214',
     primary: '#4B2FFF',
