@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components/native';
-import { CategoryColors } from './CategoryFilter';
+import { CategoryColors } from '../features/homeCategoryFilters';
 
 export interface CategoryBarProps {
     categoryColor: CategoryColors;

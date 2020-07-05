@@ -6,13 +6,13 @@ import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { WillreadItem as IWillreadItem } from './RecommendCard';
+import { Article } from './RecommendCard';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
 
 export interface WillreadItemProps {
-    item: IWillreadItem;
+    item: Article;
 }
 
 function WillreadCard({

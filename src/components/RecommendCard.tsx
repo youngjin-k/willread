@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { CategoryColors } from './CategoryFilter';
+import { CategoryColors } from '../features/homeCategoryFilters';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
@@ -16,7 +16,7 @@ export interface Category {
     label?: string;
 }
 
-export interface WillreadItem {
+export interface Article {
     id: string;
     uri: string;
     title: string;
@@ -27,7 +27,7 @@ export interface WillreadItem {
 }
 
 export interface RecommendCardProps {
-    item: WillreadItem
+    item: Article
 }
 
 function RecommendCard({ item }: RecommendCardProps): ReactElement {
@@ -69,9 +69,6 @@ function RecommendCard({ item }: RecommendCardProps): ReactElement {
     </TouchableWithoutFeedback>
   );
 }
-
-const Container = styled(TouchableWithoutFeedback)`
-`;
 
 const RecommendCardBlock = styled.View`
     padding: 16px;

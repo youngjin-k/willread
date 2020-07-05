@@ -13,7 +13,7 @@ import HistoryScreen from '../../src/screens/HistoryScreen';
 import MyScreen from '../../src/screens/MyScreen';
 import CreateNewLinkScreen from '../../src/screens/CreateNewLinkScreen';
 import ViewerScreen from '../screens/ViewerScreen';
-import { WillreadItem } from '../components/RecommendCard';
+import { Article } from '../components/RecommendCard';
 
 const Tab = createBottomTabNavigator();
 
@@ -121,7 +121,7 @@ export type RootStackParamList = {
   AppTabsScreen: undefined;
   CreateNewLink: undefined;
   Viewer: {
-    item: WillreadItem
+    item: Article
   };
 }
 
