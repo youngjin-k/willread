@@ -11,9 +11,9 @@ import HomeScreen from '../../src/screens/HomeScreen';
 import SearchScreen from '../../src/screens/SearchScreen';
 import HistoryScreen from '../../src/screens/HistoryScreen';
 import MyScreen from '../../src/screens/MyScreen';
-import CreateNewLinkScreen from '../../src/screens/CreateNewLinkScreen';
+import NewArticleScreen from '../screens/NewArticleScreen';
 import ViewerScreen from '../screens/ViewerScreen';
-import { Article } from '../components/RecommendCard';
+import { Article } from '../features/articles';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +39,7 @@ const willreadDarkTheme = {
   },
 };
 
-const CreateNewLinkScreenPlaceholder = () => null;
+const NewArticleScreenPlaceholder = () => null;
 
 function AppTabsScreen() {
   const scheme = useColorScheme();
@@ -71,7 +71,7 @@ function AppTabsScreen() {
       />
       <Tab.Screen
         name="add"
-        component={CreateNewLinkScreenPlaceholder}
+        component={NewArticleScreenPlaceholder}
         options={{
           tabBarLabel: '추가',
           tabBarIcon: ({ size }) => (
@@ -89,7 +89,7 @@ function AppTabsScreen() {
         listeners={({ navigation }) => ({
           tabPress: (event) => {
             event.preventDefault();
-            navigation.navigate('CreateNewLink');
+            navigation.navigate('NewArticle');
           },
         })}
       />
@@ -119,7 +119,7 @@ function AppTabsScreen() {
 
 export type RootStackParamList = {
   AppTabsScreen: undefined;
-  CreateNewLink: undefined;
+  NewArticle: undefined;
   Viewer: {
     item: Article
   };
@@ -135,14 +135,16 @@ export default function App(): ReactElement {
       <RootStack.Navigator
         headerMode="none"
         mode="modal"
+        // initialRouteName="NewArticle"
+        initialRouteName="AppTabsScreen"
       >
         <RootStack.Screen
           name="AppTabsScreen"
           component={AppTabsScreen}
         />
         <RootStack.Screen
-          name="CreateNewLink"
-          component={CreateNewLinkScreen}
+          name="NewArticle"
+          component={NewArticleScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           }}

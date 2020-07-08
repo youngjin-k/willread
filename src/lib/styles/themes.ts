@@ -2,10 +2,13 @@ import { DefaultTheme } from 'styled-components/native';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
+    dark: boolean;
     colors: {
       background: string;
       primary: string;
       secondary: string;
+      grey1: string,
+      grey2: string,
       border: string;
       typography: {
         title: string;
@@ -25,10 +28,13 @@ declare module 'styled-components' {
 }
 
 const light: DefaultTheme = {
+  dark: false,
   colors: {
     background: '#ffffff',
     primary: '#4B2FFF',
-    secondary: '#EDEFF4',
+    secondary: '#F0F1F3',
+    grey1: '#DFDFE6',
+    grey2: '#72717D',
     border: '#DCDCDC',
     typography: {
       title: '#121214',
@@ -47,10 +53,13 @@ const light: DefaultTheme = {
 };
 
 const dark: DefaultTheme = {
+  dark: true,
   colors: {
     background: '#121214',
     primary: '#4B2FFF',
     secondary: '#212126',
+    grey1: '#333338',
+    grey2: '#82808B',
     border: '#232323',
     typography: {
       title: '#F9F9FD',

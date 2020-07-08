@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/willread-light.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,6 +18,9 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {}
+    "android": {
+      "package": "com.willread.willread",
+      "versionCode": 1
+    }
   }
 }

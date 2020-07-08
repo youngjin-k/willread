@@ -10,20 +10,11 @@ import { CategoryColors } from '../features/homeCategoryFilters';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
+import { Article } from '../features/articles';
 
 export interface Category {
     color: CategoryColors;
     label?: string;
-}
-
-export interface Article {
-    id: string;
-    uri: string;
-    title: string;
-    description?: string;
-    imageUri?: string;
-    categoryColor: CategoryColors;
-    minutesToRead: number;
 }
 
 export interface RecommendCardProps {
