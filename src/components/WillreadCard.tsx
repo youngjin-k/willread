@@ -36,7 +36,7 @@ function WillreadCard({
   const {
     uri,
     title,
-    image: imageUri,
+    image,
     minutesToRead,
     categoryColor,
   } = item;
@@ -47,7 +47,7 @@ function WillreadCard({
         <ThumbnailWrapper>
           <Thumbnail
             source={{
-              uri: imageUri,
+              uri: image,
             }}
             scheme={scheme}
           />
