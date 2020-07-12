@@ -32,7 +32,7 @@ function Button({
     >
       <ButtonBlock disabled={disabled || loading}>
         {loading
-          ? <ActivityIndicator size="large" />
+          ? <ActivityIndicator size="small" />
           : <ButtonText disabled={disabled || loading}>{children}</ButtonText>}
       </ButtonBlock>
     </TouchableOpacity>

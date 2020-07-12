@@ -16,17 +16,17 @@ export default function App(): ReactElement {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AppearanceProvider>
-          <StatusBar
-            backgroundColor={statusBarBackgroundColor}
-            barStyle={statusBarStyle}
-          />
-          <ThemeProvider theme={isDark ? themes.dark : themes.light}>
-            <Navigation />
-          </ThemeProvider>
-        </AppearanceProvider>
-      </PersistGate>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <AppearanceProvider>
+        <StatusBar
+          backgroundColor={statusBarBackgroundColor}
+          barStyle={statusBarStyle}
+        />
+        <ThemeProvider theme={isDark ? themes.dark : themes.light}>
+          <Navigation />
+        </ThemeProvider>
+      </AppearanceProvider>
+      {/* </PersistGate> */}
     </Provider>
   );
 }

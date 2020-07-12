@@ -1,11 +1,16 @@
-import React, { ReactElement, useState, useCallback } from 'react';
+import React, {
+  ReactElement, useState, useCallback, useEffect,
+} from 'react';
 import styled from 'styled-components/native';
 import { getLinkPreview } from 'link-preview-js';
+import axios from 'axios';
+import Readability from 'readability';
 import FormLabel from '../FormLabel';
 import TextInput from '../TextInput';
 import Actions from './Actions';
 import Button from './Button';
 import { ArticleDraft } from '../../features/articles';
+import VALID_URL from '../../lib/regex/validUrl';
 
 export interface Step1Props {
     article: ArticleDraft;
@@ -19,6 +24,11 @@ function Step1({
   nextStep: next,
 }: Step1Props): ReactElement {
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(!VALID_URL.test(article.uri));
+  }, [article]);
 
   const handleTextChange = (uri: string) => {
     setArticle({
@@ -36,7 +46,8 @@ function Step1({
         ...article,
         title: response.title,
         description: response.description,
-        imageUri: response.images[0],
+        image: response.images.length > 0 ? response.images[0] : '',
+        favicon: response.favicons.length > 0 ? response.favicons[0] : '',
       });
       next();
     } catch (e) {
@@ -57,7 +68,7 @@ function Step1({
       </Container>
 
       <Actions>
-        <Button onPress={handleOnPress} loading={loading}>다음</Button>
+        <Button onPress={handleOnPress} loading={loading} disabled={disabled}>다음</Button>
       </Actions>
     </>
   );

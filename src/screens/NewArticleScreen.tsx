@@ -17,6 +17,7 @@ import Step3 from '../components/newArticle/Step3';
 import { CategoryColors } from '../features/homeCategoryFilters';
 import Step4 from '../components/newArticle/Step4';
 import { addArticle, ArticleDraft } from '../features/articles';
+import Complete from '../components/newArticle/Complete';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -25,9 +26,10 @@ function NewArticleScreen(): React.ReactElement {
 
   const [draft, setDraft] = useState<ArticleDraft>({
     uri: 'https://medium.com/daangn/%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%A4%91%EB%8B%A8%EC%97%86%EC%9D%B4-%EB%A3%A8%EB%B9%84-%EB%B2%84%EC%A0%84-2-6-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%95%98%EA%B8%B0-db8991c19050',
+    // uri: '',
     title: '',
     description: '',
-    imageUri: '',
+    image: '',
     categoryColor: CategoryColors.RED,
     minutesToRead: 0,
   });
@@ -36,14 +38,14 @@ function NewArticleScreen(): React.ReactElement {
     setStep((currentStep) => currentStep - 1);
   };
 
-  const nextStep = () => {
-    setStep((currentStep) => currentStep + 1);
-  };
+  const nextStep = useCallback(() => {
+    setStep(step + 1);
+  }, [step]);
 
   const complete = useCallback(() => {
     dispatch(addArticle(draft));
-    navigation.pop();
-  }, [dispatch, navigation, draft]);
+    nextStep();
+  }, [nextStep, dispatch, draft]);
 
   return (
     <Container>
@@ -52,7 +54,7 @@ function NewArticleScreen(): React.ReactElement {
         style={{ flex: 1, justifyContent: 'space-between' }}
       >
         <Header>
-          {step > 0 && (
+          {([1, 2, 3].includes(step)) && (
           <PrevButton onPress={prevStep}>
             <PrevButtonText>이전</PrevButtonText>
           </PrevButton>
@@ -88,6 +90,9 @@ function NewArticleScreen(): React.ReactElement {
           setArticle={(value) => setDraft(value)}
           nextStep={() => complete()}
         />)}
+        {step === 4 && (
+          <Complete />
+        )}
 
       </KeyboardAvoidingView>
     </Container>
@@ -123,11 +128,11 @@ const PrevButtonText = styled.Text`
 `;
 
 const CloseButton = styled(TouchableOpacity)`
-  width: 56px;
+  padding: 0 16px;
   height: 56px;
   position: absolute;
   top: 0;
-  right: 16px;
+  right: 0;
   align-items: center;
   justify-content: center;
 `;

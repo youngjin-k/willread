@@ -8,7 +8,8 @@ export interface Article {
   uri: string;
   title: string;
   description?: string;
-  imageUri?: string;
+  image?: string;
+  favicon?: string;
   categoryColor: CategoryColors;
   minutesToRead: number;
 }
@@ -17,7 +18,8 @@ export interface ArticleDraft {
   uri: string;
   title: string;
   description?: string;
-  imageUri?: string;
+  image?: string;
+  favicon?: string;
   categoryColor: CategoryColors;
   minutesToRead: number;
 }

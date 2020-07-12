@@ -4,16 +4,17 @@ import styled from 'styled-components/native';
 import { useSelector } from 'react-redux';
 import willreadLight from '../../assets/willread-light.png';
 import willreadDark from '../../assets/willread-dark.png';
-import RecommendCard, { Article } from '../components/RecommendCard';
+import RecommendCard from '../components/RecommendCard';
 import WillreadCard from '../components/WillreadCard';
 import CategoryFilter from '../components/CategoryFilter';
 import { CategoryColors } from '../features/homeCategoryFilters';
 import { RootState } from '../features/store';
+import { Article } from '../features/articles';
 
 const recommendItem: Article = {
   id: '',
   uri: 'https://meetup.toast.com/posts/242',
-  imageUri: 'https://image.toast.com/aaaadh/real/2020/repimg/main(18)_thumbnail.png',
+  image: 'https://image.toast.com/aaaadh/real/2020/repimg/main(18)_thumbnail.png',
   title: '라이트하우스 6.0에서 바뀐 성능 지표변화',
   minutesToRead: 5,
   categoryColor: CategoryColors.RED,
@@ -43,7 +44,7 @@ function HomeScreen(): React.ReactElement {
         </Header>
         <RecommendCard item={recommendItem} />
         <CategoryFilter />
-        {displayArticles.map((item) => <WillreadCard key={item.id} item={item} />)}
+        {displayArticles && displayArticles.map((item) => <WillreadCard key={item.id} item={item} />)}
       </ScrollView>
     </Container>
   );

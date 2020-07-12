@@ -39,7 +39,7 @@ function Step2({
         <ThumbnailWrapper windowWidth={windowWidth}>
           <Thumbnail
             source={{
-              uri: article.imageUri,
+              uri: article.image,
             }}
             scheme={scheme}
             resizeMode="cover"

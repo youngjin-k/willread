@@ -28,7 +28,7 @@ function RecommendCard({ item }: RecommendCardProps): ReactElement {
   const {
     uri,
     title,
-    imageUri,
+    image: imageUri,
     minutesToRead,
     categoryColor,
   } = item;

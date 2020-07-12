@@ -6,10 +6,10 @@ import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { Article } from './RecommendCard';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
+import { Article } from '../features/articles';
 
 export interface WillreadItemProps {
     item: Article;
@@ -27,16 +27,20 @@ function WillreadCard({
     });
   };
 
+  const handleLongPress = () => {
+    console.log(item);
+  };
+
   const {
     uri,
     title,
-    imageUri,
+    image: imageUri,
     minutesToRead,
     categoryColor,
   } = item;
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
       <WillreadItemBlock>
         <ThumbnailWrapper>
           <Thumbnail
@@ -59,7 +63,7 @@ function WillreadCard({
 }
 
 const WillreadItemBlock = styled.View`
-    padding: 0 16px 16px 16px;
+    padding: 8px 16px;
     flex-direction: row;
 `;
 

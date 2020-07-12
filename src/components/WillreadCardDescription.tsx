@@ -28,11 +28,13 @@ function WillreadCardDescription({
   return (
     <WillreadCardDescriptionBlock>
       {minutesToRead > 0 && (
-      <Description>
-        {minutesToRead}
-        min read
-      </Description>)}
-      <Separator>•</Separator>
+        <>
+          <Description>
+            {minutesToRead}
+            min read
+          </Description>
+          <Separator>•</Separator>
+        </>)}
       <Description>{extractHostname(uri)}</Description>
     </WillreadCardDescriptionBlock>
   );

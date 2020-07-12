@@ -17,7 +17,7 @@ import articlesReducer from './articles';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whiteList: ['homeCategoryFiltersReducer'],
+  whiteList: [],
 };
 
 const reducer = combineReducers({
@@ -25,17 +25,17 @@ const reducer = combineReducers({
   homeCategoryFilters: homeCategoryFiltersReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+// const persistedReducer = persistReducer(persistConfig, reducer);
 
 export type RootState = ReturnType<typeof reducer>;
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
+  reducer,
+  // middleware: getDefaultMiddleware({
+  //   serializableCheck: {
+  //     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+  //   },
+  // }),
 });
 
 export const persistor = persistStore(store);
