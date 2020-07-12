@@ -28,7 +28,7 @@ function RecommendCard({ item }: RecommendCardProps): ReactElement {
   const {
     uri,
     title,
-    image: imageUri,
+    image,
     minutesToRead,
     categoryColor,
   } = item;
@@ -46,7 +46,7 @@ function RecommendCard({ item }: RecommendCardProps): ReactElement {
         <ThumbnailWrapper>
           <Thumbnail
             source={{
-              uri: imageUri,
+              uri: image,
             }}
             scheme={scheme}
           />
