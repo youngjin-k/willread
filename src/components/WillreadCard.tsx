@@ -6,10 +6,11 @@ import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
-import { Article } from '../features/articles';
+import { Article, removeArticle } from '../features/articles';
 
 export interface WillreadItemProps {
     item: Article;
@@ -20,6 +21,7 @@ function WillreadCard({
 }: WillreadItemProps): ReactElement {
   const scheme = useColorScheme();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const dispatch = useDispatch();
 
   const handlePress = () => {
     navigation.navigate('Viewer', {
@@ -28,7 +30,7 @@ function WillreadCard({
   };
 
   const handleLongPress = () => {
-    console.log(item);
+    dispatch(removeArticle(item));
   };
 
   const {

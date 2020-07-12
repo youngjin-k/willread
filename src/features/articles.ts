@@ -43,10 +43,17 @@ const slice = createSlice({
       };
       state.articles.push(article);
     },
+    removeArticle: (state, action: PayloadAction<Article>) => {
+      state.articles.splice(
+        state.articles.findIndex((article) => article.id === action.payload.id),
+        1,
+      );
+    },
   },
 });
 export default slice.reducer;
 
 export const {
   addArticle,
+  removeArticle,
 } = slice.actions;
