@@ -6,6 +6,7 @@ declare module 'styled-components' {
     colors: {
       background: string;
       primary: string;
+      primaryTender: string;
       secondary: string;
       grey1: string,
       grey2: string,
@@ -32,6 +33,7 @@ const light: DefaultTheme = {
   colors: {
     background: '#ffffff',
     primary: '#4B2FFF',
+    primaryTender: 'rgba(75, 47, 255, 0.1)',
     secondary: '#F0F1F3',
     grey1: '#DFDFE6',
     grey2: '#72717D',
@@ -56,7 +58,8 @@ const dark: DefaultTheme = {
   dark: true,
   colors: {
     background: '#121214',
-    primary: '#4B2FFF',
+    primary: '#745DFF',
+    primaryTender: 'rgba(116, 93, 255, 0.1)',
     secondary: '#212126',
     grey1: '#333338',
     grey2: '#82808B',

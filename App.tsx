@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import themes from './src/lib/styles/themes';
 import Navigation from './src/config/Navigation';
-import store, { persistor } from './src/features/store';
+import store from './src/features/store';
 
 export default function App(): ReactElement {
   const scheme = useColorScheme();
