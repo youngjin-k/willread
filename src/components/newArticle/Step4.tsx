@@ -49,8 +49,13 @@ const formatTimeFromNow = (from: dayjs.Dayjs, to: dayjs.Dayjs): NotificationTime
     }
 
     fromNow.push(to.format('a') === 'am' ? '오전' : '오후');
-    fromNow.push(`${to.format('h')}시`);
-    fromNow.push(`${to.format('m')}분에`);
+
+    if (to.get('minute') > 0) {
+      fromNow.push(`${to.format('h')}시`);
+      fromNow.push(`${to.format('m')}분에`);
+    } else {
+      fromNow.push(`${to.format('h')}시에`);
+    }
   }
 
   fromNow.push('알려드릴게요');
@@ -58,8 +63,13 @@ const formatTimeFromNow = (from: dayjs.Dayjs, to: dayjs.Dayjs): NotificationTime
   return {
     date: to,
     fromNow: fromNow.join(' '),
-    dateStr: to.format(`M월 d일 ${to.format('a') === 'am' ? '오전' : '오후'} h:mm`),
+    dateStr: to.format(`M월 D일 ${to.format('a') === 'am' ? '오전' : '오후'} h:mm`),
   };
+};
+
+const initialNotificationTime = {
+  fromNow: '',
+  dateStr: '',
 };
 
 interface NotificationTime {
@@ -75,20 +85,28 @@ function Step4({
 }: Step4Props): ReactElement {
   const [modalVisible, setModalVisible] = useState(false);
   const [activeTimeIndex, setActiveTimeIndex] = useState<number | string>(2);
-  const [notificationTime, setNotificationTime] = useState<NotificationTime>({
-    fromNow: '',
-    dateStr: '',
-  });
+  const [notificationTime, setNotificationTime] = useState<NotificationTime>(initialNotificationTime);
 
   const handlePressTime = (hour: number, index: number) => {
     setActiveTimeIndex(index);
+
+    if (hour === 0) {
+      setNotificationTime(initialNotificationTime);
+      return;
+    }
+
     const date = dayjs(now).add(hour, 'h');
     setNotificationTime(formatTimeFromNow(now, date));
   };
 
   const handlePressManualTime = () => {
-    // setActiveTimeIndex()
     setModalVisible(true);
+  };
+
+  const setManualTime = (date: dayjs.Dayjs) => {
+    setModalVisible(false);
+    setActiveTimeIndex(timeList.length);
+    setNotificationTime(formatTimeFromNow(now, date));
   };
 
   useEffect(() => {
@@ -141,7 +159,7 @@ function Step4({
         propagateSwipe
         style={{ justifyContent: 'flex-end', margin: 0 }}
       >
-        <DateTimePicker />
+        <DateTimePicker initialDate={notificationTime.date} setManualTime={setManualTime} />
       </Modal>
     </>
   );

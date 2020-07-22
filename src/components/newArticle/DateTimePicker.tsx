@@ -1,33 +1,93 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components/native';
 import dayjs from 'dayjs';
 import { TouchableWithoutFeedback } from 'react-native';
 import Button from './Button';
 
-const dateItems = Array(30).fill(0).map((_, i) => dayjs().add(i, 'day').format('YYYY-MM-DD'));
-const ampmItems = ['오전', '오후'];
+const dateItems = Array(30).fill(0).map((_, i) => {
+  const date = dayjs().add(i, 'day');
+  return {
+    label: date.format('YYYY-MM-DD'),
+    value: [date.get('year'), date.get('month'), date.get('date')],
+  };
+});
+
+const ampmItems = [{
+  label: '오전',
+  value: 'AM',
+}, {
+  label: '오후',
+  value: 'PM',
+}];
 const hourItems = Array(12).fill(0).map((_, i) => String(i + 1).padStart(2, '0'));
 const minuteItems = Array(12).fill(0).map((_, i) => String(i * 5).padStart(2, '0'));
 
-function DateTimePicker(): JSX.Element {
-  const [date, setDate] = useState(dateItems[0]);
-  const [ampm, setAMPM] = useState(ampmItems[0]);
-  const [hour, setHour] = useState(hourItems[0]);
-  const [minute, setMinute] = useState(minuteItems[0]);
+export interface DateTimePickerProps {
+  initialDate?: dayjs.Dayjs,
+  setManualTime: (date: dayjs.Dayjs) => void;
+}
+
+function DateTimePicker({
+  initialDate,
+  setManualTime,
+}: DateTimePickerProps): JSX.Element {
+  const [time, setTime] = useState(initialDate || dayjs().add(3, 'hour').set('minute', 0));
+
+  const date = time.format('YYYY-MM-DD');
+  const ampm = time.format('A');
+  const hour = time.format('hh');
+  const minute = time.format('mm');
+  const displayTime = time.format(`M월 D일 ${ampm === 'AM' ? '오전' : '오후'} h:mm`);
+
+  const setDate = (value: number[]) => {
+    setTime(
+      time
+        .set('year', value[0])
+        .set('month', value[1])
+        .set('date', value[2]),
+    );
+  };
+
+  const setAMPM = (value: string) => {
+    if (ampm === value) {
+      return;
+    }
+    if (ampm === 'AM') {
+      setTime(time.add(12, 'hour'));
+    } else {
+      setTime(time.subtract(12, 'hour'));
+    }
+  };
+
+  const setHour = (value: string) => {
+    setTime(time.set('hour', ampm === 'AM' ? Number(value) : Number(value) + 12));
+  };
+
+  const setMinute = (value: string) => {
+    setTime(time.set('minute', Number(value)));
+  };
+
+  const handlePress = () => {
+    setManualTime(time);
+  };
+
   return (
     <DateTimePickerBlock>
       <HandleWrapper>
         <Handle />
       </HandleWrapper>
       <Content>
+        <TimeView>
+          <Time>{displayTime}</Time>
+        </TimeView>
         <PickerContainer>
 
           <DatesScrollWrapper>
             <List showsVerticalScrollIndicator={false}>
-              {dateItems.map((item) => (
-                <TouchableWithoutFeedback key={item} onPress={() => setDate(item)}>
+              {dateItems.map(({ label, value }) => (
+                <TouchableWithoutFeedback key={label} onPress={() => setDate(value)}>
                   <Item>
-                    <ItemLabel active={date === item}>{item}</ItemLabel>
+                    <ItemLabel active={date === label}>{label}</ItemLabel>
                   </Item>
                 </TouchableWithoutFeedback>
               ))}
@@ -36,10 +96,10 @@ function DateTimePicker(): JSX.Element {
 
           <AMPMScrollWrapper>
             <List showsVerticalScrollIndicator={false}>
-              {ampmItems.map((item) => (
-                <TouchableWithoutFeedback key={item} onPress={() => setAMPM(item)}>
+              {ampmItems.map(({ label, value }) => (
+                <TouchableWithoutFeedback key={value} onPress={() => setAMPM(value)}>
                   <Item>
-                    <ItemLabel active={ampm === item}>{item}</ItemLabel>
+                    <ItemLabel active={ampm === value}>{label}</ItemLabel>
                   </Item>
                 </TouchableWithoutFeedback>
               ))}
@@ -71,7 +131,7 @@ function DateTimePicker(): JSX.Element {
           </MinutesScrollWrapper>
 
         </PickerContainer>
-        <Button>완료</Button>
+        <Button onPress={handlePress}>완료</Button>
       </Content>
     </DateTimePickerBlock>
   );
@@ -84,16 +144,26 @@ const DateTimePickerBlock = styled.SafeAreaView`
 `;
 
 const HandleWrapper = styled.View`
-  padding: 8px;
+  padding: 8px 0 0 0;
   align-items: center;
   justify-content: center;
 `;
 
 const Handle = styled.View`
-    width: 60px;
-    height: 6px;
-    border-radius: 3px;
-    background-color: ${(props) => props.theme.colors.grey1};
+  width: 60px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: ${(props) => props.theme.colors.grey1};
+`;
+
+const TimeView = styled.View`
+  padding: 32px 0;
+  align-items: center;
+`;
+
+const Time = styled.Text`
+  font-size: 26px;
+  color: ${(props) => props.theme.colors.typography.title};
 `;
 
 const Content = styled.View`
@@ -134,14 +204,13 @@ const Item = styled.View`
 
 const ItemLabel = styled.Text<{active: boolean}>`
   font-size: 20px;
-  /* color: ${(props) => props.theme.colors.typography[props.active ? 'title' : 'secondary']}; */
 
   ${(props) => (props.active
     ? css`
     color: ${props.theme.colors.typography.title};
   `
     : css`
-    color: ${props.theme.colors.typography.secondary};
+    color: ${props.theme.colors.grey1};
   `)}
 `;
 
