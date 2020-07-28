@@ -1,26 +1,38 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-expressions */
+import React, { useState, createRef, RefObject } from 'react';
 import styled, { css } from 'styled-components/native';
 import dayjs from 'dayjs';
-import { TouchableWithoutFeedback } from 'react-native';
+import {
+  TouchableWithoutFeedback, NativeSyntheticEvent, NativeScrollEvent, ScrollView, Vibration,
+} from 'react-native';
 import Button from './Button';
 
-const dateItems = Array(30).fill(0).map((_, i) => {
-  const date = dayjs().add(i, 'day');
-  return {
-    label: date.format('YYYY-MM-DD'),
-    value: [date.get('year'), date.get('month'), date.get('date')],
-  };
-});
+const ITEM_HEIGHT = 48;
 
-const ampmItems = [{
-  label: '오전',
-  value: 'AM',
-}, {
-  label: '오후',
-  value: 'PM',
-}];
-const hourItems = Array(12).fill(0).map((_, i) => String(i + 1).padStart(2, '0'));
-const minuteItems = Array(12).fill(0).map((_, i) => String(i * 5).padStart(2, '0'));
+const items = {
+  date: Array(30).fill(0).map((_, i) => {
+    const date = dayjs().add(i, 'day');
+    return {
+      label: date.format('YYYY-MM-DD'),
+      value: [date.get('year'), date.get('month'), date.get('date')],
+    };
+  }),
+  ampm: [{
+    label: '오전',
+    value: 'AM',
+  }, {
+    label: '오후',
+    value: 'PM',
+  }],
+  hour: Array(12).fill(0).map((_, i) => ({
+    label: String(i + 1).padStart(2, '0'),
+    value: String(i + 1).padStart(2, '0'),
+  })),
+  minute: Array(12).fill(0).map((_, i) => ({
+    label: String(i * 5).padStart(2, '0'),
+    value: String(i * 5).padStart(2, '0'),
+  })),
+};
 
 export interface DateTimePickerProps {
   initialDate?: dayjs.Dayjs,
@@ -32,6 +44,10 @@ function DateTimePicker({
   setManualTime,
 }: DateTimePickerProps): JSX.Element {
   const [time, setTime] = useState(initialDate || dayjs().add(3, 'hour').set('minute', 0));
+  const dateScrollViewRef = createRef<ScrollView>();
+  const ampmScrollViewRef = createRef<ScrollView>();
+  const hourScrollViewRef = createRef<ScrollView>();
+  const minuteScrollViewRef = createRef<ScrollView>();
 
   const date = time.format('YYYY-MM-DD');
   const ampm = time.format('A');
@@ -67,8 +83,54 @@ function DateTimePicker({
     setTime(time.set('minute', Number(value)));
   };
 
-  const handlePress = () => {
+  const handlePressSubmit = () => {
     setManualTime(time);
+  };
+
+  const getScrollTargetIndex = (scrollY: number): number => {
+    const y = (scrollY % ITEM_HEIGHT) > (ITEM_HEIGHT / 2)
+      ? ITEM_HEIGHT - (scrollY % ITEM_HEIGHT)
+      : -1 * (scrollY % ITEM_HEIGHT);
+    return (scrollY + y) / ITEM_HEIGHT;
+  };
+
+  const fixScrollPosition = (target: React.RefObject<ScrollView>, targetIndex: number) => {
+    target.current?.scrollTo({
+      y: targetIndex * ITEM_HEIGHT,
+      animated: true,
+    });
+  };
+
+  const handleScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>, targetType: string) => {
+    if (targetType === 'date') {
+      fixScrollPosition(
+        dateScrollViewRef,
+        getScrollTargetIndex(event.nativeEvent.contentOffset.y),
+      );
+      setDate(items.date[getScrollTargetIndex(event.nativeEvent.contentOffset.y)].value);
+    } else if (targetType === 'ampm') {
+      fixScrollPosition(
+        ampmScrollViewRef,
+        getScrollTargetIndex(event.nativeEvent.contentOffset.y),
+      );
+      setAMPM(items.ampm[getScrollTargetIndex(event.nativeEvent.contentOffset.y)].value);
+    } else if (targetType === 'hour') {
+      fixScrollPosition(
+        hourScrollViewRef,
+        getScrollTargetIndex(event.nativeEvent.contentOffset.y),
+      );
+      setHour(items.hour[getScrollTargetIndex(event.nativeEvent.contentOffset.y)].value);
+    } else if (targetType === 'minute') {
+      fixScrollPosition(
+        minuteScrollViewRef,
+        getScrollTargetIndex(event.nativeEvent.contentOffset.y),
+      );
+      setMinute(items.minute[getScrollTargetIndex(event.nativeEvent.contentOffset.y)].value);
+    }
+  };
+
+  const handlePressItem = (target: React.RefObject<ScrollView>, index: number) => {
+    fixScrollPosition(target, index * ITEM_HEIGHT);
   };
 
   return (
@@ -83,55 +145,99 @@ function DateTimePicker({
         <PickerContainer>
 
           <DatesScrollWrapper>
-            <List showsVerticalScrollIndicator={false}>
-              {dateItems.map(({ label, value }) => (
-                <TouchableWithoutFeedback key={label} onPress={() => setDate(value)}>
+            <Overlay pointerEvents="none" />
+            <List
+              showsVerticalScrollIndicator={false}
+              onMomentumScrollEnd={(event) => handleScrollEnd(event, 'date')}
+              ref={dateScrollViewRef}
+            >
+              <ListSpacing />
+              {items.date.map(({ label }, index) => (
+                <TouchableWithoutFeedback
+                  key={label}
+                  onPress={() => handlePressItem(dateScrollViewRef, index)}
+                >
                   <Item>
-                    <ItemLabel active={date === label}>{label}</ItemLabel>
+                    <ItemLabel>{label}</ItemLabel>
                   </Item>
                 </TouchableWithoutFeedback>
               ))}
+              <ListSpacing />
             </List>
+            <Overlay pointerEvents="none" bottom />
           </DatesScrollWrapper>
 
           <AMPMScrollWrapper>
-            <List showsVerticalScrollIndicator={false}>
-              {ampmItems.map(({ label, value }) => (
-                <TouchableWithoutFeedback key={value} onPress={() => setAMPM(value)}>
+            <Overlay pointerEvents="none" />
+            <List
+              showsVerticalScrollIndicator={false}
+              onMomentumScrollEnd={(event) => handleScrollEnd(event, 'ampm')}
+              ref={ampmScrollViewRef}
+            >
+              <ListSpacing />
+              {items.ampm.map(({ label, value }, index) => (
+                <TouchableWithoutFeedback
+                  key={value}
+                  onPress={() => handlePressItem(ampmScrollViewRef, index)}
+                >
                   <Item>
-                    <ItemLabel active={ampm === value}>{label}</ItemLabel>
+                    <ItemLabel>{label}</ItemLabel>
                   </Item>
                 </TouchableWithoutFeedback>
               ))}
+              <ListSpacing />
             </List>
+            <Overlay pointerEvents="none" bottom />
           </AMPMScrollWrapper>
 
           <HoursScrollWrapper>
-            <List showsVerticalScrollIndicator={false}>
-              {hourItems.map((item) => (
-                <TouchableWithoutFeedback key={item} onPress={() => setHour(item)}>
+            <Overlay pointerEvents="none" />
+            <List
+              showsVerticalScrollIndicator={false}
+              onMomentumScrollEnd={(event) => handleScrollEnd(event, 'hour')}
+              ref={hourScrollViewRef}
+            >
+              <ListSpacing />
+              {items.hour.map(({ label, value }, index) => (
+                <TouchableWithoutFeedback
+                  key={value}
+                  onPress={() => handlePressItem(hourScrollViewRef, index)}
+                >
                   <Item>
-                    <ItemLabel active={hour === item}>{item}</ItemLabel>
+                    <ItemLabel>{label}</ItemLabel>
                   </Item>
                 </TouchableWithoutFeedback>
               ))}
+              <ListSpacing />
             </List>
+            <Overlay pointerEvents="none" bottom />
           </HoursScrollWrapper>
 
           <MinutesScrollWrapper>
-            <List showsVerticalScrollIndicator={false}>
-              {minuteItems.map((item) => (
-                <TouchableWithoutFeedback key={item} onPress={() => setMinute(item)}>
+            <Overlay pointerEvents="none" />
+            <List
+              showsVerticalScrollIndicator={false}
+              onMomentumScrollEnd={(event) => handleScrollEnd(event, 'minute')}
+              ref={minuteScrollViewRef}
+            >
+              <ListSpacing />
+              {items.minute.map(({ label, value }, index) => (
+                <TouchableWithoutFeedback
+                  key={index}
+                  onPress={() => handlePressItem(minuteScrollViewRef, index)}
+                >
                   <Item>
-                    <ItemLabel active={minute === item}>{item}</ItemLabel>
+                    <ItemLabel>{label}</ItemLabel>
                   </Item>
                 </TouchableWithoutFeedback>
               ))}
+              <ListSpacing />
             </List>
+            <Overlay pointerEvents="none" bottom />
           </MinutesScrollWrapper>
 
         </PickerContainer>
-        <Button onPress={handlePress}>완료</Button>
+        <Button onPress={handlePressSubmit}>완료</Button>
       </Content>
     </DateTimePickerBlock>
   );
@@ -172,7 +278,7 @@ const Content = styled.View`
 
 const PickerContainer = styled.View`
   flex-direction: row;
-  height: ${48 * 3}px;
+  height: ${ITEM_HEIGHT * 5}px;
   margin-bottom: 16px;
 `;
 
@@ -197,21 +303,44 @@ const List = styled.ScrollView`
 `;
 
 const Item = styled.View`
-  height: 48px;
+  height: ${ITEM_HEIGHT}px;
   align-items: center;
   justify-content: center;
 `;
 
-const ItemLabel = styled.Text<{active: boolean}>`
+const ItemLabel = styled.Text`
   font-size: 20px;
+  color: ${(props) => props.theme.colors.typography.title};
+`;
 
-  ${(props) => (props.active
+const ListSpacing = styled.View`
+  height: ${ITEM_HEIGHT * 2}px;
+`;
+
+const Overlay = styled.View<{bottom?: boolean;}>`
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  ${(props) => (props.bottom
     ? css`
-    color: ${props.theme.colors.typography.title};
-  `
+      bottom: 0;
+      height: ${ITEM_HEIGHT * 2}px;
+
+      background-color: ${props.theme.colors.background};
+      opacity: 0.8;
+    `
     : css`
-    color: ${props.theme.colors.grey1};
-  `)}
+      top: 0;
+      /* margin-top: ${ITEM_HEIGHT * 2 - 1}px; */
+      height: ${ITEM_HEIGHT * 2}px;
+
+      background-color: ${props.theme.colors.background};
+      opacity: 0.8;
+      /* border-color: ${props.theme.colors.grey2}; */
+      /* border-bottom-width: 1px; */
+    `)}
 `;
 
 export default DateTimePicker;
