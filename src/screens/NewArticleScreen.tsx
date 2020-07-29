@@ -9,19 +9,17 @@ import {
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useDispatch } from 'react-redux';
 import { RootStackParamList } from '../config/Navigation';
 import Step1 from '../components/newArticle/Step1';
 import Step2 from '../components/newArticle/Step2';
 import Step3 from '../components/newArticle/Step3';
 import { CategoryColors } from '../features/homeCategoryFilters';
 import Step4 from '../components/newArticle/Step4';
-import { addArticle, ArticleDraft } from '../features/articles';
+import { ArticleDraft } from '../features/articles';
 import Complete from '../components/newArticle/Complete';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const dispatch = useDispatch();
   const [step, setStep] = useState(0);
 
   const [draft, setDraft] = useState<ArticleDraft>({
@@ -41,11 +39,6 @@ function NewArticleScreen(): React.ReactElement {
   const nextStep = useCallback(() => {
     setStep(step + 1);
   }, [step]);
-
-  const complete = useCallback(() => {
-    dispatch(addArticle(draft));
-    nextStep();
-  }, [nextStep, dispatch, draft]);
 
   return (
     <Container>
@@ -88,7 +81,7 @@ function NewArticleScreen(): React.ReactElement {
         <Step4
           article={draft}
           setArticle={(value) => setDraft(value)}
-          nextStep={() => complete()}
+          nextStep={() => nextStep()}
         />)}
         {step === 4 && (
           <Complete />

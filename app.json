@@ -20,7 +20,8 @@
     },
     "android": {
       "package": "com.willread.willread",
-      "versionCode": 1
+      "versionCode": 1,
+      "useNextNotificationsApi": true
     }
   }
 }

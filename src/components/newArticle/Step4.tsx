@@ -1,12 +1,24 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, {
+  ReactElement, useState, useEffect, useCallback,
+} from 'react';
 import styled, { css } from 'styled-components/native';
 import { TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
 import dayjs from 'dayjs';
+import * as Notifications from 'expo-notifications';
+import { useDispatch } from 'react-redux';
 import Actions from './Actions';
 import Button from './Button';
-import { ArticleDraft } from '../../features/articles';
+import { ArticleDraft, addArticle } from '../../features/articles';
 import DateTimePicker from './DateTimePicker';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export interface Step4Props {
   article: ArticleDraft;
@@ -83,9 +95,11 @@ function Step4({
   setArticle,
   nextStep,
 }: Step4Props): ReactElement {
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [activeTimeIndex, setActiveTimeIndex] = useState<number | string>(2);
   const [notificationTime, setNotificationTime] = useState<NotificationTime>(initialNotificationTime);
+  const dispatch = useDispatch();
 
   const handlePressTime = (hour: number, index: number) => {
     setActiveTimeIndex(index);
@@ -109,9 +123,56 @@ function Step4({
     setNotificationTime(formatTimeFromNow(now, date));
   };
 
-  useEffect(() => {
-    handlePressTime(2, 2);
-  }, []);
+  const save = useCallback(() => {
+    dispatch(addArticle(article));
+  }, [dispatch, article]);
+
+  const setNotification = async () => {
+    const id = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: '윌리드할 시간이에요!',
+        body: article.title,
+        sound: 'default',
+        data: {
+          article,
+        },
+      },
+      trigger: {
+        seconds: 5,
+      },
+    });
+    console.log(`noti id: ${id}`);
+    return id;
+  };
+
+  const allowsNotificationsAsync = async () => {
+    const settings = await Notifications.getPermissionsAsync();
+    return settings.granted;
+  };
+
+  const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
+    ios: {
+      allowAlert: true,
+      allowBadge: true,
+      allowSound: true,
+      allowAnnouncements: true,
+    },
+  });
+
+  const handlePressComplete = async () => {
+    setLoading(true);
+    save();
+
+    const allowsPermissions = await allowsNotificationsAsync();
+    if (allowsPermissions) {
+      await setNotification();
+    } else {
+      await requestPermissionsAsync();
+      await setNotification();
+    }
+    setLoading(false);
+    nextStep();
+  };
 
   return (
     <>
@@ -148,7 +209,7 @@ function Step4({
       </Container>
 
       <Actions>
-        <Button onPress={nextStep}>완료</Button>
+        <Button onPress={handlePressComplete} loading={loading}>완료</Button>
       </Actions>
 
       <Modal

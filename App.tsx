@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { ThemeProvider } from 'styled-components/native';
 import { StatusBar } from 'react-native';

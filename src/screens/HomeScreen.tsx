@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Image, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector } from 'react-redux';
+import * as Notifications from 'expo-notifications';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import willreadLight from '../../assets/willread-light.png';
 import willreadDark from '../../assets/willread-dark.png';
 import RecommendCard from '../components/RecommendCard';
@@ -10,6 +13,7 @@ import CategoryFilter from '../components/CategoryFilter';
 import { CategoryColors } from '../features/homeCategoryFilters';
 import { RootState } from '../features/store';
 import { Article } from '../features/articles';
+import { RootStackParamList } from '../config/Navigation';
 
 const recommendItem: Article = {
   id: '',
@@ -25,6 +29,21 @@ function HomeScreen(): React.ReactElement {
   const { articles } = useSelector((state: RootState) => state.articles);
   const { filters } = useSelector((state: RootState) => state.homeCategoryFilters);
   const [displayArticles, setDisplayArticles] = useState<Article[]>([]);
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      const { article } = response.notification.request.content.data;
+      console.log(article);
+
+      if (article) {
+        navigation.navigate('Viewer', {
+          item: article,
+        });
+      }
+    });
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     if (filters.category === CategoryColors.DEFAULT) {

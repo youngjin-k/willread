@@ -127,7 +127,7 @@ export type RootStackParamList = {
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
-export default function App(): ReactElement {
+export default function Navigation(): ReactElement {
   const scheme = useColorScheme();
 
   return (
