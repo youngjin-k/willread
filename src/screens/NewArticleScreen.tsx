@@ -15,7 +15,7 @@ import Step2 from '../components/newArticle/Step2';
 import Step3 from '../components/newArticle/Step3';
 import { CategoryColors } from '../features/homeCategoryFilters';
 import Step4 from '../components/newArticle/Step4';
-import { ArticleDraft } from '../features/articles';
+import { ArticleDraft } from '../features/article/articles';
 import Complete from '../components/newArticle/Complete';
 
 function NewArticleScreen(): React.ReactElement {

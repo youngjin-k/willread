@@ -12,7 +12,7 @@ import {
 } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 import homeCategoryFiltersReducer from './homeCategoryFilters';
-import articlesReducer from './articles';
+import articlesReducer from './article/articles';
 
 const persistConfig = {
   key: 'root',

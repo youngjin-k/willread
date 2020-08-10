@@ -5,23 +5,18 @@ import FormLabel from '../FormLabel';
 import Actions from './Actions';
 import Button from './Button';
 import { CategoryColors } from '../../features/homeCategoryFilters';
-import { ArticleDraft } from '../../features/articles';
+import useArticle from '../../features/article/useArticle';
 
 export interface Step3Props {
-  article: ArticleDraft;
-  setArticle: (article: ArticleDraft) => void;
   nextStep: () => void;
 }
 
-function Step3({
-  article,
-  setArticle,
-  nextStep,
-}: Step3Props): ReactElement {
+function Step3({ nextStep }: Step3Props): ReactElement {
   const windowWidth = useWindowDimensions().width;
+  const { articleDraft, setArticleDraft } = useArticle();
   const handleCategoryPress = (color: CategoryColors) => {
-    setArticle({
-      ...article,
+    setArticleDraft({
+      ...articleDraft,
       categoryColor: color,
     });
   };
@@ -40,7 +35,7 @@ function Step3({
             >
               <CategoryItem
                 color={color}
-                active={color === article.categoryColor}
+                active={color === articleDraft.categoryColor}
               />
             </CategoryItemWrapper>
           )))}

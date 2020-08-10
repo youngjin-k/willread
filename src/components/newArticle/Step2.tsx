@@ -6,31 +6,26 @@ import { TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import TextInput from '../TextInput';
 import Actions from './Actions';
 import Button from './Button';
-import { ArticleDraft } from '../../features/articles';
+import useArticle from '../../features/article/useArticle';
 
 export interface Step2Props {
-    article: ArticleDraft;
-    setArticle: (article: ArticleDraft) => void;
     nextStep: () => void;
 }
 
-function Step2({
-  article,
-  setArticle,
-  nextStep,
-}: Step2Props): ReactElement {
+function Step2({ nextStep }: Step2Props): ReactElement {
+  const { articleDraft, setArticleDraft } = useArticle();
   const windowWidth = useWindowDimensions().width;
   const scheme = useColorScheme();
   const [editTitle, setEditTitle] = useState(false);
-  const [titleDraft, setTitleDraft] = useState(article.title);
+  const [titleDraft, setTitleDraft] = useState(articleDraft.title);
 
   const updateTitle = useCallback(() => {
-    setArticle({
-      ...article,
+    setArticleDraft({
+      ...articleDraft,
       title: titleDraft,
     });
     setEditTitle(false);
-  }, [article, setArticle, titleDraft]);
+  }, [articleDraft, setArticleDraft, titleDraft]);
 
   return (
     <>
@@ -39,7 +34,7 @@ function Step2({
         <ThumbnailWrapper windowWidth={windowWidth}>
           <Thumbnail
             source={{
-              uri: article.image,
+              uri: articleDraft.image,
             }}
             scheme={scheme}
             resizeMode="cover"
@@ -49,7 +44,7 @@ function Step2({
           ? (
             <EditContainer>
               <TextInput
-                defaultValue={article.title}
+                defaultValue={articleDraft.title}
                 onChangeText={(text) => setTitleDraft(text)}
                 autoFocus
               />
@@ -65,7 +60,7 @@ function Step2({
           ) : (
             <TouchableOpacity onPress={() => setEditTitle(true)}>
               <Title>
-                {article.title}
+                {articleDraft.title}
                 <EditIcon name="edit-3" />
               </Title>
             </TouchableOpacity>

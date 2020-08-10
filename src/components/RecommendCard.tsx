@@ -10,7 +10,7 @@ import { CategoryColors } from '../features/homeCategoryFilters';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
-import { Article } from '../features/articles';
+import { Article } from '../features/article/articles';
 
 export interface Category {
     color: CategoryColors;

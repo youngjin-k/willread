@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { RootStackParamList } from '../config/Navigation';
 import WillreadCardDescription from './WillreadCardDescription';
 import CategoryBar from './CategoryBar';
-import { Article, removeArticle } from '../features/articles';
+import { Article, removeArticle } from '../features/article/articles';
 
 export interface WillreadItemProps {
     item: Article;

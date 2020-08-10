@@ -12,7 +12,7 @@ import WillreadCard from '../components/WillreadCard';
 import CategoryFilter from '../components/CategoryFilter';
 import { CategoryColors } from '../features/homeCategoryFilters';
 import { RootState } from '../features/store';
-import { Article } from '../features/articles';
+import { Article } from '../features/article/articles';
 import { RootStackParamList } from '../config/Navigation';
 
 const recommendItem: Article = {

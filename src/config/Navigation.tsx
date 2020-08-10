@@ -13,7 +13,7 @@ import HistoryScreen from '../../src/screens/HistoryScreen';
 import MyScreen from '../../src/screens/MyScreen';
 import NewArticleScreen from '../screens/NewArticleScreen';
 import ViewerScreen from '../screens/ViewerScreen';
-import { Article } from '../features/articles';
+import { Article } from '../features/article/articles';
 
 const Tab = createBottomTabNavigator();
 

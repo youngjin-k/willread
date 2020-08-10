@@ -9,30 +9,25 @@ import FormLabel from '../FormLabel';
 import TextInput from '../TextInput';
 import Actions from './Actions';
 import Button from './Button';
-import { ArticleDraft } from '../../features/articles';
 import VALID_URL from '../../lib/regex/validUrl';
+import useArticle from '../../features/article/useArticle';
 
 export interface Step1Props {
-    article: ArticleDraft;
-    setArticle: (article: ArticleDraft) => void;
     nextStep: () => void;
 }
 
-function Step1({
-  article,
-  setArticle,
-  nextStep: next,
-}: Step1Props): ReactElement {
+function Step1({ nextStep: next }: Step1Props): ReactElement {
+  const { articleDraft, setArticleDraft } = useArticle();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    setDisabled(!VALID_URL.test(article.uri));
-  }, [article]);
+    setDisabled(!VALID_URL.test(articleDraft.uri));
+  }, [articleDraft]);
 
   const handleTextChange = (uri: string) => {
-    setArticle({
-      ...article,
+    setArticleDraft({
+      ...articleDraft,
       uri,
     });
   };
@@ -41,9 +36,9 @@ function Step1({
     setLoading(true);
 
     try {
-      const response = await getLinkPreview(article.uri);
-      setArticle({
-        ...article,
+      const response = await getLinkPreview(articleDraft.uri) as any;
+      setArticleDraft({
+        ...articleDraft,
         title: response.title,
         description: response.description,
         image: response.images.length > 0 ? response.images[0] : '',
@@ -55,14 +50,14 @@ function Step1({
     } finally {
       setLoading(false);
     }
-  }, [next, article, setArticle]);
+  }, [next, articleDraft, setArticleDraft]);
 
   return (
     <>
       <Container>
         <FormLabel>링크를 입력하세요</FormLabel>
         <TextInput
-          defaultValue={article.uri}
+          defaultValue={articleDraft.uri}
           onChangeText={handleTextChange}
         />
       </Container>
