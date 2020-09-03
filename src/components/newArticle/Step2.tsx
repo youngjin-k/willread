@@ -75,8 +75,8 @@ function Step2({ nextStep }: Step2Props): ReactElement {
 }
 
 const Container = styled.ScrollView`
+  padding: 0 16px;
   flex: 1;
-  padding: 16px;
 `;
 
 const ThumbnailWrapper = styled.View<{windowWidth: number}>`

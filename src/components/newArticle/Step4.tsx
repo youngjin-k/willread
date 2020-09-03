@@ -218,7 +218,12 @@ function Step4({ nextStep }: Step4Props): ReactElement {
           )}
         </Header>
 
-        <TimeList>
+        <TimeList
+          contentContainerStyle={{
+            paddingVertical: 16,
+          }}
+          showsVerticalScrollIndicator={false}
+        >
           {timeList.map((time, index) => (
             <TouchableWithoutFeedback
               key={index}
@@ -266,6 +271,7 @@ function Step4({ nextStep }: Step4Props): ReactElement {
 
 const Container = styled.View`
   padding: 0 16px;
+  flex: 1;
 `;
 
 const Header = styled.View`
@@ -285,9 +291,7 @@ const Time = styled.Text`
   color: ${(props) => props.theme.colors.typography.secondary};
 `;
 
-const TimeList = styled.ScrollView`
-  padding: 16px 0;
-`;
+const TimeList = styled.ScrollView``;
 
 const TimeItem = styled.View<{ active: boolean }>`
   height: 48px;

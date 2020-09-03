@@ -71,7 +71,8 @@ function Step1({ nextStep: next }: Step1Props): ReactElement {
 
 const Container = styled.View`
   justify-content: center;
-  padding: 16px;
+  padding: 0 16px;
+  flex: 1;
 `;
 
 export default Step1;

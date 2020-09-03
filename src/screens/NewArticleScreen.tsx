@@ -58,34 +58,36 @@ function NewArticleScreen(): React.ReactElement {
           </CloseButton>
         </Header>
 
-        {step === 0 && (
-        <Step1
-          article={draft}
-          setArticle={(value) => setDraft(value)}
-          nextStep={() => nextStep()}
-        />)}
+        <Content>
+          {step === 0 && (
+          <Step1
+            article={draft}
+            setArticle={(value) => setDraft(value)}
+            nextStep={() => nextStep()}
+          />)}
 
-        {step === 1 && (
-        <Step2
-          article={draft}
-          setArticle={(value) => setDraft(value)}
-          nextStep={() => nextStep()}
-        />)}
-        {step === 2 && (
-        <Step3
-          article={draft}
-          setArticle={(value) => setDraft(value)}
-          nextStep={() => nextStep()}
-        />)}
-        {step === 3 && (
-        <Step4
-          article={draft}
-          setArticle={(value) => setDraft(value)}
-          nextStep={() => nextStep()}
-        />)}
-        {step === 4 && (
+          {step === 1 && (
+          <Step2
+            article={draft}
+            setArticle={(value) => setDraft(value)}
+            nextStep={() => nextStep()}
+          />)}
+          {step === 2 && (
+          <Step3
+            article={draft}
+            setArticle={(value) => setDraft(value)}
+            nextStep={() => nextStep()}
+          />)}
+          {step === 3 && (
+          <Step4
+            article={draft}
+            setArticle={(value) => setDraft(value)}
+            nextStep={() => nextStep()}
+          />)}
+          {step === 4 && (
           <Complete />
-        )}
+          )}
+        </Content>
 
       </KeyboardAvoidingView>
     </Container>
@@ -139,6 +141,11 @@ const HeaderTitle = styled(Text)`
   font-size: 18px;
   color: ${(props) => props.theme.colors.typography.title};
   font-weight: bold;
+`;
+
+const Content = styled.View`
+  flex: 1;
+  padding-bottom: 72px;
 `;
 
 export default NewArticleScreen;

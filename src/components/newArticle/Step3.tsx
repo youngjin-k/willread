@@ -52,6 +52,7 @@ function Step3({ nextStep }: Step3Props): ReactElement {
 const Container = styled.View`
   justify-content: center;
   padding: 0 8px;
+  flex: 1;
 `;
 
 const CategoryContainer = styled.View`
