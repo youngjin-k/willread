@@ -261,7 +261,7 @@ function Step4({ nextStep }: Step4Props): ReactElement {
         style={{ justifyContent: 'flex-end', margin: 0 }}
       >
         <DateTimePicker
-          initialDate={notificationDate.date}
+          initialDate={activeTimeIndex === timeList.length ? notificationDate.date : undefined}
           setManualTime={setManualTime}
         />
       </Modal>
