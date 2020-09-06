@@ -9,9 +9,10 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { DefaultTheme } from 'styled-components';
-import Button, { ButtonSize } from '../Button';
+import Button from '../Button';
 import Line from '../Line';
 
 const ITEM_HEIGHT = 48;
@@ -63,11 +64,11 @@ const items = {
         },
       };
     }),
-  hour: Array(23)
+  hour: Array(24)
     .fill(0)
     .map((_, i) => ({
-      label: `${String(i + 1).padStart(2, '0')}시`,
-      value: String(i + 1).padStart(2, '0'),
+      label: `${String(i).padStart(2, '0')}시`,
+      value: String(i).padStart(2, '0'),
     })),
   minute: Array(12)
     .fill(0)
@@ -130,10 +131,11 @@ function DateTimePicker({
   const fixScrollPosition = (
     target: React.RefObject<ScrollView>,
     targetIndex: number,
+    animated: boolean = true,
   ) => {
     target.current?.scrollTo({
       y: targetIndex * ITEM_HEIGHT,
-      animated: true,
+      animated,
     });
   };
 
@@ -162,12 +164,12 @@ function DateTimePicker({
     }
   };
 
-  const handlePressDateTimeItem = (
-    target: React.RefObject<ScrollView>,
-    index: number,
-  ) => {
-    fixScrollPosition(target, index);
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      fixScrollPosition(hourScrollViewRef, time.get('hour'), false);
+      fixScrollPosition(minuteScrollViewRef, time.get('minute') / 5, false);
+    });
+  });
 
   return (
     <DateTimePickerBlock>
@@ -210,15 +212,14 @@ function DateTimePicker({
             <Overlay pointerEvents="none" />
             <List
               showsVerticalScrollIndicator={false}
-              onScrollEndDrag={(event) => handleScrollEnd(event, 'hour')}
+              onMomentumScrollEnd={(event) => { Platform.OS === 'android' && handleScrollEnd(event, 'hour'); }}
+              onScrollEndDrag={(event) => { Platform.OS === 'ios' && handleScrollEnd(event, 'hour'); }}
               ref={hourScrollViewRef}
+              bounces={false}
             >
               <ListSpacing />
-              {items.hour.map(({ label, value }, index) => (
-                <TouchableWithoutFeedback
-                  key={value}
-                  onPress={() => handlePressDateTimeItem(hourScrollViewRef, index)}
-                >
+              {items.hour.map(({ label, value }) => (
+                <TouchableWithoutFeedback key={value}>
                   <Item>
                     <ItemLabel active={value === hour}>{label}</ItemLabel>
                   </Item>
@@ -232,15 +233,14 @@ function DateTimePicker({
             <Overlay pointerEvents="none" />
             <List
               showsVerticalScrollIndicator={false}
-              onScrollEndDrag={(event) => handleScrollEnd(event, 'minute')}
+              onMomentumScrollEnd={(event) => { Platform.OS === 'android' && handleScrollEnd(event, 'minute'); }}
+              onScrollEndDrag={(event) => { Platform.OS === 'ios' && handleScrollEnd(event, 'minute'); }}
               ref={minuteScrollViewRef}
+              bounces={false}
             >
               <ListSpacing />
-              {items.minute.map(({ label, value }, index) => (
-                <TouchableWithoutFeedback
-                  key={value}
-                  onPress={() => handlePressDateTimeItem(minuteScrollViewRef, index)}
-                >
+              {items.minute.map(({ label, value }) => (
+                <TouchableWithoutFeedback key={value}>
                   <Item>
                     <ItemLabel active={value === minute}>{label}</ItemLabel>
                   </Item>
@@ -331,6 +331,8 @@ const DateLabelWrapper = styled.View<{ active: boolean }>`
   border-radius: 16px;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  background-color: transparent;
 
   ${(props) => props.active
     && css`
