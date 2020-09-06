@@ -78,6 +78,23 @@ const items = {
     })),
 };
 
+const getScrollTargetIndex = (scrollY: number): number => {
+  const y = scrollY % ITEM_HEIGHT > ITEM_HEIGHT / 2
+    ? ITEM_HEIGHT - (scrollY % ITEM_HEIGHT)
+    : -1 * (scrollY % ITEM_HEIGHT);
+  return (scrollY + y) / ITEM_HEIGHT;
+};
+
+const fixScrollPosition = (
+  target: React.RefObject<ScrollView>,
+  targetIndex: number,
+) => {
+  target.current?.scrollTo({
+    y: targetIndex * ITEM_HEIGHT,
+    animated: true,
+  });
+};
+
 export interface DateTimePickerProps {
   initialDate?: Dayjs;
   setManualTime: (date: Dayjs) => void;
@@ -90,6 +107,7 @@ function DateTimePicker({
   const [time, setTime] = useState(
     initialDate || dayjs().add(3, 'hour').set('minute', 0),
   );
+  const [invalidDate, setInvalidDate] = useState(false);
   const hourScrollViewRef = createRef<ScrollView>();
   const minuteScrollViewRef = createRef<ScrollView>();
 
@@ -121,42 +139,16 @@ function DateTimePicker({
     setManualTime(time);
   };
 
-  const getScrollTargetIndex = (scrollY: number): number => {
-    const y = scrollY % ITEM_HEIGHT > ITEM_HEIGHT / 2
-      ? ITEM_HEIGHT - (scrollY % ITEM_HEIGHT)
-      : -1 * (scrollY % ITEM_HEIGHT);
-    return (scrollY + y) / ITEM_HEIGHT;
-  };
-
-  const fixScrollPosition = (
-    target: React.RefObject<ScrollView>,
-    targetIndex: number,
-    animated: boolean = true,
-  ) => {
-    target.current?.scrollTo({
-      y: targetIndex * ITEM_HEIGHT,
-      animated,
-    });
-  };
-
   const handleScrollEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>,
     targetType: string,
   ) => {
     if (targetType === 'hour') {
-      fixScrollPosition(
-        hourScrollViewRef,
-        getScrollTargetIndex(event.nativeEvent.contentOffset.y),
-      );
       setHour(
         items.hour[getScrollTargetIndex(event.nativeEvent.contentOffset.y)]
           .value,
       );
     } else if (targetType === 'minute') {
-      fixScrollPosition(
-        minuteScrollViewRef,
-        getScrollTargetIndex(event.nativeEvent.contentOffset.y),
-      );
       setMinute(
         items.minute[getScrollTargetIndex(event.nativeEvent.contentOffset.y)]
           .value,
@@ -166,10 +158,14 @@ function DateTimePicker({
 
   useEffect(() => {
     setTimeout(() => {
-      fixScrollPosition(hourScrollViewRef, time.get('hour'), false);
-      fixScrollPosition(minuteScrollViewRef, time.get('minute') / 5, false);
+      fixScrollPosition(hourScrollViewRef, time.get('hour'));
+      fixScrollPosition(minuteScrollViewRef, time.get('minute') / 5);
     });
   });
+
+  useEffect(() => {
+    setInvalidDate((dayjs().isAfter(time)));
+  }, [time]);
 
   return (
     <DateTimePickerBlock>
@@ -212,8 +208,9 @@ function DateTimePicker({
             <Overlay pointerEvents="none" />
             <List
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => { Platform.OS === 'android' && handleScrollEnd(event, 'hour'); }}
-              onScrollEndDrag={(event) => { Platform.OS === 'ios' && handleScrollEnd(event, 'hour'); }}
+              onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'hour'); }}
+              snapToInterval={ITEM_HEIGHT}
+              decelerationRate="fast"
               ref={hourScrollViewRef}
               bounces={false}
             >
@@ -233,8 +230,9 @@ function DateTimePicker({
             <Overlay pointerEvents="none" />
             <List
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => { Platform.OS === 'android' && handleScrollEnd(event, 'minute'); }}
-              onScrollEndDrag={(event) => { Platform.OS === 'ios' && handleScrollEnd(event, 'minute'); }}
+              onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'minute'); }}
+              snapToInterval={ITEM_HEIGHT}
+              decelerationRate="fast"
               ref={minuteScrollViewRef}
               bounces={false}
             >
@@ -253,7 +251,8 @@ function DateTimePicker({
         <ButtonWrapper>
           <Button
             onPress={handlePressSubmit}
-            label="완료"
+            disabled={invalidDate}
+            label={!invalidDate ? '완료' : '과거로는 설정할 수 없어요'}
           />
         </ButtonWrapper>
       </Content>
