@@ -72,35 +72,10 @@ function NewArticleScreen(): React.ReactElement {
         </Header>
 
         <Content>
-          {step === 0 && (
-            <Step1
-              article={draft}
-              setArticle={(value) => setDraft(value)}
-              nextStep={() => nextStep()}
-            />
-          )}
-
-          {step === 1 && (
-            <Step2
-              article={draft}
-              setArticle={(value) => setDraft(value)}
-              nextStep={() => nextStep()}
-            />
-          )}
-          {step === 2 && (
-            <Step3
-              article={draft}
-              setArticle={(value) => setDraft(value)}
-              nextStep={() => nextStep()}
-            />
-          )}
-          {step === 3 && (
-            <Step4
-              article={draft}
-              setArticle={(value) => setDraft(value)}
-              nextStep={() => nextStep()}
-            />
-          )}
+          {step === 0 && <Step1 nextStep={nextStep} />}
+          {step === 1 && <Step2 nextStep={nextStep} />}
+          {step === 2 && <Step3 nextStep={nextStep} />}
+          {step === 3 && <Step4 nextStep={nextStep} />}
           {step === 4 && <Complete />}
         </Content>
       </KeyboardAvoidingView>
@@ -123,17 +98,11 @@ const Header = styled.View`
 const PrevButtonWrapper = styled.View`
   padding: 0 16px;
   height: 56px;
-  width: ${48 + 32}px
+  width: ${48 + 32}px;
   position: absolute;
   top: 0;
   left: 0;
   justify-content: center;
-`;
-
-const PrevButtonText = styled.Text`
-  font-size: 16px;
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: 500;
 `;
 
 const CloseButtonWrapper = styled.View`
