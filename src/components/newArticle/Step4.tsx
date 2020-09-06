@@ -58,7 +58,13 @@ const formatTimeFromNow = (
 
   const fromNow = [];
   if (diffDay === 0) {
-    fromNow.push(`${Math.abs(from.diff(to, 'h'))}시간 후에`);
+    if (Math.abs(from.diff(to, 'hour')) > 0) {
+      fromNow.push(`${Math.abs(from.diff(to, 'hour'))}시간`);
+    }
+    if (Math.abs(from.diff(to, 'minute')) % 60 > 0) {
+      fromNow.push(`${Math.abs(from.diff(to, 'minute') % 60)}분`);
+    }
+    fromNow.push('후');
   } else {
     if (diffDay === 1) {
       fromNow.push('내일');
