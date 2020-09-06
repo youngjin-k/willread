@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
 import Actions from './Actions';
-import Button from './Button';
+import Button, { ButtonSize } from '../Button';
 import { RootStackParamList } from '../../config/Navigation';
 
 function Complete(): ReactElement {
@@ -25,7 +25,7 @@ function Complete(): ReactElement {
       </Container>
 
       <Actions>
-        <Button onPress={handlePress}>확인</Button>
+        <Button onPress={handlePress} label="확인" size={ButtonSize.Large} />
       </Actions>
     </>
   );

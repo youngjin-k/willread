@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import { useDispatch } from 'react-redux';
 import Actions from './Actions';
-import Button from './Button';
+import Button, { ButtonSize } from '../Button';
 import { addArticle, updateArticle } from '../../features/article/articles';
 import DateTimePicker from './DateTimePicker';
 import useArticle from '../../features/article/useArticle';
@@ -247,9 +247,12 @@ function Step4({ nextStep }: Step4Props): ReactElement {
       </Container>
 
       <Actions>
-        <Button onPress={handlePressComplete} loading={loading}>
-          완료
-        </Button>
+        <Button
+          onPress={handlePressComplete}
+          loading={loading}
+          label="완료"
+          size={ButtonSize.Large}
+        />
       </Actions>
 
       <Modal
@@ -261,7 +264,11 @@ function Step4({ nextStep }: Step4Props): ReactElement {
         style={{ justifyContent: 'flex-end', margin: 0 }}
       >
         <DateTimePicker
-          initialDate={activeTimeIndex === timeList.length ? notificationDate.date : undefined}
+          initialDate={
+            activeTimeIndex === timeList.length
+              ? notificationDate.date
+              : undefined
+          }
           setManualTime={setManualTime}
         />
       </Modal>

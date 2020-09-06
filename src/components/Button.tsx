@@ -121,7 +121,7 @@ export type ButtonProps = TouchableWithoutFeedbackProps & {
   disabled?: boolean;
   loading?: boolean;
   children?: ReactElement;
-  label: string;
+  label?: string;
 };
 
 function Button({

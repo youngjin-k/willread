@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components/native';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import FormLabel from '../FormLabel';
 import Actions from './Actions';
-import Button from './Button';
 import { CategoryColors } from '../../features/homeCategoryFilters';
 import useArticle from '../../features/article/useArticle';
+import Button, { ButtonSize } from '../Button';
 
 export interface Step3Props {
   nextStep: () => void;
@@ -43,7 +43,7 @@ function Step3({ nextStep }: Step3Props): ReactElement {
       </Container>
 
       <Actions>
-        <Button onPress={nextStep}>다음</Button>
+        <Button onPress={nextStep} label="다음" size={ButtonSize.Large} />
       </Actions>
     </>
   );

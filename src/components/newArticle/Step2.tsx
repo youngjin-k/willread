@@ -5,11 +5,11 @@ import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import TextInput from '../TextInput';
 import Actions from './Actions';
-import Button from './Button';
+import Button, { ButtonSize, ButtonVariant } from '../Button';
 import useArticle from '../../features/article/useArticle';
 
 export interface Step2Props {
-    nextStep: () => void;
+  nextStep: () => void;
 }
 
 function Step2({ nextStep }: Step2Props): ReactElement {
@@ -40,35 +40,44 @@ function Step2({ nextStep }: Step2Props): ReactElement {
             resizeMode="cover"
           />
         </ThumbnailWrapper>
-        {editTitle
-          ? (
-            <EditContainer>
-              <TextInput
-                defaultValue={articleDraft.title}
-                onChangeText={(text) => setTitleDraft(text)}
-                autoFocus
-              />
-              <EditActions>
-                <TouchableOpacity onPress={() => setEditTitle(false)}>
-                  <CancelText>취소</CancelText>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={updateTitle}>
-                  <SaveText>변경</SaveText>
-                </TouchableOpacity>
-              </EditActions>
-            </EditContainer>
-          ) : (
-            <TouchableOpacity onPress={() => setEditTitle(true)}>
-              <Title>
-                {articleDraft.title}
-                <EditIcon name="edit-3" />
-              </Title>
-            </TouchableOpacity>
-          )}
+        {editTitle ? (
+          <EditContainer>
+            <TextInput
+              defaultValue={articleDraft.title}
+              onChangeText={(text) => setTitleDraft(text)}
+              autoFocus
+            />
+            <EditActions>
+              <EditActionWrapper>
+                <Button
+                  onPress={() => setEditTitle(false)}
+                  size={ButtonSize.Small}
+                  variant={ButtonVariant.DefaultText}
+                  label="취소"
+                />
+              </EditActionWrapper>
+              <EditActionWrapper>
+                <Button
+                  onPress={updateTitle}
+                  size={ButtonSize.Small}
+                  variant={ButtonVariant.PrimaryText}
+                  label="변경"
+                />
+              </EditActionWrapper>
+            </EditActions>
+          </EditContainer>
+        ) : (
+          <TouchableOpacity onPress={() => setEditTitle(true)}>
+            <Title>
+              {articleDraft.title}
+              <EditIcon name="edit-3" />
+            </Title>
+          </TouchableOpacity>
+        )}
       </Container>
 
       <Actions>
-        <Button onPress={nextStep}>다음</Button>
+        <Button onPress={nextStep} label="다음" size={ButtonSize.Large} />
       </Actions>
     </>
   );
@@ -79,7 +88,7 @@ const Container = styled.ScrollView`
   flex: 1;
 `;
 
-const ThumbnailWrapper = styled.View<{windowWidth: number}>`
+const ThumbnailWrapper = styled.View<{ windowWidth: number }>`
   width: 100%;
   height: ${(props) => (props.windowWidth - 32) * 0.53};
   border-radius: 16px;
@@ -87,14 +96,15 @@ const ThumbnailWrapper = styled.View<{windowWidth: number}>`
   margin: 0 0 16px 0;
 `;
 
-const Thumbnail = styled.Image<{scheme: ColorSchemeName}>`
+const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
   width: 100%;
   height: 100%;
   border-radius: 16px;
 
-  ${(props) => props.scheme === 'dark' && css`
-    opacity: 0.8;
-  `}
+  ${(props) => props.scheme === 'dark'
+    && css`
+      opacity: 0.8;
+    `}
 `;
 
 const Title = styled.Text`
@@ -114,19 +124,11 @@ const EditContainer = styled.View``;
 const EditActions = styled.View`
   flex-direction: row;
   justify-content: flex-end;
+  padding-top: 16px;
 `;
 
-const CancelText = styled.Text`
-  font-size: 14px;
-  padding: 16px;
-  color: ${(props) => props.theme.colors.grey2};
-`;
-
-const SaveText = styled.Text`
-  font-size: 14px;
-  padding: 16px;
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: bold;
+const EditActionWrapper = styled.View`
+  width: 56px;
 `;
 
 export default Step2;

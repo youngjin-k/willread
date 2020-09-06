@@ -3,17 +3,15 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import { getLinkPreview } from 'link-preview-js';
-import axios from 'axios';
-import Readability from 'readability';
 import FormLabel from '../FormLabel';
 import TextInput from '../TextInput';
 import Actions from './Actions';
-import Button from './Button';
+import Button, { ButtonSize } from '../Button';
 import VALID_URL from '../../lib/regex/validUrl';
 import useArticle from '../../features/article/useArticle';
 
 export interface Step1Props {
-    nextStep: () => void;
+  nextStep: () => void;
 }
 
 function Step1({ nextStep: next }: Step1Props): ReactElement {
@@ -36,7 +34,7 @@ function Step1({ nextStep: next }: Step1Props): ReactElement {
     setLoading(true);
 
     try {
-      const response = await getLinkPreview(articleDraft.uri) as any;
+      const response = (await getLinkPreview(articleDraft.uri)) as any;
       setArticleDraft({
         ...articleDraft,
         title: response.title,
@@ -63,7 +61,13 @@ function Step1({ nextStep: next }: Step1Props): ReactElement {
       </Container>
 
       <Actions>
-        <Button onPress={handleOnPress} loading={loading} disabled={disabled}>다음</Button>
+        <Button
+          onPress={handleOnPress}
+          loading={loading}
+          disabled={disabled}
+          label="다음"
+          size={ButtonSize.Large}
+        />
       </Actions>
     </>
   );
