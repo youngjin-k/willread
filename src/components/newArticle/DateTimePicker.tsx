@@ -210,7 +210,7 @@ function DateTimePicker({
             <Overlay pointerEvents="none" />
             <List
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => handleScrollEnd(event, 'hour')}
+              onScrollEndDrag={(event) => handleScrollEnd(event, 'hour')}
               ref={hourScrollViewRef}
             >
               <ListSpacing />
@@ -232,7 +232,7 @@ function DateTimePicker({
             <Overlay pointerEvents="none" />
             <List
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => handleScrollEnd(event, 'minute')}
+              onScrollEndDrag={(event) => handleScrollEnd(event, 'minute')}
               ref={minuteScrollViewRef}
             >
               <ListSpacing />
