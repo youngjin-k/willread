@@ -252,7 +252,7 @@ function DateTimePicker({
           <Button
             onPress={handlePressSubmit}
             disabled={invalidDate}
-            label={!invalidDate ? '완료' : '과거로는 설정할 수 없어요'}
+            label={!invalidDate ? '완료' : '과거로는 설정할 수 없어요 😅'}
           />
         </ButtonWrapper>
       </Content>
