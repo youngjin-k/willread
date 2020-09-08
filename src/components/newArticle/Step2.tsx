@@ -2,7 +2,7 @@ import React, { ReactElement, useState, useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { Feather } from '@expo/vector-icons';
-import { TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import TextInput from '../TextInput';
 import Actions from './Actions';
 import Button, { ButtonSize, ButtonVariant } from '../Button';
@@ -30,7 +30,6 @@ function Step2({ nextStep }: Step2Props): ReactElement {
   return (
     <>
       <Container>
-        <View style={{ flex: 1, justifyContent: 'center' }} />
         <ThumbnailWrapper windowWidth={windowWidth}>
           <Thumbnail
             source={{
@@ -61,18 +60,29 @@ function Step2({ nextStep }: Step2Props): ReactElement {
                   onPress={updateTitle}
                   size={ButtonSize.Small}
                   variant={ButtonVariant.PrimaryText}
-                  label="변경"
+                  label="완료"
                 />
               </EditActionWrapper>
             </EditActions>
           </EditContainer>
         ) : (
-          <TouchableOpacity onPress={() => setEditTitle(true)}>
-            <Title>
-              {articleDraft.title}
-              <EditIcon name="edit-3" />
-            </Title>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity onPress={() => setEditTitle(true)}>
+              <Title numberOfLines={3}>
+                {articleDraft.title}
+              </Title>
+            </TouchableOpacity>
+
+            <EditActions>
+              <Button
+                style={{ paddingHorizontal: 12 }}
+                onPress={() => setEditTitle(true)}
+                size={ButtonSize.Small}
+                variant={ButtonVariant.PrimaryText}
+                label="타이틀 수정"
+              />
+            </EditActions>
+          </>
         )}
       </Container>
 
@@ -83,9 +93,10 @@ function Step2({ nextStep }: Step2Props): ReactElement {
   );
 }
 
-const Container = styled.ScrollView`
+const Container = styled.View`
   padding: 0 16px;
   flex: 1;
+  justify-content: center;
 `;
 
 const ThumbnailWrapper = styled.View<{ windowWidth: number }>`
