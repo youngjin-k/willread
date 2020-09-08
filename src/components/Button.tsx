@@ -6,7 +6,8 @@ import {
   ActivityIndicator,
   useColorScheme,
   Animated,
-  Easing,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import themes from '../lib/styles/themes';
 
@@ -122,6 +123,7 @@ export type ButtonProps = TouchableWithoutFeedbackProps & {
   loading?: boolean;
   children?: ReactElement;
   label?: string;
+  style?: StyleProp<ViewStyle>;
 };
 
 function Button({
@@ -132,6 +134,7 @@ function Button({
   onPress,
   children,
   label,
+  style,
   ...others
 }: ButtonProps): ReactElement {
   const scheme = useColorScheme();
@@ -196,6 +199,7 @@ function Button({
       {...others}
     >
       <ButtonBlock
+        style={style}
         disabled={isLoading}
         size={size}
         variant={variant}
