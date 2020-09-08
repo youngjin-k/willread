@@ -90,7 +90,7 @@ const Container = styled.ScrollView`
 
 const ThumbnailWrapper = styled.View<{ windowWidth: number }>`
   width: 100%;
-  height: ${(props) => (props.windowWidth - 32) * 0.53};
+  height: ${(props) => (props.windowWidth - 32) * 0.53}px;
   border-radius: 16px;
   background-color: ${(props) => props.theme.colors.secondary};
   margin: 0 0 16px 0;
