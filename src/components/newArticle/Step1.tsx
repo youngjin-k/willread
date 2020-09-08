@@ -45,7 +45,6 @@ function Step1({ nextStep: next }: Step1Props): ReactElement {
       next();
     } catch (e) {
       console.log(e);
-    } finally {
       setLoading(false);
     }
   }, [next, articleDraft, setArticleDraft]);
