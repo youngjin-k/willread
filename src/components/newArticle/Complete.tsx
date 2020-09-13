@@ -20,12 +20,12 @@ function Complete(): ReactElement {
         <IconWrapper>
           <Icon name="check" />
         </IconWrapper>
-        <Title>등록 완료</Title>
+        <Title>윌리드 등록 완료</Title>
         <SubTitle>윌리드와 함께 성장하세요</SubTitle>
       </Container>
 
       <Actions>
-        <Button onPress={handlePress} label="확인" size={ButtonSize.Large} />
+        <Button onPress={handlePress} label="완료" size={ButtonSize.Large} />
       </Actions>
     </>
   );
@@ -35,6 +35,7 @@ const Container = styled.View`
   justify-content: center;
   align-items: center;
   padding: 0 16px;
+  flex: 1;
 `;
 
 const IconWrapper = styled.View`
@@ -45,10 +46,12 @@ const IconWrapper = styled.View`
   align-items: center;
   background-color: ${(props) => props.theme.colors.primary};
   margin-bottom: 32px;
+  padding-top: 12px;
+  box-shadow: 0 3px 17px rgba(0, 0, 0, 0.24);
 `;
 
 const Icon = styled(Feather)`
-  font-size: 72px;
+  font-size: 60px;
   color: #fff;
 `;
 
