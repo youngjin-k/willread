@@ -2,14 +2,16 @@ import React, {
   ReactElement, useState, useEffect, useCallback,
 } from 'react';
 import styled, { css } from 'styled-components/native';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, Text } from 'react-native';
 import Modal from 'react-native-modal';
 import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import { useDispatch } from 'react-redux';
 import Actions from './Actions';
 import Button, { ButtonSize } from '../Button';
-import { addArticle, updateArticle } from '../../features/article/articles';
+import {
+  addArticle, updateArticle, PermissionStatus, setPermissionStatus,
+} from '../../features/article/articles';
 import DateTimePicker from './DateTimePicker';
 import useArticle from '../../features/article/useArticle';
 
@@ -95,6 +97,30 @@ const formatTimeFromNow = (
   };
 };
 
+const setNotification = async (date: Date, articleDraft: ArticleDraft) => {
+  const id = await Notifications.scheduleNotificationAsync({
+    content: {
+      title: '윌리드할 시간이에요!',
+      body: articleDraft.title,
+      sound: 'default',
+      data: {
+        articleDraft,
+      },
+    },
+    trigger: date,
+  });
+  return id;
+};
+
+const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
+  ios: {
+    allowAlert: true,
+    allowBadge: true,
+    allowSound: true,
+    allowAnnouncements: true,
+  },
+});
+
 const initialNotificationTime = {
   fromNow: '',
   dateStr: '',
@@ -114,7 +140,14 @@ function Step4({ nextStep }: Step4Props): ReactElement {
     initialNotificationTime,
   );
   const dispatch = useDispatch();
-  const { articleDraft, setArticleDraft, lastAddedArticle } = useArticle();
+  const {
+    articleDraft,
+    setArticleDraft,
+    lastAddedArticle,
+    permissionStatus,
+  } = useArticle();
+
+  console.log(permissionStatus);
 
   const handlePressTime = (hour: number, index: number) => {
     setActiveTimeIndex(index);
@@ -146,69 +179,50 @@ function Step4({ nextStep }: Step4Props): ReactElement {
     dispatch(addArticle(articleDraft));
   }, [dispatch, articleDraft]);
 
-  const setNotification = async () => {
-    if (!notificationDate.date) {
-      return null;
-    }
-    const id = await Notifications.scheduleNotificationAsync({
-      content: {
-        title: '윌리드할 시간이에요!',
-        body: articleDraft.title,
-        sound: 'default',
-        data: {
-          articleDraft,
-        },
-      },
-      trigger: notificationDate.date.toDate(),
-    });
-    return id;
-  };
-
-  const allowsNotificationsAsync = async () => {
-    const settings = await Notifications.getPermissionsAsync();
-    return settings.granted;
-  };
-
-  const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
-    ios: {
-      allowAlert: true,
-      allowBadge: true,
-      allowSound: true,
-      allowAnnouncements: true,
-    },
-  });
-
   const handlePressComplete = async () => {
     setLoading(true);
-    save();
 
-    if (notificationDate.date) {
-      const allowsPermissions = await allowsNotificationsAsync();
-      if (!allowsPermissions) {
-        await requestPermissionsAsync();
-      }
-
-      const notificationId = await setNotification();
-
-      if (lastAddedArticle) {
-        dispatch(
-          updateArticle({
-            id: lastAddedArticle.id,
-            article: {
-              ...lastAddedArticle,
-              scheduleNotification: {
-                id: notificationId,
-                date: notificationDate.date.toDate(),
-              },
-            },
-          }),
-        );
-      }
+    if (permissionStatus === PermissionStatus.DENIED) {
+      save();
+      nextStep();
+      return;
     }
 
-    setLoading(false);
+    if (!notificationDate.date) {
+      save();
+      nextStep();
+      return;
+    }
+
+    if (permissionStatus === PermissionStatus.UNDETERMINED) {
+      const notificationPermissionsStatus = await requestPermissionsAsync();
+      setPermissionStatus(notificationPermissionsStatus.status);
+    }
+
+    const notificationId = await setNotification(notificationDate.date.toDate(), articleDraft);
+
+    save();
     nextStep();
   };
+
+  if (permissionStatus === PermissionStatus.DENIED) {
+    return (
+      <>
+        <Container>
+          <Text>알림을 보낼 수 있는 권한이 없어요.</Text>
+        </Container>
+
+        <Actions>
+          <Button
+            onPress={handlePressComplete}
+            loading={loading}
+            label="건너뛰기"
+            size={ButtonSize.Large}
+          />
+        </Actions>
+      </>
+    );
+  }
 
   return (
     <>

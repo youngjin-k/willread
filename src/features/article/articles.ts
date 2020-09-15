@@ -12,10 +12,6 @@ export interface Article {
   favicon?: string;
   categoryColor: CategoryColors;
   minutesToRead: number;
-  scheduleNotification?: {
-    id: string;
-    date: Date;
-  };
 }
 
 export interface ArticleDraft {

@@ -4,7 +4,6 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
-  TouchableOpacity,
 } from 'react-native';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -13,27 +12,12 @@ import { RootStackParamList } from '../config/Navigation';
 import Step1 from '../components/newArticle/Step1';
 import Step2 from '../components/newArticle/Step2';
 import Step3 from '../components/newArticle/Step3';
-import { CategoryColors } from '../features/homeCategoryFilters';
-import Step4 from '../components/newArticle/Step4';
-import { ArticleDraft } from '../features/article/articles';
 import Complete from '../components/newArticle/Complete';
 import Button, { ButtonVariant, ButtonSize } from '../components/Button';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [step, setStep] = useState(0);
-
-  const [draft, setDraft] = useState<ArticleDraft>({
-    uri:
-      'https://medium.com/daangn/%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%A4%91%EB%8B%A8%EC%97%86%EC%9D%B4-%EB%A3%A8%EB%B9%84-%EB%B2%84%EC%A0%84-2-6-%EC%97%85%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%9C-%ED%95%98%EA%B8%B0-db8991c19050',
-    // uri: '',
-    title: '',
-    description: '',
-    image: '',
-    categoryColor: CategoryColors.RED,
-    minutesToRead: 0,
-  });
-
   const prevStep = () => {
     setStep((currentStep) => currentStep - 1);
   };
@@ -49,7 +33,7 @@ function NewArticleScreen(): React.ReactElement {
         style={{ flex: 1, justifyContent: 'space-between' }}
       >
         <Header>
-          {[1, 2, 3].includes(step) && (
+          {[1, 2].includes(step) && (
             <PrevButtonWrapper>
               <Button
                 onPress={prevStep}
@@ -75,8 +59,7 @@ function NewArticleScreen(): React.ReactElement {
           {step === 0 && <Step1 nextStep={nextStep} />}
           {step === 1 && <Step2 nextStep={nextStep} />}
           {step === 2 && <Step3 nextStep={nextStep} />}
-          {step === 3 && <Step4 nextStep={nextStep} />}
-          {step === 4 && <Complete />}
+          {step === 3 && <Complete />}
         </Content>
       </KeyboardAvoidingView>
     </Container>

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState, useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import FormLabel from '../FormLabel';
@@ -13,7 +13,8 @@ export interface Step3Props {
 
 function Step3({ nextStep }: Step3Props): ReactElement {
   const windowWidth = useWindowDimensions().width;
-  const { articleDraft, setArticleDraft } = useArticle();
+  const { articleDraft, setArticleDraft, addArticle } = useArticle();
+  const [loading, setLoading] = useState(false);
   const handleCategoryPress = (color: CategoryColors) => {
     setArticleDraft({
       ...articleDraft,
@@ -21,12 +22,21 @@ function Step3({ nextStep }: Step3Props): ReactElement {
     });
   };
 
+  const save = useCallback(() => {
+    addArticle(articleDraft);
+  }, [addArticle, articleDraft]);
+
+  const handleOnPress = () => {
+    setLoading(true);
+    save();
+    nextStep();
+  };
+
   return (
     <>
       <Container>
         <FormLabel>태그를 선택하세요</FormLabel>
         <CategoryContainer>
-
           {Object.values(CategoryColors).map((color) => (color === CategoryColors.DEFAULT ? null : (
             <CategoryItemWrapper
               key={color}
@@ -43,7 +53,12 @@ function Step3({ nextStep }: Step3Props): ReactElement {
       </Container>
 
       <Actions>
-        <Button onPress={nextStep} label="다음" size={ButtonSize.Large} />
+        <Button
+          onPress={handleOnPress}
+          label="다음"
+          size={ButtonSize.Large}
+          loading={loading}
+        />
       </Actions>
     </>
   );
@@ -59,7 +74,7 @@ const CategoryContainer = styled.View`
   flex-direction: row;
 `;
 
-const CategoryItemWrapper = styled(TouchableOpacity)<{windowWidth: number}>`
+const CategoryItemWrapper = styled(TouchableOpacity)<{ windowWidth: number }>`
   width: ${(props) => (props.windowWidth - 16) / 6}px;
   height: ${(props) => (props.windowWidth - 16) / 6}px;
   padding: 8px;
@@ -67,7 +82,7 @@ const CategoryItemWrapper = styled(TouchableOpacity)<{windowWidth: number}>`
   justify-content: center;
 `;
 
-const CategoryItem = styled.View<{color: CategoryColors, active: boolean}>`
+const CategoryItem = styled.View<{ color: CategoryColors; active: boolean }>`
   border-radius: 8px;
   padding: 0 16px;
   align-items: center;
@@ -78,7 +93,10 @@ const CategoryItem = styled.View<{color: CategoryColors, active: boolean}>`
 
   background-color: ${(props) => props.theme.colors.category[props.color]};
 
-  ${(props) => props.active && css`opacity: 1;`}
+  ${(props) => props.active
+    && css`
+      opacity: 1;
+    `}
 `;
 
 export default Step3;
