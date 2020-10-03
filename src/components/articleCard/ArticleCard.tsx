@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
-import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
-import { CategoryColors } from '../../features/homeCategoryFilters';
-import ArticleCardDescription from './ArticleCardDescription';
-import CategoryBar from '../CategoryBar';
+
 import { Article } from '../../features/article/articles';
+import { CategoryColors } from '../../features/homeCategoryFilters';
+import CategoryBar from '../CategoryBar';
+import ArticleCardDescription from './ArticleCardDescription';
+import PressableWrapper from './PressableWrapper';
 
 export interface Category {
   color: CategoryColors;
@@ -38,7 +39,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
+    <PressableWrapper onPress={handlePress} onLongPress={handleLongPress}>
       <RecommendCardBlock>
         <ReccomendTitle>추천</ReccomendTitle>
         <ThumbnailWrapper>
@@ -55,7 +56,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
           <ArticleCardDescription uri={uri} minutesToRead={minutesToRead} />
         </Content>
       </RecommendCardBlock>
-    </TouchableWithoutFeedback>
+    </PressableWrapper>
   );
 }
 

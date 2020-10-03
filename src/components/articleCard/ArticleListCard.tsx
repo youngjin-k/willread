@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
 import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
 import CategoryBar from '../CategoryBar';
 import ArticleCardDescription from './ArticleCardDescription';
+import PressableWrapper from './PressableWrapper';
 
 export interface ArticleListCardProps {
   article: Article;
@@ -37,10 +37,7 @@ function ArticleListCard({
   } = article;
 
   return (
-    <TouchableWithoutFeedback
-      onPress={handlePress}
-      onLongPress={handleLongPress}
-    >
+    <PressableWrapper onPress={handlePress} onLongPress={handleLongPress}>
       <ArticleListCardBlock>
         <ThumbnailWrapper>
           <Thumbnail
@@ -56,7 +53,7 @@ function ArticleListCard({
           <ArticleCardDescription uri={uri} minutesToRead={minutesToRead} />
         </Content>
       </ArticleListCardBlock>
-    </TouchableWithoutFeedback>
+    </PressableWrapper>
   );
 }
 
