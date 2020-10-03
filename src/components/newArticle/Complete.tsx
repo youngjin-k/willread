@@ -1,11 +1,12 @@
-import React, { ReactElement } from 'react';
-import styled from 'styled-components/native';
+import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Feather } from '@expo/vector-icons';
-import Actions from './Actions';
-import Button, { ButtonSize } from '../Button';
+import React, { ReactElement } from 'react';
+import styled from 'styled-components/native';
+
 import { RootStackParamList } from '../../config/Navigation';
+import Button, { ButtonSize, ButtonVariant } from '../Button';
+import Actions from './Actions';
 
 function Complete(): ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -27,11 +28,22 @@ function Complete(): ReactElement {
         </IconWrapper>
         <Title>윌리드 등록 완료</Title>
         <SubTitle>윌리드와 함께 성장하세요</SubTitle>
-        <Button onPress={handlePressNewNotification} label="알림 설정" />
+        <NotificationButtonWrapper>
+          <Button
+            onPress={handlePressNewNotification}
+            label="알림을 받고 싶어요"
+            variant={ButtonVariant.PrimaryTenderContained}
+            style={{ paddingHorizontal: 16 }}
+          />
+        </NotificationButtonWrapper>
       </Container>
 
       <Actions>
-        <Button onPress={handlePressClose} label="완료" size={ButtonSize.Large} />
+        <Button
+          onPress={handlePressClose}
+          label="완료"
+          size={ButtonSize.Large}
+        />
       </Actions>
     </>
   );
@@ -74,4 +86,7 @@ const SubTitle = styled.Text`
   color: ${(props) => props.theme.colors.typography.secondary};
 `;
 
+const NotificationButtonWrapper = styled.View`
+  margin-top: 16px;
+`;
 export default Complete;
