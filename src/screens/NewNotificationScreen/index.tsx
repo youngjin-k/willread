@@ -267,7 +267,6 @@ function NewNotificationScreen(): ReactElement {
         onBackButtonPress={closeModal}
         swipeDirection="down"
         propagateSwipe
-        useNativeDriver
         style={{ justifyContent: 'flex-end', margin: 0 }}
       >
         <DateTimePicker
