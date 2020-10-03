@@ -172,8 +172,12 @@ function NewNotificationScreen(): ReactElement {
     };
   }, []);
 
-  const handlePressManualTime = () => {
+  const openModal = () => {
     setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   const setManualTime = (date: dayjs.Dayjs) => {
@@ -237,7 +241,7 @@ function NewNotificationScreen(): ReactElement {
               </TimeItem>
             </TouchableWithoutFeedback>
           ))}
-          <TouchableWithoutFeedback onPress={() => handlePressManualTime()}>
+          <TouchableWithoutFeedback onPress={openModal}>
             <TimeItem active={activeTimeIndex === timeList.length}>
               <TimeItemLabel active={activeTimeIndex === timeList.length}>
                 직접 선택할게요
@@ -258,8 +262,9 @@ function NewNotificationScreen(): ReactElement {
 
       <Modal
         isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-        onSwipeComplete={() => setModalVisible(false)}
+        onBackdropPress={closeModal}
+        onSwipeComplete={closeModal}
+        onBackButtonPress={closeModal}
         swipeDirection="down"
         propagateSwipe
         style={{ justifyContent: 'flex-end', margin: 0 }}
