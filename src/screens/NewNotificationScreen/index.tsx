@@ -5,7 +5,7 @@ import * as Notifications from 'expo-notifications';
 import React, {
   ReactElement, useCallback, useEffect, useState,
 } from 'react';
-import { TouchableWithoutFeedback, AppState } from 'react-native';
+import { AppState, TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
 import styled, { css } from 'styled-components/native';
 
@@ -53,8 +53,6 @@ const timeList = [
     value: 24,
   },
 ];
-
-const now = dayjs();
 
 const formatTimeFromNow = (
   from: dayjs.Dayjs,
@@ -147,17 +145,18 @@ function NewNotificationScreen(): ReactElement {
     initialNotificationTime,
   );
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
+  const [now] = useState(dayjs());
 
-  const handlePressTime = (hour: number, index: number) => {
+  const handlePressTime = useCallback((hour: number, index: number) => {
     setActiveTimeIndex(index);
 
     const date = dayjs(now).add(hour, 'h');
     setNotificationDate(formatTimeFromNow(now, date));
-  };
+  }, [now]);
 
   useEffect(() => {
     handlePressTime(2, 1);
-  }, []);
+  }, [handlePressTime]);
 
   useEffect(() => {
     const getPermissions = async () => {
