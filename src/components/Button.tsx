@@ -97,7 +97,7 @@ export const buttonTextColor = (
   }
 };
 
-export const buttonBackDropColor = (
+export const buttonPressedColor = (
   variant: ButtonVariant,
   dark: boolean,
 ): string => {
@@ -162,7 +162,7 @@ function Button({
     >
       <Pressable
         android_ripple={{
-          color: buttonBackDropColor(variant, isDark),
+          color: buttonPressedColor(variant, isDark),
           borderless: true,
         }}
         style={({ pressed }) => [
@@ -173,7 +173,7 @@ function Button({
             height: buttonHeight[size],
           },
           Platform.OS === 'ios' && pressed ? {
-            backgroundColor: buttonBackDropColor(variant, isDark),
+            backgroundColor: buttonPressedColor(variant, isDark),
           } : null,
           style,
         ]}
