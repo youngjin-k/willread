@@ -6,17 +6,27 @@ import { useColorScheme } from 'react-native-appearance';
 
 export interface PressableWrapperProps {
     children: ReactElement;
+    pressable?: boolean;
     onPress: (event: GestureResponderEvent) => void;
     onLongPress: (event: GestureResponderEvent) => void;
   }
 
 function PressableWrapper({
   children,
+  pressable = true,
   onPress,
   onLongPress,
 }: PressableWrapperProps): ReactElement {
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
+
+  if (!pressable) {
+    return (
+      <View style={{ paddingHorizontal: 8 }}>
+        {children}
+      </View>
+    );
+  }
 
   if (Platform.OS === 'ios') {
     return (

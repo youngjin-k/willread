@@ -37,7 +37,11 @@ function ArticleListCard({
   } = article;
 
   return (
-    <PressableWrapper onPress={handlePress} onLongPress={handleLongPress}>
+    <PressableWrapper
+      onPress={handlePress}
+      onLongPress={handleLongPress}
+      pressable={Boolean(onPress || onLongPress)}
+    >
       <ArticleListCardBlock>
         <ThumbnailWrapper>
           <Thumbnail
