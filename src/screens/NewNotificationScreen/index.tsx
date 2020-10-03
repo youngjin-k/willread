@@ -11,7 +11,7 @@ import styled, { css } from 'styled-components/native';
 
 import Button, { ButtonSize } from '../../components/Button';
 import Actions from '../../components/newArticle/Actions';
-import DateTimePicker from '../../components/newNotification/DateTimePicker';
+import DateTimePicker from './DateTimePicker';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import PermissionSettingGuide from './PermissionSettingGuide';

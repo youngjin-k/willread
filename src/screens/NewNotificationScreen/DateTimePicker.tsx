@@ -12,8 +12,8 @@ import {
   Platform,
 } from 'react-native';
 import { DefaultTheme } from 'styled-components';
-import Button from '../Button';
-import Line from '../Line';
+import Button from '../../components/Button';
+import Line from '../../components/Line';
 
 const ITEM_HEIGHT = 48;
 

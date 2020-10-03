@@ -6,15 +6,15 @@ import { Image, useColorScheme } from 'react-native';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 
-import willreadDark from '../../assets/willread-dark.png';
-import willreadLight from '../../assets/willread-light.png';
-import ArticleCard from '../components/articleCard/ArticleCard';
-import ArticleListCard from '../components/articleCard/ArticleListCard';
-import CategoryFilter from '../components/CategoryFilter';
-import { RootStackParamList } from '../config/Navigation';
-import { Article } from '../features/article/articles';
-import { CategoryColors } from '../features/homeCategoryFilters';
-import { RootState } from '../features/store';
+import willreadDark from '../../../assets/willread-dark.png';
+import willreadLight from '../../../assets/willread-light.png';
+import ArticleCard from '../../components/articleCard/ArticleCard';
+import ArticleListCard from '../../components/articleCard/ArticleListCard';
+import CategoryFilter from '../../components/CategoryFilter';
+import { RootStackParamList } from '../../config/Navigation';
+import { Article } from '../../features/article/articles';
+import { CategoryColors } from '../../features/homeCategoryFilters';
+import { RootState } from '../../features/store';
 
 const recommendItem: Article = {
   id: '',

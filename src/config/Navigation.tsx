@@ -1,20 +1,21 @@
 /* eslint-disable react/display-name */
-import React, { ReactElement } from 'react';
-import { useColorScheme } from 'react-native-appearance';
-import { DefaultTheme, DarkTheme, NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import React, { ReactElement } from 'react';
 import { View } from 'react-native';
+import { useColorScheme } from 'react-native-appearance';
+
 import themes from '../../src/lib/styles/themes';
-import HomeScreen from '../../src/screens/HomeScreen';
-import SearchScreen from '../../src/screens/SearchScreen';
 import HistoryScreen from '../../src/screens/HistoryScreen';
 import MyScreen from '../../src/screens/MyScreen';
-import NewArticleScreen from '../screens/NewArticleScreen';
-import ViewerScreen from '../screens/ViewerScreen';
+import SearchScreen from '../../src/screens/SearchScreen';
 import { Article } from '../features/article/articles';
+import HomeScreen from '../screens/HomeScreen';
+import NewArticleScreen from '../screens/NewArticleScreen';
 import NewNotificationScreen from '../screens/NewNotificationScreen';
+import ViewerScreen from '../screens/ViewerScreen';
 
 const Tab = createBottomTabNavigator();
 
