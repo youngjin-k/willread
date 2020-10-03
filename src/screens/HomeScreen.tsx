@@ -8,8 +8,8 @@ import styled from 'styled-components/native';
 
 import willreadDark from '../../assets/willread-dark.png';
 import willreadLight from '../../assets/willread-light.png';
-import ArticleListCard from '../components/articleCard/ArticleListCard';
 import ArticleCard from '../components/articleCard/ArticleCard';
+import ArticleListCard from '../components/articleCard/ArticleListCard';
 import CategoryFilter from '../components/CategoryFilter';
 import { RootStackParamList } from '../config/Navigation';
 import { Article } from '../features/article/articles';
@@ -73,7 +73,10 @@ function HomeScreen(): React.ReactElement {
 
   return (
     <Container>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 8 }}
+      >
         <Header>
           <Image
             style={{ width: 160 }}
