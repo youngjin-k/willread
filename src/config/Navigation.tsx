@@ -14,6 +14,7 @@ import MyScreen from '../../src/screens/MyScreen';
 import NewArticleScreen from '../screens/NewArticleScreen';
 import ViewerScreen from '../screens/ViewerScreen';
 import { Article } from '../features/article/articles';
+import NewNotificationScreen from '../screens/NewNotificationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -120,6 +121,7 @@ function AppTabsScreen() {
 export type RootStackParamList = {
   AppTabsScreen: undefined;
   NewArticle: undefined;
+  NewNotification: undefined;
   Viewer: {
     item: Article
   };
@@ -145,6 +147,13 @@ export default function Navigation(): ReactElement {
         <RootStack.Screen
           name="NewArticle"
           component={NewArticleScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          }}
+        />
+        <RootStack.Screen
+          name="NewNotification"
+          component={NewNotificationScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           }}

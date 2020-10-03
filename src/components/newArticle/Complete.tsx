@@ -10,8 +10,13 @@ import { RootStackParamList } from '../../config/Navigation';
 function Complete(): ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const handlePress = () => {
+  const handlePressClose = () => {
     navigation.pop();
+  };
+
+  const handlePressNewNotification = () => {
+    navigation.pop();
+    navigation.navigate('NewNotification');
   };
 
   return (
@@ -22,10 +27,11 @@ function Complete(): ReactElement {
         </IconWrapper>
         <Title>윌리드 등록 완료</Title>
         <SubTitle>윌리드와 함께 성장하세요</SubTitle>
+        <Button onPress={handlePressNewNotification} label="알림 설정" />
       </Container>
 
       <Actions>
-        <Button onPress={handlePress} label="완료" size={ButtonSize.Large} />
+        <Button onPress={handlePressClose} label="완료" size={ButtonSize.Large} />
       </Actions>
     </>
   );
