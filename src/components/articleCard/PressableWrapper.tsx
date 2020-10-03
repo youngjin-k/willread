@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import {
-  GestureResponderEvent, Platform, Pressable, TouchableOpacity,
+  GestureResponderEvent, Platform, Pressable, TouchableOpacity, View,
 } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 
@@ -20,22 +20,33 @@ function PressableWrapper({
 
   if (Platform.OS === 'ios') {
     return (
-      <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
+      <TouchableOpacity
+        onPress={onPress}
+        onLongPress={onLongPress}
+        style={{ paddingHorizontal: 8 }}
+      >
         {children}
       </TouchableOpacity>
     );
   }
 
   return (
-    <Pressable
-      onPress={onPress}
-      onLongPress={onLongPress}
-      android_ripple={{
-        color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-      }}
+    <View style={{
+      marginHorizontal: 8,
+      borderRadius: 16,
+      overflow: 'hidden',
+    }}
     >
-      {children}
-    </Pressable>
+      <Pressable
+        onPress={onPress}
+        onLongPress={onLongPress}
+        android_ripple={{
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        {children}
+      </Pressable>
+    </View>
   );
 }
 

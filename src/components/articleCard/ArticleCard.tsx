@@ -39,36 +39,38 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
   };
 
   return (
-    <PressableWrapper onPress={handlePress} onLongPress={handleLongPress}>
-      <RecommendCardBlock>
-        <ReccomendTitle>추천</ReccomendTitle>
-        <ThumbnailWrapper>
-          <Thumbnail
-            source={{
-              uri: image,
-            }}
-            scheme={scheme}
-          />
-        </ThumbnailWrapper>
-        <Content>
-          <CategoryBar categoryColor={categoryColor} />
-          <Title numberOfLines={2}>{title}</Title>
-          <ArticleCardDescription uri={uri} />
-        </Content>
-      </RecommendCardBlock>
-    </PressableWrapper>
+    <>
+      <ReccomendTitle>추천</ReccomendTitle>
+      <PressableWrapper onPress={handlePress} onLongPress={handleLongPress}>
+        <RecommendCardBlock>
+          <ThumbnailWrapper>
+            <Thumbnail
+              source={{
+                uri: image,
+              }}
+              scheme={scheme}
+            />
+          </ThumbnailWrapper>
+          <Content>
+            <CategoryBar categoryColor={categoryColor} />
+            <Title numberOfLines={2}>{title}</Title>
+            <ArticleCardDescription uri={uri} />
+          </Content>
+        </RecommendCardBlock>
+      </PressableWrapper>
+    </>
   );
 }
 
 const RecommendCardBlock = styled.View`
-  padding: 16px;
+  padding: 8px;
 `;
 
 const ReccomendTitle = styled.Text`
   font-weight: bold;
   font-size: 14px;
   color: ${(props) => props.theme.colors.primary};
-  margin: 0 0 12px 8px;
+  margin: 0 0 4px 24px;
   font-weight: bold;
 `;
 

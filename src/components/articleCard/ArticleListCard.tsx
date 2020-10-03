@@ -58,7 +58,7 @@ function ArticleListCard({
 }
 
 const ArticleListCardBlock = styled.View`
-  padding: 8px 16px;
+  padding: 8px;
   flex-direction: row;
 `;
 
