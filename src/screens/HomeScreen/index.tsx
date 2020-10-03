@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from 'react';
 import { Image, useColorScheme } from 'react-native';
+import Modal from 'react-native-modal';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 
@@ -15,6 +16,7 @@ import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import { CategoryColors } from '../../features/homeCategoryFilters';
 import { RootState } from '../../features/store';
+import ArticleMenu from './ArticleMenu';
 
 const recommendItem: Article = {
   id: '',
@@ -33,6 +35,9 @@ function HomeScreen(): React.ReactElement {
   );
   const [displayArticles, setDisplayArticles] = useState<Article[]>([]);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const [selectedArticle, setSelectedArticle] = useState<Article>();
+
+  const visibleArticleMenu = !!selectedArticle;
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
@@ -66,9 +71,11 @@ function HomeScreen(): React.ReactElement {
   };
 
   const handleLongPressArticle = (article: Article) => {
-    navigation.navigate('NewNotification', {
-      article,
-    });
+    setSelectedArticle(article);
+  };
+
+  const closeArticleMenu = () => {
+    setSelectedArticle(undefined);
   };
 
   return (
@@ -100,6 +107,20 @@ function HomeScreen(): React.ReactElement {
             />
           ))}
       </ScrollView>
+
+      <Modal
+        isVisible={visibleArticleMenu}
+        onBackdropPress={closeArticleMenu}
+        onSwipeComplete={closeArticleMenu}
+        onBackButtonPress={closeArticleMenu}
+        swipeDirection="down"
+        propagateSwipe
+        style={{ justifyContent: 'flex-end', margin: 0 }}
+      >
+        {selectedArticle ? (
+          <ArticleMenu article={selectedArticle} onClose={closeArticleMenu} />
+        ) : <></>}
+      </Modal>
     </Container>
   );
 }
