@@ -39,17 +39,16 @@ function HomeScreen(): React.ReactElement {
     const subscription = Notifications.addNotificationResponseReceivedListener(
       (response) => {
         const { article } = response.notification.request.content.data;
-        console.log(article);
 
         if (article) {
           navigation.navigate('Viewer', {
-            item: article,
+            article: article as Article,
           });
         }
       },
     );
     return () => subscription.remove();
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     if (filters.category === CategoryColors.DEFAULT) {
@@ -61,6 +60,18 @@ function HomeScreen(): React.ReactElement {
     );
   }, [articles, filters]);
 
+  const handlePressArticle = (article: Article) => {
+    navigation.navigate('Viewer', {
+      article,
+    });
+  };
+
+  const handleLongPressArticle = (article: Article) => {
+    navigation.navigate('NewNotification', {
+      article,
+    });
+  };
+
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -71,11 +82,20 @@ function HomeScreen(): React.ReactElement {
             source={scheme === 'dark' ? willreadDark : willreadLight}
           />
         </Header>
-        <ArticleCard item={recommendItem} />
+        <ArticleCard
+          article={recommendItem}
+          onPress={handlePressArticle}
+          onLongPress={handleLongPressArticle}
+        />
         <CategoryFilter />
         {displayArticles
-          && displayArticles.map((item) => (
-            <ArticleListCard key={item.id} item={item} />
+          && displayArticles.map((article) => (
+            <ArticleListCard
+              key={article.id}
+              article={article}
+              onPress={handlePressArticle}
+              onLongPress={handleLongPressArticle}
+            />
           ))}
       </ScrollView>
     </Container>

@@ -2,10 +2,7 @@ import React, { ReactElement } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { CategoryColors } from '../../features/homeCategoryFilters';
-import { RootStackParamList } from '../../config/Navigation';
 import ArticleCardDescription from './ArticleCardDescription';
 import CategoryBar from '../CategoryBar';
 import { Article } from '../../features/article/articles';
@@ -16,27 +13,28 @@ export interface Category {
 }
 
 export interface ArticleCardProps {
-  item: Article;
+  article: Article;
+  onPress?: (article: Article) => void;
+  onLongPress?: (article: Article) => void;
 }
 
-function ArticleCard({ item }: ArticleCardProps): ReactElement {
+function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): ReactElement {
   const scheme = useColorScheme();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const {
     uri, title, image, minutesToRead, categoryColor,
-  } = item;
+  } = article;
 
   const handlePress = () => {
-    navigation.navigate('Viewer', {
-      item,
-    });
+    if (onPress) {
+      onPress(article);
+    }
   };
 
   const handleLongPress = () => {
-    navigation.navigate('NewNotification', {
-      article: item,
-    });
+    if (onLongPress) {
+      onLongPress(article);
+    }
   };
 
   return (

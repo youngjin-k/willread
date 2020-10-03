@@ -1,15 +1,14 @@
-import React, { useState, useRef } from 'react';
-import {
-  useColorScheme, TouchableOpacity,
-} from 'react-native';
-import styled from 'styled-components/native';
-import { useRoute, useNavigation, RouteProp } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import React, { useRef, useState } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { WebViewProgressEvent } from 'react-native-webview/lib/WebViewTypes';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../config/Navigation';
+import styled from 'styled-components/native';
+
 import ProgressBar from '../components/ProgressBar';
+import { RootStackParamList } from '../config/Navigation';
 
 function ViewerScreen(): React.ReactElement {
   const route = useRoute<RouteProp<RootStackParamList, 'Viewer'>>();
@@ -38,7 +37,7 @@ function ViewerScreen(): React.ReactElement {
           <HeaderIcon name="chevron-left" />
         </HeaderButton>
         <Title numberOfLines={1}>
-          {route.params.item.title}
+          {route.params.article.title}
         </Title>
         <HeaderButton>
           <HeaderIcon name="more-vertical" />
@@ -50,7 +49,7 @@ function ViewerScreen(): React.ReactElement {
       <WebView
         ref={webViewRef}
         originWhitelist={['*']}
-        source={{ uri: route.params.item.uri }}
+        source={{ uri: route.params.article.uri }}
         onLoadProgress={handleLoadProgress}
         onLoadStart={handleLoadStart}
         onLoadEnd={handleLoadEnd}
@@ -94,11 +93,5 @@ const ProgressBarWrapper = styled.View`
   bottom: 0;
   right: 0;
 `;
-
-const Text = styled.Text`
-  color: ${(props) => props.theme.colors.typography.title};
-`;
-
-const Button = styled.Button``;
 
 export default ViewerScreen;

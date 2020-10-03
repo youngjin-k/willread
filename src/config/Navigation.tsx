@@ -125,7 +125,7 @@ export type RootStackParamList = {
     article: Article;
   };
   Viewer: {
-    item: Article
+    article: Article
   };
 }
 

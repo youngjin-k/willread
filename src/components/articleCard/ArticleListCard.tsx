@@ -1,38 +1,40 @@
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { ReactElement } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
-import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components/native';
 
-import { RootStackParamList } from '../../config/Navigation';
-import { Article, removeArticle } from '../../features/article/articles';
+import { Article } from '../../features/article/articles';
 import CategoryBar from '../CategoryBar';
 import ArticleCardDescription from './ArticleCardDescription';
 
 export interface ArticleListCardProps {
-  item: Article;
+  article: Article;
+  onPress?: (article: Article) => void;
+  onLongPress?: (article: Article) => void;
 }
 
-function ArticleListCard({ item }: ArticleListCardProps): ReactElement {
+function ArticleListCard({
+  article,
+  onPress,
+  onLongPress,
+}: ArticleListCardProps): ReactElement {
   const scheme = useColorScheme();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const dispatch = useDispatch();
 
   const handlePress = () => {
-    navigation.navigate('Viewer', {
-      item,
-    });
+    if (onPress) {
+      onPress(article);
+    }
   };
 
   const handleLongPress = () => {
-    dispatch(removeArticle(item));
+    if (onLongPress) {
+      onLongPress(article);
+    }
   };
 
   const {
     uri, title, image, minutesToRead, categoryColor,
-  } = item;
+  } = article;
 
   return (
     <TouchableWithoutFeedback
