@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import {
-  TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -47,7 +47,7 @@ const ScrollView = styled.ScrollView`
     padding: 0 8px 8px 8px;
 `;
 
-const CategoryItemWrapper = styled(TouchableOpacity)`
+const CategoryItemWrapper = styled(Pressable)`
     min-width: 48px;
     height: ${32 + 16 + 16}px;
     padding: 8px;
