@@ -33,8 +33,14 @@ function ArticleCard({ item }: ArticleCardProps): ReactElement {
     });
   };
 
+  const handleLongPress = () => {
+    navigation.navigate('NewNotification', {
+      article: item,
+    });
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
+    <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
       <RecommendCardBlock>
         <ReccomendTitle>추천</ReccomendTitle>
         <ThumbnailWrapper>

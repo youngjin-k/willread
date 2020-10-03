@@ -121,7 +121,9 @@ function AppTabsScreen() {
 export type RootStackParamList = {
   AppTabsScreen: undefined;
   NewArticle: undefined;
-  NewNotification: undefined;
+  NewNotification: {
+    article: Article;
+  };
   Viewer: {
     item: Article
   };

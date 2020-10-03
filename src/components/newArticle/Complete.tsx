@@ -5,11 +5,13 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components/native';
 
 import { RootStackParamList } from '../../config/Navigation';
+import useArticle from '../../features/article/useArticle';
 import Button, { ButtonSize, ButtonVariant } from '../Button';
 import Actions from './Actions';
 
 function Complete(): ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const { lastAddedArticle } = useArticle();
 
   const handlePressClose = () => {
     navigation.pop();
@@ -17,7 +19,14 @@ function Complete(): ReactElement {
 
   const handlePressNewNotification = () => {
     navigation.pop();
-    navigation.navigate('NewNotification');
+
+    if (!lastAddedArticle) {
+      return;
+    }
+
+    navigation.navigate('NewNotification', {
+      article: lastAddedArticle,
+    });
   };
 
   return (
