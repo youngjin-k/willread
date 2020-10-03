@@ -1,13 +1,13 @@
-import React, { ReactElement, useRef } from 'react';
+import React, { ReactElement } from 'react';
 import styled from 'styled-components/native';
 import {
-  TouchableWithoutFeedbackProps,
-  GestureResponderEvent,
   ActivityIndicator,
   useColorScheme,
-  Animated,
   StyleProp,
   ViewStyle,
+  Pressable,
+  PressableProps,
+  Platform,
 } from 'react-native';
 import themes from '../lib/styles/themes';
 
@@ -116,7 +116,7 @@ export const buttonBackDropColor = (
   }
 };
 
-export type ButtonProps = TouchableWithoutFeedbackProps & {
+export type ButtonProps = PressableProps & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   disabled?: boolean;
@@ -131,7 +131,6 @@ function Button({
   size = ButtonSize.Medium,
   disabled = false,
   loading = false,
-  onPress,
   children,
   label,
   style,
@@ -140,42 +139,6 @@ function Button({
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
   const isLoading = disabled || loading;
-  const scaleValue = useRef(new Animated.Value(0.95)).current;
-  const opacityValue = useRef(new Animated.Value(0)).current;
-
-  const handleOnPress = (event: GestureResponderEvent) => {
-    if (onPress) {
-      onPress(event);
-    }
-  };
-
-  const handleOnPressIn = () => {
-    Animated.timing(scaleValue, {
-      toValue: 1,
-      duration: 240,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(opacityValue, {
-      toValue: 1,
-      duration: 240,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handleOnPressOut = () => {
-    Animated.timing(scaleValue, {
-      toValue: 0.95,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
-
-    Animated.timing(opacityValue, {
-      toValue: 0,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
-  };
 
   const ButtonContent = label ? (
     <ButtonText
@@ -191,31 +154,32 @@ function Button({
   );
 
   return (
-    <Touchable
-      onPress={handleOnPress}
-      onPressIn={handleOnPressIn}
-      onPressOut={handleOnPressOut}
-      disabled={isLoading}
-      {...others}
+    <ButtonBlock
+      size={size}
+      style={{
+        backgroundColor: buttonBackgroundColor(variant, isDark, isLoading),
+      }}
     >
-      <ButtonBlock
-        style={style}
+      <Pressable
+        android_ripple={{
+          color: buttonBackDropColor(variant, isDark),
+          borderless: true,
+        }}
+        style={({ pressed }) => [
+          {
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            height: buttonHeight[size],
+          },
+          Platform.OS === 'ios' && pressed ? {
+            backgroundColor: buttonBackDropColor(variant, isDark),
+          } : null,
+          style,
+        ]}
         disabled={isLoading}
-        size={size}
-        variant={variant}
-        dark={isDark}
+        {...others}
       >
-        <BackDrop
-          size={size}
-          variant={variant}
-          dark={isDark}
-          style={{
-            opacity: opacityValue,
-            transform: [{
-              scale: scaleValue,
-            }],
-          }}
-        />
         {loading ? (
           <ActivityIndicator
             size="small"
@@ -224,42 +188,14 @@ function Button({
         ) : (
           ButtonContent
         )}
-      </ButtonBlock>
-    </Touchable>
+      </Pressable>
+    </ButtonBlock>
   );
 }
 
-const Touchable = styled.TouchableWithoutFeedback``;
-
-type ButtonBlockProps = Required<
-  Pick<ButtonProps, 'disabled' | 'variant' | 'size'>
-> & {
-  dark: boolean;
-};
-const ButtonBlock = styled.View<ButtonBlockProps>`
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  height: ${(props) => `${buttonHeight[props.size]}px`};
+const ButtonBlock = styled.View<Required<Pick<ButtonProps, 'size'>>>`
   border-radius: ${(props) => `${buttonHeight[props.size] / 4}px`};
-  background-color: ${(props) => buttonBackgroundColor(props.variant, props.dark, props.disabled)};
-`;
-
-type BackDropProps = Required<
-  Pick<ButtonProps, 'variant' | 'size'>
-> & {
-  dark: boolean;
-};
-const BackDrop = styled(Animated.View)<BackDropProps>`
-  height: ${(props) => `${buttonHeight[props.size]}px`};
-  border-radius: ${(props) => `${buttonHeight[props.size] / 4}px`};
-  background-color: ${(props) => buttonBackDropColor(props.variant, props.dark)};
-  flex: 1;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
+  overflow: hidden;
 `;
 
 type ButtonTextProps = Required<
