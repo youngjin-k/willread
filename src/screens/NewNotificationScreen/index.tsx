@@ -3,9 +3,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import React, {
-  ReactElement, useEffect, useState,
+  ReactElement, useCallback, useEffect, useState,
 } from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, AppState } from 'react-native';
 import Modal from 'react-native-modal';
 import styled, { css } from 'styled-components/native';
 
@@ -166,7 +166,12 @@ function NewNotificationScreen(): ReactElement {
     };
 
     getPermissions();
-  });
+    AppState.addEventListener('change', getPermissions);
+
+    return () => {
+      AppState.removeEventListener('change', getPermissions);
+    };
+  }, []);
 
   const handlePressManualTime = () => {
     setModalVisible(true);
@@ -178,14 +183,18 @@ function NewNotificationScreen(): ReactElement {
     setNotificationDate(formatTimeFromNow(now, date));
   };
 
-  const handlePressComplete = async () => {
+  const handlePressComplete = useCallback(async () => {
     setLoading(true);
 
     if (permissionStatus === PermissionStatus.UNDETERMINED) {
       const { status } = await requestPermissionsAsync();
 
-      if (status === PermissionStatus.DENIED) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // status의 type은 PermissionStatus 이지만 실제 값은 0/1이 반환 됨
+      if (status === PermissionStatus.DENIED || status === 0) {
         setPermissionStatus(status);
+        setLoading(false);
         return;
       }
     }
@@ -196,7 +205,7 @@ function NewNotificationScreen(): ReactElement {
     );
 
     navigation.pop();
-  };
+  }, [permissionStatus, notificationDate, route, navigation]);
 
   if (permissionStatus === PermissionStatus.DENIED) {
     return <PermissionSettingGuide />;
