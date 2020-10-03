@@ -18,24 +18,13 @@ const extractHostname = (url: string) => {
 
 export interface ArticleCardDescriptionProps {
   uri: string;
-  minutesToRead: number;
 }
 
 function ArticleCardDescription({
   uri,
-  minutesToRead,
 }: ArticleCardDescriptionProps): ReactElement {
   return (
     <WillreadCardDescriptionBlock>
-      {minutesToRead > 0 && (
-        <>
-          <Description>
-            {minutesToRead}
-            min read
-          </Description>
-          <Separator>•</Separator>
-        </>
-      )}
       <Description>{extractHostname(uri)}</Description>
     </WillreadCardDescriptionBlock>
   );
@@ -50,12 +39,6 @@ const WillreadCardDescriptionBlock = styled.View`
 const Description = styled.Text`
   font-size: 11px;
   color: ${(props) => props.theme.colors.typography.secondary};
-`;
-
-const Separator = styled.Text`
-  font-size: 11px;
-  color: ${(props) => props.theme.colors.typography.secondary};
-  margin: 0 4px;
 `;
 
 export default ArticleCardDescription;

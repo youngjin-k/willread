@@ -33,7 +33,7 @@ function ArticleListCard({
   };
 
   const {
-    uri, title, image, minutesToRead, categoryColor,
+    uri, title, image, categoryColor,
   } = article;
 
   return (
@@ -50,7 +50,7 @@ function ArticleListCard({
         <Content>
           <CategoryBar categoryColor={categoryColor} />
           <Title numberOfLines={2}>{title}</Title>
-          <ArticleCardDescription uri={uri} minutesToRead={minutesToRead} />
+          <ArticleCardDescription uri={uri} />
         </Content>
       </ArticleListCardBlock>
     </PressableWrapper>

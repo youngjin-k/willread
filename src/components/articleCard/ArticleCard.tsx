@@ -23,7 +23,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
   const scheme = useColorScheme();
 
   const {
-    uri, title, image, minutesToRead, categoryColor,
+    uri, title, image, categoryColor,
   } = article;
 
   const handlePress = () => {
@@ -53,7 +53,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
         <Content>
           <CategoryBar categoryColor={categoryColor} />
           <Title numberOfLines={2}>{title}</Title>
-          <ArticleCardDescription uri={uri} minutesToRead={minutesToRead} />
+          <ArticleCardDescription uri={uri} />
         </Content>
       </RecommendCardBlock>
     </PressableWrapper>

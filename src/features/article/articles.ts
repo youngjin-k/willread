@@ -11,7 +11,6 @@ export interface Article {
   image?: string;
   favicon?: string;
   categoryColor: CategoryColors;
-  minutesToRead: number;
 }
 
 export interface ArticleDraft {
@@ -21,7 +20,6 @@ export interface ArticleDraft {
   image?: string;
   favicon?: string;
   categoryColor: CategoryColors;
-  minutesToRead: number;
 }
 
 export interface InitialState {
@@ -35,7 +33,6 @@ const defaultArticleDraft = () => ({
   title: '',
   description: '',
   categoryColor: CategoryColors.RED,
-  minutesToRead: -1,
 });
 
 const initialState: InitialState = {
