@@ -70,12 +70,12 @@ const dark: DefaultTheme = {
     },
     category: {
       default: '#B4B4B4',
-      red: '#CE4C4C',
-      blue: '#2155DC',
-      orange: '#DC7F4A',
-      green: '#239C62',
-      yellow: '#E5D332',
-      pink: '#DD48B3',
+      red: '#DF7575',
+      blue: '#7DA1FD',
+      orange: '#F3A980',
+      green: '#6FDAA6',
+      yellow: '#F1E579',
+      pink: '#E493CE',
     },
   },
 };
