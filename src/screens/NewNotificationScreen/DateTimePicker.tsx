@@ -196,14 +196,13 @@ function DateTimePicker({
 
         <TimePickerContainer>
           <HoursScrollWrapper>
-            <Overlay pointerEvents="none" />
+            <Overlay pointerEvents="none" position="left" />
             <List
               showsVerticalScrollIndicator={false}
               onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'hour'); }}
               snapToInterval={ITEM_HEIGHT}
               decelerationRate="fast"
               ref={hourScrollViewRef}
-              bounces={false}
             >
               <ListSpacing />
               {items.hour.map(({ label, value }) => (
@@ -218,14 +217,13 @@ function DateTimePicker({
           </HoursScrollWrapper>
 
           <MinutesScrollWrapper>
-            <Overlay pointerEvents="none" />
+            <Overlay pointerEvents="none" position="right" />
             <List
               showsVerticalScrollIndicator={false}
               onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'minute'); }}
               snapToInterval={ITEM_HEIGHT}
               decelerationRate="fast"
               ref={minuteScrollViewRef}
-              bounces={false}
             >
               <ListSpacing />
               {items.minute.map(({ label, value }) => (
@@ -351,15 +349,26 @@ const ListSpacing = styled.View`
   height: ${ITEM_HEIGHT}px;
 `;
 
-const Overlay = styled.View`
+const Overlay = styled.View<{position: 'left' | 'right'}>`
   position: absolute;
-  left: 32px;
-  right: 32px;
   top: ${ITEM_HEIGHT}px;
   height: ${ITEM_HEIGHT}px;
   z-index: 1;
   background-color: ${(props) => props.theme.colors.primaryTender};
-  border-radius: 16px;
+  
+  ${(props) => props.position === 'left' && css`
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    left: 16px;
+    right: 0;
+  `}
+
+  ${(props) => props.position === 'right' && css`
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    left: 0;
+    right: 16px;
+  `}
 `;
 
 const ButtonWrapper = styled.View`
