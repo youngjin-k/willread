@@ -1,18 +1,13 @@
-import React, {
-  useState, createRef, useEffect,
-} from 'react';
-import styled, { css } from 'styled-components/native';
 import dayjs, { Dayjs } from 'dayjs';
+import React, { createRef, useEffect, useState } from 'react';
 import {
-  TouchableWithoutFeedback,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  ScrollView,
+  NativeScrollEvent, NativeSyntheticEvent, ScrollView, TouchableWithoutFeedback,
 } from 'react-native';
 import { DefaultTheme } from 'styled-components';
+import styled, { css } from 'styled-components/native';
+
 import Button from '../../components/Button';
 import Line from '../../components/Line';
-import BottomModalContainer from '../BottomModalContainer';
 
 const ITEM_HEIGHT = 48;
 
@@ -167,7 +162,7 @@ function DateTimePicker({
   }, [time]);
 
   return (
-    <BottomModalContainer>
+    <>
       <Content>
         <TimeView>
           <Time>{displayTime}</Time>
@@ -252,7 +247,7 @@ function DateTimePicker({
           />
         </ButtonWrapper>
       </Content>
-    </BottomModalContainer>
+    </>
   );
 }
 
@@ -267,7 +262,6 @@ const Time = styled.Text`
 `;
 
 const Content = styled.View`
-  
 `;
 
 const DatePickerContainer = styled.View`

@@ -6,7 +6,7 @@ const Actions = styled.View`
   left: 0;
   right: 0;
   padding: 16px;
-  height: ${56 + 16 + 16}px;
+  height: ${64 + 16 + 16}px;
 `;
 
 export default Actions;

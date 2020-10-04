@@ -6,7 +6,6 @@ import React, {
   ReactElement, useCallback, useEffect, useState,
 } from 'react';
 import { AppState, TouchableWithoutFeedback } from 'react-native';
-import Modal from 'react-native-modal';
 import styled, { css } from 'styled-components/native';
 
 import Button, { ButtonSize } from '../../components/Button';
@@ -16,6 +15,7 @@ import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
+import BottomModal from '../BottomModal';
 
 export enum PermissionStatus {
   GRANTED = 'granted',
@@ -147,12 +147,15 @@ function NewNotificationScreen(): ReactElement {
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
   const [now] = useState(dayjs());
 
-  const handlePressTime = useCallback((hour: number, index: number) => {
-    setActiveTimeIndex(index);
+  const handlePressTime = useCallback(
+    (hour: number, index: number) => {
+      setActiveTimeIndex(index);
 
-    const date = dayjs(now).add(hour, 'h');
-    setNotificationDate(formatTimeFromNow(now, date));
-  }, [now]);
+      const date = dayjs(now).add(hour, 'h');
+      setNotificationDate(formatTimeFromNow(now, date));
+    },
+    [now],
+  );
 
   useEffect(() => {
     handlePressTime(2, 1);
@@ -202,10 +205,7 @@ function NewNotificationScreen(): ReactElement {
       }
     }
 
-    await setNotification(
-      notificationDate.date.toDate(),
-      route.params.article,
-    );
+    await setNotification(notificationDate.date.toDate(), route.params.article);
 
     navigation.pop();
   }, [permissionStatus, notificationDate, route, navigation]);
@@ -260,14 +260,9 @@ function NewNotificationScreen(): ReactElement {
         </Actions>
       </Main>
 
-      <Modal
+      <BottomModal
         isVisible={modalVisible}
-        onBackdropPress={closeModal}
-        onSwipeComplete={closeModal}
-        onBackButtonPress={closeModal}
-        swipeDirection="down"
-        propagateSwipe
-        style={{ justifyContent: 'flex-end', margin: 0 }}
+        onClose={closeModal}
       >
         <DateTimePicker
           initialDate={
@@ -277,7 +272,7 @@ function NewNotificationScreen(): ReactElement {
           }
           setManualTime={setManualTime}
         />
-      </Modal>
+      </BottomModal>
     </Container>
   );
 }

@@ -11,7 +11,6 @@ import Line from '../../components/Line';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
-import BottomModalContainer from '../BottomModalContainer';
 
 export interface ArticleMenuProps {
   article: Article;
@@ -41,7 +40,7 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
   }, [article]);
 
   return (
-    <BottomModalContainer>
+    <>
       <ArticleCardWrapper>
         <ArticleListCard article={article} />
       </ArticleCardWrapper>
@@ -94,7 +93,7 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
           </Button>
         </ButtonWrapper>
       </MenuList>
-    </BottomModalContainer>
+    </>
   );
 }
 
