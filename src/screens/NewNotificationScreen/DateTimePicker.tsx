@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-expressions */
 import React, {
-  useState, createRef, RefObject, useEffect,
+  useState, createRef, useEffect,
 } from 'react';
 import styled, { css } from 'styled-components/native';
 import dayjs, { Dayjs } from 'dayjs';
@@ -9,11 +8,11 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   ScrollView,
-  Platform,
 } from 'react-native';
 import { DefaultTheme } from 'styled-components';
 import Button from '../../components/Button';
 import Line from '../../components/Line';
+import BottomModalContainer from '../BottomModalContainer';
 
 const ITEM_HEIGHT = 48;
 
@@ -168,10 +167,7 @@ function DateTimePicker({
   }, [time]);
 
   return (
-    <DateTimePickerBlock>
-      <HandleWrapper>
-        <Handle />
-      </HandleWrapper>
+    <BottomModalContainer>
       <Content>
         <TimeView>
           <Time>{displayTime}</Time>
@@ -256,31 +252,12 @@ function DateTimePicker({
           />
         </ButtonWrapper>
       </Content>
-    </DateTimePickerBlock>
+    </BottomModalContainer>
   );
 }
 
-const DateTimePickerBlock = styled.SafeAreaView`
-  background-color: ${(props) => props.theme.colors.background};
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-`;
-
-const HandleWrapper = styled.View`
-  padding: 8px 0 0 0;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Handle = styled.View`
-  width: 60px;
-  height: 6px;
-  border-radius: 3px;
-  background-color: ${(props) => props.theme.colors.grey1};
-`;
-
 const TimeView = styled.View`
-  padding: 32px 0;
+  padding: 24px 0 32px 0;
   align-items: center;
 `;
 
@@ -290,7 +267,7 @@ const Time = styled.Text`
 `;
 
 const Content = styled.View`
-  padding: 16px 0;
+  
 `;
 
 const DatePickerContainer = styled.View`
@@ -347,7 +324,6 @@ const DateLabel = styled.Text<{ active: boolean }>`
 `;
 
 const TimePickerContainer = styled.View`
-  margin-bottom: 16px;
   flex-direction: row;
   height: ${ITEM_HEIGHT * 3}px;
 `;
