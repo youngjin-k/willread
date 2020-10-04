@@ -2,11 +2,12 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useCallback } from 'react';
+import { Share } from 'react-native';
 import styled from 'styled-components/native';
+
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import Button, { ButtonVariant } from '../../components/Button';
 import Line from '../../components/Line';
-import ModalHandle from '../../components/ModalHandle';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
@@ -33,6 +34,12 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
     removeArticle(article);
   }, [article, removeArticle, onClose]);
 
+  const handlePressSharing = useCallback(() => {
+    Share.share({
+      message: `${article.title} - ${article.uri}`,
+    });
+  }, [article]);
+
   return (
     <BottomModalContainer>
       <ArticleCardWrapper>
@@ -47,6 +54,15 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
             <ButtonContent>
               <ButtonIcon name="tag" />
               <ButtonText>태그 변경</ButtonText>
+            </ButtonContent>
+          </Button>
+        </ButtonWrapper>
+
+        <ButtonWrapper>
+          <Button variant={ButtonVariant.DefaultText} onPress={handlePressSharing}>
+            <ButtonContent>
+              <ButtonIcon name="share" />
+              <ButtonText>공유</ButtonText>
             </ButtonContent>
           </Button>
         </ButtonWrapper>
