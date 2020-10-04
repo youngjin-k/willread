@@ -6,9 +6,11 @@ import styled from 'styled-components/native';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import Button, { ButtonVariant } from '../../components/Button';
 import Line from '../../components/Line';
+import ModalHandle from '../../components/ModalHandle';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import BottomModalContainer from '../BottomModalContainer';
 
 export interface ArticleMenuProps {
   article: Article;
@@ -32,7 +34,7 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
   }, [article, removeArticle, onClose]);
 
   return (
-    <ArticleMenuBlock>
+    <BottomModalContainer>
       <ArticleCardWrapper>
         <ArticleListCard article={article} />
       </ArticleCardWrapper>
@@ -76,19 +78,12 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
           </Button>
         </ButtonWrapper>
       </MenuList>
-    </ArticleMenuBlock>
+    </BottomModalContainer>
   );
 }
 
-const ArticleMenuBlock = styled.SafeAreaView`
-  background-color: ${(props) => props.theme.colors.background};
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  padding-bottom: 16px;
-`;
-
 const ArticleCardWrapper = styled.View`
-  padding: 8px 0 8px 0;
+  padding: 0 0 8px 0;
 `;
 
 const MenuList = styled.View`
