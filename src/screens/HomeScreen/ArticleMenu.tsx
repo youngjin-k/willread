@@ -1,9 +1,10 @@
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Share } from 'react-native';
 import styled from 'styled-components/native';
+import Alert from '../../components/Alert';
 
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import Button, { ButtonVariant } from '../../components/Button';
@@ -17,9 +18,16 @@ export interface ArticleMenuProps {
   onClose: () => void;
 }
 
-function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement {
+function ArticleMenu({
+  article,
+  onClose,
+}: ArticleMenuProps): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { removeArticle } = useArticle();
+  const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
+
+  const openRemoveAlert = () => setVisibleRemoveAlert(true);
+  const closeRemoveAlert = () => setVisibleRemoveAlert(false);
 
   const handlePressNewNotification = useCallback(() => {
     onClose();
@@ -28,10 +36,10 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
     });
   }, [navigation, article, onClose]);
 
-  const handlePressRemoveArticle = useCallback(() => {
-    onClose();
+  const handleRemoveArticle = useCallback(() => {
     removeArticle(article);
-  }, [article, removeArticle, onClose]);
+    onClose();
+  }, [article, onClose, removeArticle]);
 
   const handlePressSharing = useCallback(() => {
     Share.share({
@@ -58,7 +66,10 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
         </ButtonWrapper>
 
         <ButtonWrapper>
-          <Button variant={ButtonVariant.DefaultText} onPress={handlePressSharing}>
+          <Button
+            variant={ButtonVariant.DefaultText}
+            onPress={handlePressSharing}
+          >
             <ButtonContent>
               <ButtonIcon name="share" />
               <ButtonText>공유</ButtonText>
@@ -76,7 +87,10 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
         </ButtonWrapper>
 
         <ButtonWrapper>
-          <Button variant={ButtonVariant.DefaultText} onPress={handlePressNewNotification}>
+          <Button
+            variant={ButtonVariant.DefaultText}
+            onPress={handlePressNewNotification}
+          >
             <ButtonContent>
               <ButtonIcon name="bell" />
               <ButtonText>알림 설정</ButtonText>
@@ -85,7 +99,10 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
         </ButtonWrapper>
 
         <ButtonWrapper>
-          <Button variant={ButtonVariant.DefaultText} onPress={handlePressRemoveArticle}>
+          <Button
+            variant={ButtonVariant.DefaultText}
+            onPress={openRemoveAlert}
+          >
             <ButtonContent>
               <ButtonIcon name="trash" />
               <ButtonText>삭제</ButtonText>
@@ -93,6 +110,21 @@ function ArticleMenu({ article, onClose }: ArticleMenuProps): React.ReactElement
           </Button>
         </ButtonWrapper>
       </MenuList>
+
+      <Alert
+        visible={visibleRemoveAlert}
+        title={article.title.length < 40 ? article.title : `${article.title.slice(0, 40)}...`}
+        message="이 아티클을 삭제할까요?"
+        onClose={closeRemoveAlert}
+        buttons={[{
+          text: '취소',
+          style: 'cancel',
+        }, {
+          text: '삭제',
+          style: 'destructive',
+          onPress: handleRemoveArticle,
+        }]}
+      />
     </>
   );
 }
