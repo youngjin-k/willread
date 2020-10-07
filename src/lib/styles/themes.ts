@@ -8,8 +8,10 @@ declare module 'styled-components' {
       primary: string;
       primaryTender: string;
       secondary: string;
-      grey1: string,
-      grey2: string,
+      grey1: string;
+      grey2: string;
+      danger: string;
+      dangerTender: string;
       border: string;
       typography: {
         title: string;
@@ -37,6 +39,8 @@ const light: DefaultTheme = {
     secondary: '#F0F1F3',
     grey1: '#DFDFE6',
     grey2: '#72717D',
+    danger: '#FF0745',
+    dangerTender: 'rgba(255, 7, 69, 0.1)',
     border: '#DCDCDC',
     typography: {
       title: '#121214',
@@ -63,6 +67,8 @@ const dark: DefaultTheme = {
     secondary: '#212126',
     grey1: '#333338',
     grey2: '#82808B',
+    danger: '#CC3834',
+    dangerTender: 'rgba(204, 56, 52, 0.07)',
     border: '#232323',
     typography: {
       title: '#F9F9FD',

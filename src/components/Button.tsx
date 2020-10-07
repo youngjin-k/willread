@@ -16,6 +16,7 @@ export enum ButtonVariant {
   PrimaryText = 'PrimaryText',
   PrimaryContained = 'PrimaryContained',
   PrimaryTenderContained = 'PrimaryTenderContained',
+  DangerText = 'DangerText',
 }
 
 export enum ButtonSize {
@@ -49,6 +50,8 @@ export const buttonBackgroundColor = (
         return 'transparent';
       case ButtonVariant.PrimaryText:
         return 'transparent';
+      case ButtonVariant.DangerText:
+        return 'transparent';
       case ButtonVariant.PrimaryContained:
         return themes[appearance].colors.grey1;
       case ButtonVariant.PrimaryTenderContained:
@@ -62,6 +65,8 @@ export const buttonBackgroundColor = (
     case ButtonVariant.DefaultText:
       return 'transparent';
     case ButtonVariant.PrimaryText:
+      return 'transparent';
+    case ButtonVariant.DangerText:
       return 'transparent';
     case ButtonVariant.PrimaryContained:
       return themes[appearance].colors.primary;
@@ -88,6 +93,8 @@ export const buttonTextColor = (
       return themes[appearance].colors.typography.title;
     case ButtonVariant.PrimaryText:
       return themes[appearance].colors.primary;
+    case ButtonVariant.DangerText:
+      return themes[appearance].colors.danger;
     case ButtonVariant.PrimaryContained:
       return '#ffffff';
     case ButtonVariant.PrimaryTenderContained:
@@ -107,6 +114,8 @@ export const buttonPressedColor = (
       return dark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
     case ButtonVariant.PrimaryText:
       return themes[appearance].colors.primaryTender;
+    case ButtonVariant.DangerText:
+      return themes[appearance].colors.dangerTender;
     case ButtonVariant.PrimaryContained:
       return 'rgba(255, 255, 255, 0.2)';
     case ButtonVariant.PrimaryTenderContained:
