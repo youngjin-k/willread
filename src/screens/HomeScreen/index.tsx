@@ -1,8 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
-import React, { useEffect, useState } from 'react';
-import { Image, useColorScheme } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, ScrollView, useColorScheme } from 'react-native';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 
@@ -11,7 +11,7 @@ import willreadLight from '../../../assets/willread-light.png';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import CategoryFilter from '../../components/CategoryFilter';
-import { RootStackParamList } from '../../config/Navigation';
+import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import { CategoryColors } from '../../features/homeCategoryFilters';
 import { RootState } from '../../features/store';
@@ -28,6 +28,7 @@ const recommendItem: Article = {
 };
 
 function HomeScreen(): React.ReactElement {
+  const scrollViewRef = useRef<ScrollView>();
   const scheme = useColorScheme();
   const { articles } = useSelector((state: RootState) => state.articles);
   const { filters } = useSelector(
@@ -36,8 +37,15 @@ function HomeScreen(): React.ReactElement {
   const [displayArticles, setDisplayArticles] = useState<Article[]>([]);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [selectedArticle, setSelectedArticle] = useState<Article>();
+  const route = useRoute<RouteProp<TabParamList, 'Home'>>();
 
   const visibleArticleMenu = !!selectedArticle;
+
+  useEffect(() => {
+    if (route?.params?.setScrollBottom && scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  }, [route]);
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
@@ -80,7 +88,8 @@ function HomeScreen(): React.ReactElement {
 
   return (
     <Container>
-      <ScrollView
+      <HomeScrollView
+        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 8 }}
       >
@@ -106,7 +115,7 @@ function HomeScreen(): React.ReactElement {
               onLongPress={handleLongPressArticle}
             />
           ))}
-      </ScrollView>
+      </HomeScrollView>
 
       <BottomModal
         isVisible={visibleArticleMenu}
@@ -124,7 +133,7 @@ const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-const ScrollView = styled.ScrollView`
+const HomeScrollView = styled.ScrollView`
   flex: 1;
 `;
 

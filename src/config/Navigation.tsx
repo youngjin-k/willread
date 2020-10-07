@@ -17,7 +17,16 @@ import NewArticleScreen from '../screens/NewArticleScreen';
 import NewNotificationScreen from '../screens/NewNotificationScreen';
 import ViewerScreen from '../screens/ViewerScreen';
 
-const Tab = createBottomTabNavigator();
+export type TabParamList = {
+  Home: {
+    setScrollBottom?: boolean;
+  };
+  Search: undefined;
+  Add: undefined;
+  History: undefined;
+  More: undefined;
+}
+const Tab = createBottomTabNavigator<TabParamList>();
 
 const willreadLightTheme = {
   ...DefaultTheme,
@@ -72,7 +81,7 @@ function AppTabsScreen() {
         }}
       />
       <Tab.Screen
-        name="add"
+        name="Add"
         component={NewArticleScreenPlaceholder}
         options={{
           tabBarLabel: '추가',
@@ -96,7 +105,7 @@ function AppTabsScreen() {
         })}
       />
       <Tab.Screen
-        name="history"
+        name="History"
         component={HistoryScreen}
         options={{
           tabBarLabel: '기록',
@@ -106,7 +115,7 @@ function AppTabsScreen() {
         }}
       />
       <Tab.Screen
-        name="My"
+        name="More"
         component={MyScreen}
         options={{
           tabBarLabel: '더보기',

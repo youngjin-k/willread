@@ -14,7 +14,9 @@ function Complete(): ReactElement {
   const { lastAddedArticle } = useArticle();
 
   const handlePressClose = () => {
-    navigation.pop();
+    navigation.navigate('Home', {
+      setScrollBottom: true,
+    });
   };
 
   const handlePressNewNotification = () => {
