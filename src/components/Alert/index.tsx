@@ -52,16 +52,16 @@ function Alert({
           </Main>
           <Actions>
             {buttons.map(({ text, style, onPress }, index) => (
-              <>
+              <React.Fragment key={text}>
                 {index > 0 && <ActionSeparator />}
-                <ActionWrapper key={text}>
+                <ActionWrapper>
                   <Button
                     label={text}
                     variant={buttonVariantByStyle[style]}
                     onPress={onPress || onClose}
                   />
                 </ActionWrapper>
-              </>
+              </React.Fragment>
             ))}
           </Actions>
         </SafeAreaView>
@@ -70,8 +70,7 @@ function Alert({
   );
 }
 
-const AlertBlock = styled.View`
-`;
+const AlertBlock = styled.View``;
 
 const SafeAreaView = styled.SafeAreaView`
   background-color: ${(props) => props.theme.colors.background};
