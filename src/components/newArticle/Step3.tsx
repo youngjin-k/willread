@@ -1,6 +1,5 @@
 import React, { ReactElement, useState, useCallback } from 'react';
-import styled, { css } from 'styled-components/native';
-import { TouchableOpacity, useWindowDimensions } from 'react-native';
+import styled from 'styled-components/native';
 import FormLabel from '../FormLabel';
 import Actions from './Actions';
 import { CategoryColors } from '../../features/homeCategoryFilters';
@@ -13,7 +12,6 @@ export interface Step3Props {
 }
 
 function Step3({ nextStep }: Step3Props): ReactElement {
-  const windowWidth = useWindowDimensions().width;
   const { articleDraft, setArticleDraft, addArticle } = useArticle();
   const [loading, setLoading] = useState(false);
   const handleCategoryPress = (color: CategoryColors) => {

@@ -1,12 +1,12 @@
-import React, { ReactElement, useEffect } from 'react';
-import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { ThemeProvider } from 'styled-components/native';
+import React, { ReactElement } from 'react';
 import { StatusBar } from 'react-native';
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import themes from './src/lib/styles/themes';
+import { ThemeProvider } from 'styled-components/native';
+
 import Navigation from './src/config/Navigation';
 import store from './src/features/store';
+import themes from './src/lib/styles/themes';
 
 export default function App(): ReactElement {
   const scheme = useColorScheme();

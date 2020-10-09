@@ -196,7 +196,10 @@ function DateTimePicker({
 
         <TimePickerContainer>
           <HoursScrollWrapper>
-            <Overlay pointerEvents="none" position="left" />
+            <Overlay
+              pointerEvents="none"
+              position="left"
+            />
             <List
               showsVerticalScrollIndicator={false}
               onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'hour'); }}
@@ -217,7 +220,10 @@ function DateTimePicker({
           </HoursScrollWrapper>
 
           <MinutesScrollWrapper>
-            <Overlay pointerEvents="none" position="right" />
+            <Overlay
+              pointerEvents="none"
+              position="right"
+            />
             <List
               showsVerticalScrollIndicator={false}
               onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'minute'); }}

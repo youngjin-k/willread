@@ -49,9 +49,15 @@ function CategoryPicker({
   return (
     <CategoryPickerBlock>
       {Object.values(CategoryColors).map((color) => (color === CategoryColors.DEFAULT ? null : (
-        <CategoryItemWrapper key={color} buttonSize={buttonSize}>
+        <CategoryItemWrapper
+          key={color}
+          buttonSize={buttonSize}
+        >
           <Pressable onPress={() => handlePress(color)}>
-            <CategoryColorBar color={color} buttonSize={buttonSize}>
+            <CategoryColorBar
+              color={color}
+              buttonSize={buttonSize}
+            >
               {color === value && <ActiveRing buttonSize={buttonSize} />}
             </CategoryColorBar>
           </Pressable>

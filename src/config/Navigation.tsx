@@ -66,7 +66,11 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '홈',
           tabBarIcon: ({ color, size }) => (
-            <Feather name="home" size={size} color={color} />
+            <Feather
+              name="home"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -76,7 +80,11 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '검색',
           tabBarIcon: ({ color, size }) => (
-            <Feather name="search" size={size} color={color} />
+            <Feather
+              name="search"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -93,7 +101,11 @@ function AppTabsScreen() {
               borderRadius: 6,
             }}
             >
-              <Feather name="plus" size={size} color={themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary} />
+              <Feather
+                name="plus"
+                size={size}
+                color={themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary}
+              />
             </View>
           ),
         }}
@@ -110,7 +122,11 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '기록',
           tabBarIcon: ({ color, size }) => (
-            <Feather name="archive" size={size} color={color} />
+            <Feather
+              name="archive"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
@@ -120,7 +136,11 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '더보기',
           tabBarIcon: ({ color, size }) => (
-            <Feather name="menu" size={size} color={color} />
+            <Feather
+              name="menu"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />

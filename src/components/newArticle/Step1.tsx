@@ -44,7 +44,6 @@ function Step1({ nextStep: next }: Step1Props): ReactElement {
       });
       next();
     } catch (e) {
-      console.log(e);
       setLoading(false);
     }
   }, [next, articleDraft, setArticleDraft]);

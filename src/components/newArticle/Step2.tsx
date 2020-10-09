@@ -1,7 +1,6 @@
 import React, { ReactElement, useState, useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
-import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
 import TextInput from '../TextInput';
 import Actions from './Actions';
@@ -87,7 +86,11 @@ function Step2({ nextStep }: Step2Props): ReactElement {
       </Container>
 
       <Actions>
-        <Button onPress={nextStep} label="다음" size={ButtonSize.Large} />
+        <Button
+          onPress={nextStep}
+          label="다음"
+          size={ButtonSize.Large}
+        />
       </Actions>
     </>
   );
@@ -121,12 +124,6 @@ const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
 const Title = styled.Text`
   font-size: 21px;
   color: ${(props) => props.theme.colors.typography.title};
-  font-weight: bold;
-`;
-
-const EditIcon = styled(Feather)`
-  font-size: 19px;
-  color: ${(props) => props.theme.colors.primary};
   font-weight: bold;
 `;
 

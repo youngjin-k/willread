@@ -41,7 +41,10 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
   return (
     <>
       <ReccomendTitle>추천</ReccomendTitle>
-      <PressableWrapper onPress={handlePress} onLongPress={handleLongPress}>
+      <PressableWrapper
+        onPress={handlePress}
+        onLongPress={handleLongPress}
+      >
         <RecommendCardBlock>
           <ThumbnailWrapper>
             <Thumbnail

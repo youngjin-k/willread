@@ -122,7 +122,10 @@ function HomeScreen(): React.ReactElement {
         onClose={closeArticleMenu}
       >
         {selectedArticle ? (
-          <ArticleMenu article={selectedArticle} onClose={closeArticleMenu} />
+          <ArticleMenu
+            article={selectedArticle}
+            onClose={closeArticleMenu}
+          />
         ) : <></>}
       </BottomModal>
     </Container>
