@@ -104,7 +104,7 @@ const Message = styled.Text`
 
 const Actions = styled.View`
   flex-direction: row;
-  padding: 0 32px 16px 32px;
+  padding: 0 16px 16px 16px;
 `;
 
 const ActionSeparator = styled.View`
