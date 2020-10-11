@@ -13,7 +13,6 @@ import { Article } from '../features/article/articles';
 import HomeScreen from '../screens/HomeScreen';
 import NewArticleScreen from '../screens/NewArticleScreen';
 import NewNotificationScreen from '../screens/NewNotificationScreen';
-import ViewerScreen from '../screens/ViewerScreen';
 
 export type TabParamList = {
   Home: {
