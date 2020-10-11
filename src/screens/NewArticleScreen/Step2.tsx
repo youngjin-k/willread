@@ -2,9 +2,9 @@ import React, { ReactElement, useState, useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
 import { useColorScheme, ColorSchemeName } from 'react-native-appearance';
 import { TouchableOpacity, useWindowDimensions } from 'react-native';
-import TextInput from '../TextInput';
+import TextInput from '../../components/TextInput';
 import Actions from './Actions';
-import Button, { ButtonSize, ButtonVariant } from '../Button';
+import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import useArticle from '../../features/article/useArticle';
 
 export interface Step2Props {

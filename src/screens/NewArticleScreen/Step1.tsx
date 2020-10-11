@@ -3,10 +3,10 @@ import React, {
 } from 'react';
 import styled from 'styled-components/native';
 import { getLinkPreview } from 'link-preview-js';
-import FormLabel from '../FormLabel';
-import TextInput from '../TextInput';
+import FormLabel from '../../components/FormLabel';
+import TextInput from '../../components/TextInput';
 import Actions from './Actions';
-import Button, { ButtonSize } from '../Button';
+import Button, { ButtonSize } from '../../components/Button';
 import VALID_URL from '../../lib/regex/validUrl';
 import useArticle from '../../features/article/useArticle';
 

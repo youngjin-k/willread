@@ -8,12 +8,12 @@ import {
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../config/Navigation';
-import Step1 from '../components/newArticle/Step1';
-import Step2 from '../components/newArticle/Step2';
-import Step3 from '../components/newArticle/Step3';
-import Complete from '../components/newArticle/Complete';
-import Button, { ButtonVariant, ButtonSize } from '../components/Button';
+import { RootStackParamList } from '../../config/Navigation';
+import Step1 from './Step1';
+import Step2 from './Step2';
+import Step3 from './Step3';
+import Complete from './Complete';
+import Button, { ButtonVariant, ButtonSize } from '../../components/Button';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();

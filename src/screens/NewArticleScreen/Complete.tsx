@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 
 import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
-import Button, { ButtonSize, ButtonVariant } from '../Button';
+import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import Actions from './Actions';
 
 function Complete(): ReactElement {

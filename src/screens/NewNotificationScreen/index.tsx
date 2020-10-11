@@ -9,7 +9,7 @@ import { AppState, TouchableWithoutFeedback } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 import Button, { ButtonSize } from '../../components/Button';
-import Actions from '../../components/newArticle/Actions';
+import Actions from '../NewArticleScreen/Actions';
 import DateTimePicker from './DateTimePicker';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';

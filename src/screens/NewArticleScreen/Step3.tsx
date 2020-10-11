@@ -1,11 +1,11 @@
 import React, { ReactElement, useState, useCallback } from 'react';
 import styled from 'styled-components/native';
-import FormLabel from '../FormLabel';
+import FormLabel from '../../components/FormLabel';
 import Actions from './Actions';
 import { CategoryColors } from '../../features/homeCategoryFilters';
 import useArticle from '../../features/article/useArticle';
-import Button, { ButtonSize } from '../Button';
-import CategoryPicker from '../CategoryPicker';
+import Button, { ButtonSize } from '../../components/Button';
+import CategoryPicker from '../../components/CategoryPicker';
 
 export interface Step3Props {
   nextStep: () => void;
