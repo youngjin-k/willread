@@ -8,9 +8,7 @@ import { View } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
 
 import themes from '../../src/lib/styles/themes';
-import HistoryScreen from '../../src/screens/HistoryScreen';
 import MyScreen from '../../src/screens/MyScreen';
-import SearchScreen from '../../src/screens/SearchScreen';
 import { Article } from '../features/article/articles';
 import HomeScreen from '../screens/HomeScreen';
 import NewArticleScreen from '../screens/NewArticleScreen';
@@ -21,9 +19,7 @@ export type TabParamList = {
   Home: {
     setScrollBottom?: boolean;
   };
-  Search: undefined;
   Add: undefined;
-  History: undefined;
   More: undefined;
 }
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -75,20 +71,6 @@ function AppTabsScreen() {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={SearchScreen}
-        options={{
-          tabBarLabel: '검색',
-          tabBarIcon: ({ color, size }) => (
-            <Feather
-              name="search"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Add"
         component={NewArticleScreenPlaceholder}
         options={{
@@ -115,20 +97,6 @@ function AppTabsScreen() {
             navigation.navigate('NewArticle');
           },
         })}
-      />
-      <Tab.Screen
-        name="History"
-        component={HistoryScreen}
-        options={{
-          tabBarLabel: '기록',
-          tabBarIcon: ({ color, size }) => (
-            <Feather
-              name="archive"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
       />
       <Tab.Screen
         name="More"
