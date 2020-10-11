@@ -3,7 +3,6 @@ import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
-import CategoryBar from '../CategoryBar';
 import ArticleCardDescription from './ArticleCardDescription';
 import PressableWrapper from './PressableWrapper';
 
@@ -33,7 +32,7 @@ function ArticleListCard({
   };
 
   const {
-    uri, title, image, categoryColor,
+    uri, title, image,
   } = article;
 
   return (
@@ -52,7 +51,6 @@ function ArticleListCard({
           />
         </ThumbnailWrapper>
         <Content>
-          <CategoryBar categoryColor={categoryColor} />
           <Title numberOfLines={2}>{title}</Title>
           <ArticleCardDescription uri={uri} />
         </Content>

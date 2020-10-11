@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import articles from '../../data/articles';
-import { CategoryColors } from '../homeCategoryFilters';
 
 export interface Article {
   id: string;
@@ -10,7 +9,6 @@ export interface Article {
   description?: string;
   image?: string;
   favicon?: string;
-  categoryColor: CategoryColors;
 }
 
 export interface ArticleDraft {
@@ -19,7 +17,6 @@ export interface ArticleDraft {
   description: string;
   image?: string;
   favicon?: string;
-  categoryColor: CategoryColors;
 }
 
 export interface InitialState {
@@ -32,7 +29,6 @@ const defaultArticleDraft = () => ({
   uri: 'https://blog.logrocket.com/caching-clash-useswr-vs-react-query/',
   title: '',
   description: '',
-  categoryColor: CategoryColors.RED,
 });
 
 const initialState: InitialState = {

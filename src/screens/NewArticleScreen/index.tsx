@@ -11,7 +11,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../config/Navigation';
 import Step1 from './Step1';
 import Step2 from './Step2';
-import Step3 from './Step3';
 import Complete from './Complete';
 import Button, { ButtonVariant, ButtonSize } from '../../components/Button';
 
@@ -33,7 +32,7 @@ function NewArticleScreen(): React.ReactElement {
         style={{ flex: 1, justifyContent: 'space-between' }}
       >
         <Header>
-          {[1, 2].includes(step) && (
+          {[1].includes(step) && (
             <PrevButtonWrapper>
               <Button
                 onPress={prevStep}
@@ -58,8 +57,7 @@ function NewArticleScreen(): React.ReactElement {
         <Content>
           {step === 0 && <Step1 nextStep={nextStep} />}
           {step === 1 && <Step2 nextStep={nextStep} />}
-          {step === 2 && <Step3 nextStep={nextStep} />}
-          {step === 3 && <Complete />}
+          {step === 2 && <Complete />}
         </Content>
       </KeyboardAvoidingView>
     </Container>

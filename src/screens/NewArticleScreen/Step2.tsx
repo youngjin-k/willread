@@ -12,11 +12,12 @@ export interface Step2Props {
 }
 
 function Step2({ nextStep }: Step2Props): ReactElement {
-  const { articleDraft, setArticleDraft } = useArticle();
+  const { addArticle, articleDraft, setArticleDraft } = useArticle();
   const windowWidth = useWindowDimensions().width;
   const scheme = useColorScheme();
   const [editTitle, setEditTitle] = useState(false);
   const [titleDraft, setTitleDraft] = useState(articleDraft.title);
+  const [loading, setLoading] = useState(false);
 
   const updateTitle = useCallback(() => {
     setArticleDraft({
@@ -25,6 +26,16 @@ function Step2({ nextStep }: Step2Props): ReactElement {
     });
     setEditTitle(false);
   }, [articleDraft, setArticleDraft, titleDraft]);
+
+  const save = useCallback(() => {
+    addArticle(articleDraft);
+  }, [addArticle, articleDraft]);
+
+  const handleOnPress = () => {
+    setLoading(true);
+    save();
+    nextStep();
+  };
 
   return (
     <>
@@ -87,9 +98,10 @@ function Step2({ nextStep }: Step2Props): ReactElement {
 
       <Actions>
         <Button
-          onPress={nextStep}
+          onPress={handleOnPress}
           label="다음"
           size={ButtonSize.Large}
+          loading={loading}
         />
       </Actions>
     </>

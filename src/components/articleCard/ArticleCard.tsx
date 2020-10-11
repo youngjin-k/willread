@@ -3,15 +3,8 @@ import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
-import { CategoryColors } from '../../features/homeCategoryFilters';
-import CategoryBar from '../CategoryBar';
 import ArticleCardDescription from './ArticleCardDescription';
 import PressableWrapper from './PressableWrapper';
-
-export interface Category {
-  color: CategoryColors;
-  label?: string;
-}
 
 export interface ArticleCardProps {
   article: Article;
@@ -23,7 +16,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
   const scheme = useColorScheme();
 
   const {
-    uri, title, image, categoryColor,
+    uri, title, image,
   } = article;
 
   const handlePress = () => {
@@ -55,7 +48,6 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
             />
           </ThumbnailWrapper>
           <Content>
-            <CategoryBar categoryColor={categoryColor} />
             <Title numberOfLines={2}>{title}</Title>
             <ArticleCardDescription uri={uri} />
           </Content>
