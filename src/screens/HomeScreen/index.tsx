@@ -15,7 +15,7 @@ import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import { CategoryColors } from '../../features/homeCategoryFilters';
 import { RootState } from '../../features/store';
-import BottomModal from '../BottomModal';
+import BottomModal from '../../components/BottomModal';
 import ArticleMenu from './ArticleMenu';
 
 const recommendItem: Article = {

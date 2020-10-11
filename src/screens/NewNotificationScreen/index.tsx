@@ -15,7 +15,7 @@ import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
-import BottomModal from '../BottomModal';
+import BottomModal from '../../components/BottomModal';
 
 export enum PermissionStatus {
   GRANTED = 'granted',

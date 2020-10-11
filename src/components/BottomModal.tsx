@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
-import ModalHandle from '../components/ModalHandle';
+import ModalHandle from './ModalHandle';
 
 export interface BottomModalProps {
   isVisible: boolean;
