@@ -56,14 +56,6 @@ function ArticleMenu({
       <Line />
 
       <MenuList>
-        <ButtonWrapper>
-          <Button variant={ButtonVariant.DefaultText}>
-            <ButtonContent>
-              <ButtonIcon name="tag" />
-              <ButtonText>태그 변경</ButtonText>
-            </ButtonContent>
-          </Button>
-        </ButtonWrapper>
 
         <ButtonWrapper>
           <Button
@@ -73,15 +65,6 @@ function ArticleMenu({
             <ButtonContent>
               <ButtonIcon name="share" />
               <ButtonText>공유</ButtonText>
-            </ButtonContent>
-          </Button>
-        </ButtonWrapper>
-
-        <ButtonWrapper>
-          <Button variant={ButtonVariant.DefaultText}>
-            <ButtonContent>
-              <ButtonIcon name="inbox" />
-              <ButtonText>보관함으로 이동</ButtonText>
             </ButtonContent>
           </Button>
         </ButtonWrapper>
