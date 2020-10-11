@@ -122,9 +122,6 @@ export type RootStackParamList = {
   NewNotification: {
     article: Article;
   };
-  Viewer: {
-    article: Article
-  };
 }
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -156,14 +153,6 @@ export default function Navigation(): ReactElement {
           component={NewNotificationScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-          }}
-        />
-        <RootStack.Screen
-          name="Viewer"
-          component={ViewerScreen}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            gestureDirection: 'horizontal',
           }}
         />
       </RootStack.Navigator>
