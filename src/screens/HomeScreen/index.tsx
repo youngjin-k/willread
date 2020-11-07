@@ -28,7 +28,7 @@ const recommendItem: Article = {
 };
 
 function HomeScreen(): React.ReactElement {
-  const scrollViewRef = useRef<ScrollView>();
+  const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
   const { articles } = useArticle();
   const [selectedArticle, setSelectedArticle] = useState<Article>();
@@ -57,28 +57,24 @@ function HomeScreen(): React.ReactElement {
   }, []);
 
   const handlePressArticle = async (article: Article) => {
-    try {
-      if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open(article.uri, {
-          // iOS Properties
-          readerMode: false,
-          animated: true,
-          modalPresentationStyle: 'fullScreen',
-          modalTransitionStyle: 'coverVertical',
-          modalEnabled: false,
-          enableBarCollapsing: true,
+    if (await InAppBrowser.isAvailable()) {
+      await InAppBrowser.open(article.uri, {
+        // iOS Properties
+        readerMode: false,
+        animated: true,
+        modalPresentationStyle: 'fullScreen',
+        modalTransitionStyle: 'coverVertical',
+        modalEnabled: false,
+        enableBarCollapsing: true,
 
-          // Android Properties
-          showTitle: true,
-          enableUrlBarHiding: true,
-          enableDefaultShare: true,
-          forceCloseOnRedirection: false,
-        });
-      } else {
-        Linking.openURL(article.uri);
-      }
-    } catch (error) {
-      console.log(error);
+        // Android Properties
+        showTitle: true,
+        enableUrlBarHiding: true,
+        enableDefaultShare: true,
+        forceCloseOnRedirection: false,
+      });
+    } else {
+      Linking.openURL(article.uri);
     }
   };
 
