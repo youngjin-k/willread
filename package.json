@@ -27,6 +27,7 @@
     "react-native": "0.63.3",
     "react-native-appearance": "^0.3.4",
     "react-native-gesture-handler": "^1.8.0",
+    "react-native-inappbrowser-reborn": "^3.5.1",
     "react-native-modal": "^11.5.6",
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.13.0",

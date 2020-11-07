@@ -1,22 +1,23 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-// import * as Notifications from 'expo-notifications';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Image, ScrollView, useColorScheme, View,
+  Image, Linking, ScrollView, useColorScheme, View,
 } from 'react-native';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import styled from 'styled-components/native';
-// import * as WebBrowser from 'expo-web-browser';
 
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
+import BottomModal from '../../components/BottomModal';
+import Line from '../../components/Line';
 import { TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
-import BottomModal from '../../components/BottomModal';
-import ArticleMenu from './ArticleMenu';
 import useArticle from '../../features/article/useArticle';
-import Line from '../../components/Line';
+import ArticleMenu from './ArticleMenu';
+
+// import * as Notifications from 'expo-notifications';
 
 const recommendItem: Article = {
   id: '',
@@ -45,7 +46,6 @@ function HomeScreen(): React.ReactElement {
     // const subscription = Notifications.addNotificationResponseReceivedListener(
     //   async (response) => {
     //     const { article } = response.notification.request.content.data as {article: Article};
-
     //     if (article) {
     //       await WebBrowser.openBrowserAsync(article.uri, {
     //         enableBarCollapsing: true,
@@ -57,9 +57,29 @@ function HomeScreen(): React.ReactElement {
   }, []);
 
   const handlePressArticle = async (article: Article) => {
-    // await WebBrowser.openBrowserAsync(article.uri, {
-    //   enableBarCollapsing: true,
-    // });
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        await InAppBrowser.open(article.uri, {
+          // iOS Properties
+          readerMode: false,
+          animated: true,
+          modalPresentationStyle: 'fullScreen',
+          modalTransitionStyle: 'coverVertical',
+          modalEnabled: false,
+          enableBarCollapsing: true,
+
+          // Android Properties
+          showTitle: true,
+          enableUrlBarHiding: true,
+          enableDefaultShare: true,
+          forceCloseOnRedirection: false,
+        });
+      } else {
+        Linking.openURL(article.uri);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleLongPressArticle = (article: Article) => {
@@ -115,7 +135,9 @@ function HomeScreen(): React.ReactElement {
             article={selectedArticle}
             onClose={closeArticleMenu}
           />
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </BottomModal>
     </Container>
   );
