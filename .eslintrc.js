@@ -3,31 +3,14 @@ const WARNING = 1;
 const ERROR = 2;
 
 module.exports = {
-  env: {
-    browser: true,
-    commonjs: true,
-    es6: true,
-    node: true,
-  },
-  parser: '@typescript-eslint/parser',
-  plugins: ['react', 'react-hooks', '@typescript-eslint'],
+  root: true,
   extends: [
     'airbnb',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  parserOptions: {
-    sourceType: 'module',
-    ecmaVersion: 2018,
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
+  parser: '@typescript-eslint/parser',
+  plugins: ['react', 'react-hooks', '@typescript-eslint'],
   rules: {
     'react-hooks/rules-of-hooks': ERROR,
     'react-hooks/exhaustive-deps': WARNING,
@@ -36,7 +19,7 @@ module.exports = {
     'react/jsx-props-no-spreading': OFF,
     'react/jsx-filename-extension': [
       ERROR,
-      { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+      {extensions: ['.js', '.jsx', '.ts', '.tsx']},
     ],
     'react/jsx-wrap-multilines': ERROR,
     '@typescript-eslint/no-inferrable-types': OFF,
@@ -45,7 +28,7 @@ module.exports = {
     'react/no-array-index-key': OFF,
     quotes: [WARNING, 'single'],
     semi: [ERROR, 'always'],
-    'react/jsx-max-props-per-line': [ERROR, { maximum: 1 }],
+    'react/jsx-max-props-per-line': [ERROR, {maximum: 1}],
   },
   overrides: [
     {

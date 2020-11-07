@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { ReactElement } from 'react';
@@ -35,7 +35,7 @@ function Complete(): ReactElement {
     <>
       <Container>
         <IconWrapper>
-          <Icon name="check" />
+          <CheckIcon name="check" />
         </IconWrapper>
         <Title>윌리드 등록 완료</Title>
         <SubTitle>윌리드와 함께 성장하세요</SubTitle>
@@ -79,7 +79,7 @@ const IconWrapper = styled.View`
   box-shadow: 0 3px 17px rgba(0, 0, 0, 0.24);
 `;
 
-const Icon = styled(Feather)`
+const CheckIcon = styled(Icon)`
   font-size: 60px;
   color: #fff;
 `;

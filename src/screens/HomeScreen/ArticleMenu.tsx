@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useCallback, useState } from 'react';
@@ -133,7 +133,7 @@ const ButtonContent = styled.View`
   padding: 0 16px;
 `;
 
-const ButtonIcon = styled(Feather)`
+const ButtonIcon = styled(Icon)`
   font-size: 18px;
   color: ${(props) => props.theme.colors.typography.title};
   margin-right: 16px;

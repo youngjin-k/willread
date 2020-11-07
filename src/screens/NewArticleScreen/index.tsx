@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Feather } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
 import {
   Text,
   KeyboardAvoidingView,
@@ -96,7 +96,7 @@ const CloseButtonWrapper = styled.View`
   justify-content: center;
 `;
 
-const BackIcon = styled(Feather)`
+const BackIcon = styled(Icon)`
   font-size: 20px;
   color: ${(props) => props.theme.colors.typography.title};
 `;

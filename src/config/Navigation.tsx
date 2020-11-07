@@ -1,8 +1,15 @@
 /* eslint-disable react/display-name */
-import { Feather } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React, { ReactElement } from 'react';
 import { View } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
@@ -20,7 +27,7 @@ export type TabParamList = {
   };
   Add: undefined;
   More: undefined;
-}
+};
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const willreadLightTheme = {
@@ -51,9 +58,10 @@ function AppTabsScreen() {
   const scheme = useColorScheme();
 
   return (
-    <Tab.Navigator tabBarOptions={{
-      showLabel: false,
-    }}
+    <Tab.Navigator
+      tabBarOptions={{
+        showLabel: false,
+      }}
     >
       <Tab.Screen
         name="Home"
@@ -61,7 +69,7 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '홈',
           tabBarIcon: ({ color, size }) => (
-            <Feather
+            <Icon
               name="home"
               size={size}
               color={color}
@@ -75,17 +83,21 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '추가',
           tabBarIcon: ({ size }) => (
-            <View style={{
-              width: size,
-              height: size,
-              backgroundColor: themes[scheme === 'dark' ? 'dark' : 'light'].colors.primary,
-              borderRadius: 6,
-            }}
+            <View
+              style={{
+                width: size,
+                height: size,
+                backgroundColor:
+                  themes[scheme === 'dark' ? 'dark' : 'light'].colors.primary,
+                borderRadius: 6,
+              }}
             >
-              <Feather
+              <Icon
                 name="plus"
                 size={size}
-                color={themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary}
+                color={
+                  themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary
+                }
               />
             </View>
           ),
@@ -103,7 +115,7 @@ function AppTabsScreen() {
         options={{
           tabBarLabel: '더보기',
           tabBarIcon: ({ color, size }) => (
-            <Feather
+            <Icon
               name="menu"
               size={size}
               color={color}
@@ -121,7 +133,7 @@ export type RootStackParamList = {
   NewNotification: {
     article: Article;
   };
-}
+};
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -129,7 +141,9 @@ export default function Navigation(): ReactElement {
   const scheme = useColorScheme();
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? willreadDarkTheme : willreadLightTheme}>
+    <NavigationContainer
+      theme={scheme === 'dark' ? willreadDarkTheme : willreadLightTheme}
+    >
       <RootStack.Navigator
         headerMode="none"
         mode="modal"

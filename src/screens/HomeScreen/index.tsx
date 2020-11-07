@@ -1,11 +1,11 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import * as Notifications from 'expo-notifications';
+// import * as Notifications from 'expo-notifications';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Image, ScrollView, useColorScheme, View,
 } from 'react-native';
 import styled from 'styled-components/native';
-import * as WebBrowser from 'expo-web-browser';
+// import * as WebBrowser from 'expo-web-browser';
 
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
@@ -42,24 +42,24 @@ function HomeScreen(): React.ReactElement {
   }, [route]);
 
   useEffect(() => {
-    const subscription = Notifications.addNotificationResponseReceivedListener(
-      async (response) => {
-        const { article } = response.notification.request.content.data as {article: Article};
+    // const subscription = Notifications.addNotificationResponseReceivedListener(
+    //   async (response) => {
+    //     const { article } = response.notification.request.content.data as {article: Article};
 
-        if (article) {
-          await WebBrowser.openBrowserAsync(article.uri, {
-            enableBarCollapsing: true,
-          });
-        }
-      },
-    );
-    return () => subscription.remove();
+    //     if (article) {
+    //       await WebBrowser.openBrowserAsync(article.uri, {
+    //         enableBarCollapsing: true,
+    //       });
+    //     }
+    //   },
+    // );
+    // return () => subscription.remove();
   }, []);
 
   const handlePressArticle = async (article: Article) => {
-    await WebBrowser.openBrowserAsync(article.uri, {
-      enableBarCollapsing: true,
-    });
+    // await WebBrowser.openBrowserAsync(article.uri, {
+    //   enableBarCollapsing: true,
+    // });
   };
 
   const handleLongPressArticle = (article: Article) => {

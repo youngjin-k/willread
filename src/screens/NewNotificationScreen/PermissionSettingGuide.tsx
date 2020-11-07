@@ -1,4 +1,4 @@
-import * as Linking from 'expo-linking';
+// import * as Linking from 'expo-linking';
 import React from 'react';
 import styled from 'styled-components/native';
 
@@ -6,7 +6,7 @@ import Button, { ButtonVariant } from '../../components/Button';
 import ScreenHeader from './ScreenHeader';
 
 const openSettings = () => {
-  Linking.openSettings();
+  // Linking.openSettings();
 };
 
 function PermissionSettingGuide(): React.ReactElement {

@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import dayjs from 'dayjs';
-import * as Notifications from 'expo-notifications';
+// import * as Notifications from 'expo-notifications';
 import React, {
   ReactElement, useCallback, useEffect, useState,
 } from 'react';
@@ -23,13 +23,13 @@ export enum PermissionStatus {
   DENIED = 'denied',
 }
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: false,
+//     shouldSetBadge: false,
+//   }),
+// });
 
 export interface Step4Props {
   nextStep: () => void;
@@ -100,28 +100,28 @@ const formatTimeFromNow = (
 };
 
 const setNotification = async (date: Date, article: Article) => {
-  const id = await Notifications.scheduleNotificationAsync({
-    content: {
-      title: '윌리드할 시간이에요!',
-      body: article.title,
-      sound: 'default',
-      data: {
-        article,
-      },
-    },
-    trigger: date,
-  });
-  return id;
+  // const id = await Notifications.scheduleNotificationAsync({
+  //   content: {
+  //     title: '윌리드할 시간이에요!',
+  //     body: article.title,
+  //     sound: 'default',
+  //     data: {
+  //       article,
+  //     },
+  //   },
+  //   trigger: date,
+  // });
+  // return id;
 };
 
-const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
-  ios: {
-    allowAlert: true,
-    allowBadge: true,
-    allowSound: true,
-    allowAnnouncements: true,
-  },
-});
+// const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
+//   ios: {
+//     allowAlert: true,
+//     allowBadge: true,
+//     allowSound: true,
+//     allowAnnouncements: true,
+//   },
+// });
 
 const initialNotificationTime = {
   date: dayjs(),
@@ -162,17 +162,17 @@ function NewNotificationScreen(): ReactElement {
   }, [handlePressTime]);
 
   useEffect(() => {
-    const getPermissions = async () => {
-      const settings = await Notifications.getPermissionsAsync();
-      setPermissionStatus(settings.status);
-    };
+    // const getPermissions = async () => {
+    //   const settings = await Notifications.getPermissionsAsync();
+    //   setPermissionStatus(settings.status);
+    // };
 
-    getPermissions();
-    AppState.addEventListener('change', getPermissions);
+    // getPermissions();
+    // AppState.addEventListener('change', getPermissions);
 
-    return () => {
-      AppState.removeEventListener('change', getPermissions);
-    };
+    // return () => {
+    //   AppState.removeEventListener('change', getPermissions);
+    // };
   }, []);
 
   const openModal = () => {
@@ -190,24 +190,24 @@ function NewNotificationScreen(): ReactElement {
   };
 
   const handlePressComplete = useCallback(async () => {
-    setLoading(true);
+    // setLoading(true);
 
-    if (permissionStatus === PermissionStatus.UNDETERMINED) {
-      const { status } = await requestPermissionsAsync();
+    // if (permissionStatus === PermissionStatus.UNDETERMINED) {
+    //   const { status } = await requestPermissionsAsync();
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // status의 type은 PermissionStatus 이지만 실제 값은 0/1이 반환 됨
-      if (status === PermissionStatus.DENIED || status === 0) {
-        setPermissionStatus(status);
-        setLoading(false);
-        return;
-      }
-    }
+    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //   // @ts-ignore
+    //   // status의 type은 PermissionStatus 이지만 실제 값은 0/1이 반환 됨
+    //   if (status === PermissionStatus.DENIED || status === 0) {
+    //     setPermissionStatus(status);
+    //     setLoading(false);
+    //     return;
+    //   }
+    // }
 
-    await setNotification(notificationDate.date.toDate(), route.params.article);
+    // await setNotification(notificationDate.date.toDate(), route.params.article);
 
-    navigation.pop();
+    // navigation.pop();
   }, [permissionStatus, notificationDate, route, navigation]);
 
   if (permissionStatus === PermissionStatus.DENIED) {

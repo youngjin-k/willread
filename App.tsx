@@ -1,12 +1,16 @@
+import 'react-native-gesture-handler';
 import React, { ReactElement } from 'react';
 import { StatusBar } from 'react-native';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components/native';
+import Icon from 'react-native-vector-icons/Feather';
 
 import Navigation from './src/config/Navigation';
 import store from './src/features/store';
 import themes from './src/lib/styles/themes';
+
+Icon.loadFont();
 
 export default function App(): ReactElement {
   const scheme = useColorScheme();

@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
@@ -43,7 +43,7 @@ const CloseButtonWrapper = styled.View`
   justify-content: center;
 `;
 
-const BackIcon = styled(Feather)`
+const BackIcon = styled(Icon)`
   font-size: 20px;
   color: ${(props) => props.theme.colors.typography.title};
 `;
