@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   NativeScrollEvent, NativeSyntheticEvent, ScrollView, TouchableWithoutFeedback,
 } from 'react-native';
@@ -83,10 +83,12 @@ const fixScrollPosition = (
   target: React.RefObject<ScrollView>,
   targetIndex: number,
 ) => {
-  target.current?.scrollTo({
-    y: targetIndex * ITEM_HEIGHT,
-    animated: true,
-  });
+  if (target.current) {
+    target.current.scrollTo({
+      y: targetIndex * ITEM_HEIGHT,
+      animated: true,
+    });
+  }
 };
 
 export interface DateTimePickerProps {
@@ -102,8 +104,8 @@ function DateTimePicker({
     initialDate || dayjs().add(3, 'hour').set('minute', 0),
   );
   const [invalidDate, setInvalidDate] = useState(false);
-  const hourScrollViewRef = createRef<ScrollView>();
-  const minuteScrollViewRef = createRef<ScrollView>();
+  const hourScrollViewRef = useRef<ScrollView>(null);
+  const minuteScrollViewRef = useRef<ScrollView>(null);
 
   const date = time.format('YYYY-MM-DD');
   const hour = time.format('HH');
