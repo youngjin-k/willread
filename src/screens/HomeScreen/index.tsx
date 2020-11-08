@@ -17,7 +17,7 @@ import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import ArticleMenu from './ArticleMenu';
 
-// import * as Notifications from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
 
 const recommendItem: Article = {
   id: '',
@@ -43,17 +43,15 @@ function HomeScreen(): React.ReactElement {
   }, [route]);
 
   useEffect(() => {
-    // const subscription = Notifications.addNotificationResponseReceivedListener(
-    //   async (response) => {
-    //     const { article } = response.notification.request.content.data as {article: Article};
-    //     if (article) {
-    //       await WebBrowser.openBrowserAsync(article.uri, {
-    //         enableBarCollapsing: true,
-    //       });
-    //     }
-    //   },
-    // );
-    // return () => subscription.remove();
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      async (response) => {
+        const { article } = response.notification.request.content.data as {article: Article};
+        if (article) {
+          handlePressArticle(article);
+        }
+      },
+    );
+    return () => subscription.remove();
   }, []);
 
   const handlePressArticle = async (article: Article) => {
