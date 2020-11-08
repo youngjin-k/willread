@@ -10,6 +10,9 @@ import Navigation from './src/config/Navigation';
 import store from './src/features/store';
 import themes from './src/lib/styles/themes';
 
+import { Constants } from 'react-native-unimodules';
+console.log(Constants.systemFonts);
+
 Icon.loadFont();
 
 export default function App(): ReactElement {
