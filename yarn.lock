@@ -6353,6 +6353,11 @@ react-native-screens@^2.13.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.13.0.tgz#6360dfd65d51f73479bea14373a8e289cd58a327"
   integrity sha512-B0kPYq5ZK/2G7pPhcAFLflDfm+HXktdVEeLFHnP/+oPnao+b28hXsOBCi0IgK72gxbdPtnpZME8KONRIKOBDug==
 
+react-native-share-menu@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-share-menu/-/react-native-share-menu-5.0.2.tgz#e755f44f174850296a4f08d25ea0019d57187eee"
+  integrity sha512-YO9YVd5u/EGL90xSRDueD1ncmQ+fHyxPd2hg0qFWLDk/73OmuWY9ImxpoTMlbUyHO/epX9hgddZrdCa5kmgBAg==
+
 react-native-unimodules@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.11.0.tgz#78483ee4e7eb27b439d34c3ba7455f40087ff166"
