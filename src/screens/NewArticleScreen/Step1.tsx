@@ -1,14 +1,17 @@
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { getLinkPreview } from 'link-preview-js';
 import React, {
-  ReactElement, useState, useCallback, useEffect,
+  ReactElement, useCallback, useEffect, useState,
 } from 'react';
 import styled from 'styled-components/native';
-import { getLinkPreview } from 'link-preview-js';
+
+import Button, { ButtonSize } from '../../components/Button';
 import FormLabel from '../../components/FormLabel';
 import TextInput from '../../components/TextInput';
-import Actions from './Actions';
-import Button, { ButtonSize } from '../../components/Button';
-import VALID_URL from '../../lib/regex/validUrl';
+import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
+import VALID_URL from '../../lib/regex/validUrl';
+import Actions from './Actions';
 
 export interface Step1Props {
   nextStep: () => void;
@@ -18,6 +21,16 @@ function Step1({ nextStep: next }: Step1Props): ReactElement {
   const { articleDraft, setArticleDraft } = useArticle();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const route = useRoute<RouteProp<RootStackParamList, 'NewArticle'>>();
+
+  useEffect(() => {
+    if (route?.params?.uri) {
+      setArticleDraft({
+        ...articleDraft,
+        uri: route.params.uri,
+      });
+    }
+  }, [route]);
 
   useEffect(() => {
     setDisabled(!VALID_URL.test(articleDraft.uri));

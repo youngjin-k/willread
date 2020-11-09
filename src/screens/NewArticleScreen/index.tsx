@@ -17,6 +17,7 @@ import Button, { ButtonVariant, ButtonSize } from '../../components/Button';
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [step, setStep] = useState(0);
+
   const prevStep = () => {
     setStep((currentStep) => currentStep - 1);
   };
