@@ -1,29 +1,65 @@
-import React, { useState, useCallback } from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import {
-  Text,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { getLinkPreview } from 'link-preview-js';
+import React, { useCallback, useEffect, useState } from 'react';
+import { KeyboardAvoidingView, Platform, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import styled from 'styled-components/native';
+
+import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
+import FormLabel from '../../components/FormLabel';
+import TextInput from '../../components/TextInput';
 import { RootStackParamList } from '../../config/Navigation';
-import Step1 from './Step1';
-import Step2 from './Step2';
+import useArticle from '../../features/article/useArticle';
+import VALID_URL from '../../lib/regex/validUrl';
+import Actions from './Actions';
 import Complete from './Complete';
-import Button, { ButtonVariant, ButtonSize } from '../../components/Button';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [step, setStep] = useState(0);
-  const prevStep = () => {
-    setStep((currentStep) => currentStep - 1);
+  const { articleDraft, setArticleDraft, addArticle } = useArticle();
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [complete, setComplete] = useState(false);
+  const route = useRoute<RouteProp<RootStackParamList, 'NewArticle'>>();
+
+  useEffect(() => {
+    if (route?.params?.uri) {
+      setArticleDraft({
+        ...articleDraft,
+        uri: route.params.uri,
+      });
+    }
+  }, [route]);
+
+  useEffect(() => {
+    setDisabled(!VALID_URL.test(articleDraft.uri));
+  }, [articleDraft]);
+
+  const handleTextChange = (uri: string) => {
+    setArticleDraft({
+      ...articleDraft,
+      uri,
+    });
   };
 
-  const nextStep = useCallback(() => {
-    setStep(step + 1);
-  }, [step]);
+  const handleOnPress = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      const response = (await getLinkPreview(articleDraft.uri)) as any;
+      addArticle({
+        uri: articleDraft.uri,
+        title: response.title,
+        description: response.description,
+        image: response.images.length > 0 ? response.images[0] : '',
+        favicon: response.favicons.length > 0 ? response.favicons[0] : '',
+      });
+      setComplete(true);
+    } catch (e) {
+      setLoading(false);
+    }
+  }, [articleDraft, addArticle]);
 
   return (
     <Container>
@@ -32,16 +68,6 @@ function NewArticleScreen(): React.ReactElement {
         style={{ flex: 1, justifyContent: 'space-between' }}
       >
         <Header>
-          {[1].includes(step) && (
-            <PrevButtonWrapper>
-              <Button
-                onPress={prevStep}
-                variant={ButtonVariant.PrimaryText}
-                size={ButtonSize.Small}
-                label="이전"
-              />
-            </PrevButtonWrapper>
-          )}
           <HeaderTitle>새로운 윌리드</HeaderTitle>
           <CloseButtonWrapper>
             <Button
@@ -54,11 +80,32 @@ function NewArticleScreen(): React.ReactElement {
           </CloseButtonWrapper>
         </Header>
 
-        <Content>
-          {step === 0 && <Step1 nextStep={nextStep} />}
-          {step === 1 && <Step2 nextStep={nextStep} />}
-          {step === 2 && <Complete />}
-        </Content>
+        {complete ? (
+          <Content>
+            <Complete />
+          </Content>
+        ) : (
+
+          <Content>
+            <FormLabel>링크를 입력하세요</FormLabel>
+            <TextInput
+              defaultValue={route?.params?.uri}
+              autoFocus
+              keyboardType="url"
+              onChangeText={handleTextChange}
+            />
+
+            <Actions>
+              <Button
+                onPress={handleOnPress}
+                loading={loading}
+                disabled={disabled}
+                label="다음"
+                size={ButtonSize.Large}
+              />
+            </Actions>
+          </Content>
+        )}
       </KeyboardAvoidingView>
     </Container>
   );
@@ -73,16 +120,6 @@ const Header = styled.View`
   padding: 0 16px;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-`;
-
-const PrevButtonWrapper = styled.View`
-  padding: 0 16px;
-  height: 56px;
-  width: ${48 + 32}px;
-  position: absolute;
-  top: 0;
-  left: 0;
   justify-content: center;
 `;
 
@@ -109,7 +146,8 @@ const HeaderTitle = styled(Text)`
 
 const Content = styled.View`
   flex: 1;
-  padding-bottom: 72px;
+  justify-content: center;
+  padding: 0 16px 72px 16px;
 `;
 
 export default NewArticleScreen;

@@ -32,6 +32,7 @@
     "react-native-modal": "^11.5.6",
     "react-native-safe-area-context": "^3.1.8",
     "react-native-screens": "^2.13.0",
+    "react-native-share-menu": "^5.0.2",
     "react-native-unimodules": "^0.11.0",
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.2",

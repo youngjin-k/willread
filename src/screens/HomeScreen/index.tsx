@@ -1,9 +1,14 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import * as Notifications from 'expo-notifications';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import {
   Image, Linking, ScrollView, useColorScheme, View,
 } from 'react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
 
 import willreadDark from '../../../assets/willread-dark.png';
@@ -12,12 +17,15 @@ import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import BottomModal from '../../components/BottomModal';
 import Line from '../../components/Line';
-import { TabParamList } from '../../config/Navigation';
+import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import ArticleMenu from './ArticleMenu';
 
-import * as Notifications from 'expo-notifications';
+type SharedItem = {
+  mimeType: string;
+  data: string;
+};
 
 const recommendItem: Article = {
   id: '',
@@ -28,6 +36,7 @@ const recommendItem: Article = {
 };
 
 function HomeScreen(): React.ReactElement {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
   const { articles } = useArticle();
@@ -53,6 +62,33 @@ function HomeScreen(): React.ReactElement {
     );
     return () => subscription.remove();
   }, []);
+
+  const handleShare = useCallback((item?: SharedItem) => {
+    if (!item) {
+      return;
+    }
+
+    const { mimeType, data } = item;
+
+    console.log(data);
+    console.log(mimeType);
+
+    navigation.navigate('NewArticle', {
+      uri: data,
+    });
+  }, []);
+
+  useEffect(() => {
+    ShareMenu.getInitialShare(handleShare);
+  }, [handleShare]);
+
+  useEffect(() => {
+    const listener = ShareMenu.addNewShareListener(handleShare);
+
+    return () => {
+      listener.remove();
+    };
+  }, [handleShare]);
 
   const handlePressArticle = async (article: Article) => {
     if (await InAppBrowser.isAvailable()) {

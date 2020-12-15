@@ -15,7 +15,12 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* willreadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* willreadTests.m */; };
+		3783F22725583A8A00DB09FF /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3783F22525583A8A00DB09FF /* MainInterface.storyboard */; };
+		3783F22B25583A8A00DB09FF /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3783F22125583A8A00DB09FF /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3783F24625583B9800DB09FF /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3783F24525583B9800DB09FF /* ShareViewController.swift */; };
+		3783F38D2558409600DB09FF /* ReactShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3783F38C2558409600DB09FF /* ReactShareViewController.swift */; };
 		7B4E89661F5CF11775F04BF9 /* libPods-willread-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A035A40262BDC3299ECD925 /* libPods-willread-tvOS.a */; };
+		91604C9CC731134055CA6CC2 /* libPods-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2916869F41E5EB706764C79 /* libPods-ShareExtension.a */; };
 		99DE5395472F564E6BEA297C /* libPods-willread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80005D7E11F1B4939B9E7FDE /* libPods-willread.a */; };
 		BA5232C4A7FBCE9BA1F7D3B8 /* libPods-willread-willreadTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA138D11427BC576F23D2CF8 /* libPods-willread-willreadTests.a */; };
 		C1DC01E0AEED6BD126A9E7D5 /* libPods-willread-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E81B9C595F564F0F6BE7A33 /* libPods-willread-tvOSTests.a */; };
@@ -36,7 +41,28 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "willread-tvOS";
 		};
+		3783F22925583A8A00DB09FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3783F22025583A8A00DB09FF;
+			remoteInfo = ShareExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3783EF2A255812C700DB09FF /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3783F22B25583A8A00DB09FF /* ShareExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -52,7 +78,11 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = willread/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = willread/main.m; sourceTree = "<group>"; };
 		14210AF37D182CC017F5CD4A /* Pods-willread-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-willread-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-willread-tvOSTests/Pods-willread-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		188D7A5C77084544C44A020F /* Pods-willreadShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-willreadShare.release.xcconfig"; path = "Target Support Files/Pods-willreadShare/Pods-willreadShare.release.xcconfig"; sourceTree = "<group>"; };
+		1D5E545D3EF9F75558F6786F /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		1E81B9C595F564F0F6BE7A33 /* libPods-willread-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-willread-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21A125F2392B5075A1A47444 /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		244CEBA517A6294F8D0AB32C /* libPods-willreadShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-willreadShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* willread-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "willread-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* willread-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "willread-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		376A3D632556CA6D00BD5624 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
@@ -71,11 +101,20 @@
 		376A3D702556CA6D00BD5624 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		376A3D712556CA6D00BD5624 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		376A3D722556CA6D00BD5624 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		3783F0262558181E00DB09FF /* willread.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = willread.entitlements; path = willread/willread.entitlements; sourceTree = "<group>"; };
+		3783F22125583A8A00DB09FF /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3783F22625583A8A00DB09FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		3783F22825583A8A00DB09FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3783F23425583A9800DB09FF /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		3783F24525583B9800DB09FF /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareViewController.swift; path = "../../node_modules/react-native-share-menu/ios/ShareViewController.swift"; sourceTree = "<group>"; };
+		3783F38C2558409600DB09FF /* ReactShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReactShareViewController.swift; path = "../../node_modules/react-native-share-menu/ios/ReactShareViewController.swift"; sourceTree = "<group>"; };
 		5E0711CC9DE1EB1C6A1EF14D /* Pods-willread.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-willread.debug.xcconfig"; path = "Target Support Files/Pods-willread/Pods-willread.debug.xcconfig"; sourceTree = "<group>"; };
 		80005D7E11F1B4939B9E7FDE /* libPods-willread.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-willread.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = willread/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8571CC13B6D6F65A64C31778 /* Pods-willread-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-willread-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-willread-tvOSTests/Pods-willread-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		8A035A40262BDC3299ECD925 /* libPods-willread-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-willread-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A169F8E8D2CE1172906E9E66 /* Pods-willreadShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-willreadShare.debug.xcconfig"; path = "Target Support Files/Pods-willreadShare/Pods-willreadShare.debug.xcconfig"; sourceTree = "<group>"; };
+		C2916869F41E5EB706764C79 /* libPods-ShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA138D11427BC576F23D2CF8 /* libPods-willread-willreadTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-willread-willreadTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA816566DB0368C43861325F /* Pods-willread.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-willread.release.xcconfig"; path = "Target Support Files/Pods-willread/Pods-willread.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -117,6 +156,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3783F21E25583A8A00DB09FF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91604C9CC731134055CA6CC2 /* libPods-ShareExtension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -140,6 +187,7 @@
 		13B07FAE1A68108700A75B9A /* willread */ = {
 			isa = PBXGroup;
 			children = (
+				3783F0262558181E00DB09FF /* willread.entitlements */,
 				376A3D622556CA6D00BD5624 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -161,6 +209,8 @@
 				8A035A40262BDC3299ECD925 /* libPods-willread-tvOS.a */,
 				1E81B9C595F564F0F6BE7A33 /* libPods-willread-tvOSTests.a */,
 				CA138D11427BC576F23D2CF8 /* libPods-willread-willreadTests.a */,
+				244CEBA517A6294F8D0AB32C /* libPods-willreadShare.a */,
+				C2916869F41E5EB706764C79 /* libPods-ShareExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -188,6 +238,18 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		3783F22225583A8A00DB09FF /* ShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				3783F38C2558409600DB09FF /* ReactShareViewController.swift */,
+				3783F24525583B9800DB09FF /* ShareViewController.swift */,
+				3783F23425583A9800DB09FF /* ShareExtension.entitlements */,
+				3783F22525583A8A00DB09FF /* MainInterface.storyboard */,
+				3783F22825583A8A00DB09FF /* Info.plist */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
 		60471EBA1A42454068571557 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +261,10 @@
 				8571CC13B6D6F65A64C31778 /* Pods-willread-tvOSTests.release.xcconfig */,
 				FB479F201919CD4D58DB94D9 /* Pods-willread-willreadTests.debug.xcconfig */,
 				073748D37BECADD92FDEA947 /* Pods-willread-willreadTests.release.xcconfig */,
+				A169F8E8D2CE1172906E9E66 /* Pods-willreadShare.debug.xcconfig */,
+				188D7A5C77084544C44A020F /* Pods-willreadShare.release.xcconfig */,
+				1D5E545D3EF9F75558F6786F /* Pods-ShareExtension.debug.xcconfig */,
+				21A125F2392B5075A1A47444 /* Pods-ShareExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -216,6 +282,7 @@
 				13B07FAE1A68108700A75B9A /* willread */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* willreadTests */,
+				3783F22225583A8A00DB09FF /* ShareExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				60471EBA1A42454068571557 /* Pods */,
@@ -233,6 +300,7 @@
 				00E356EE1AD99517003FC87E /* willreadTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* willread-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* willread-tvOSTests.xctest */,
+				3783F22125583A8A00DB09FF /* ShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -278,10 +346,12 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				84E3C5F585B9C3163241B7CE /* [CP] Copy Pods Resources */,
+				3783EF2A255812C700DB09FF /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3783F22A25583A8A00DB09FF /* PBXTargetDependency */,
 			);
 			name = willread;
 			productName = willread;
@@ -327,12 +397,33 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* willread-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		3783F22025583A8A00DB09FF /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3783F22C25583A8A00DB09FF /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				8FA01CCA66E599A24555DA5D /* [CP] Check Pods Manifest.lock */,
+				3783F21D25583A8A00DB09FF /* Sources */,
+				3783F21E25583A8A00DB09FF /* Frameworks */,
+				3783F21F25583A8A00DB09FF /* Resources */,
+				3783F3932558429700DB09FF /* Bundle React Native code and images */,
+				4B3DF64696499F908D09DA15 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExtension;
+			productName = ShareExtension;
+			productReference = 3783F22125583A8A00DB09FF /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1210;
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -353,6 +444,12 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
+					3783F22025583A8A00DB09FF = {
+						CreatedOnToolsVersion = 12.1;
+						DevelopmentTeam = LKQG38MYK9;
+						LastSwiftMigration = 1210;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "willread" */;
@@ -372,6 +469,7 @@
 				00E356ED1AD99517003FC87E /* willreadTests */,
 				2D02E47A1E0B4A5D006451C7 /* willread-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* willread-tvOSTests */,
+				3783F22025583A8A00DB09FF /* ShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -404,6 +502,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3783F21F25583A8A00DB09FF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3783F22725583A8A00DB09FF /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +593,42 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		3783F3932558429700DB09FF /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\nexport ENTRY_FILE=index.share.js\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		4B3DF64696499F908D09DA15 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		5144A4D2B720C71441F8ED9F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -576,6 +718,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-willread-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8FA01CCA66E599A24555DA5D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ShareExtension-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -701,6 +865,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3783F21D25583A8A00DB09FF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3783F38D2558409600DB09FF /* ReactShareViewController.swift in Sources */,
+				3783F24625583B9800DB09FF /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -714,7 +887,23 @@
 			target = 2D02E47A1E0B4A5D006451C7 /* willread-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
+		3783F22A25583A8A00DB09FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3783F22025583A8A00DB09FF /* ShareExtension */;
+			targetProxy = 3783F22925583A8A00DB09FF /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3783F22525583A8A00DB09FF /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3783F22625583A8A00DB09FF /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
@@ -766,8 +955,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5E0711CC9DE1EB1C6A1EF14D /* Pods-willread.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = willread/willread.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LKQG38MYK9;
 				ENABLE_BITCODE = NO;
@@ -790,8 +981,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EA816566DB0368C43861325F /* Pods-willread.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = willread/willread.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LKQG38MYK9;
 				INFOPLIST_FILE = willread/Info.plist;
@@ -915,6 +1108,71 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/willread-tvOS.app/willread-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
+			};
+			name = Release;
+		};
+		3783F22D25583A8A00DB09FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D5E545D3EF9F75558F6786F /* Pods-ShareExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = LKQG38MYK9;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.willread.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/ShareExtension-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3783F22E25583A8A00DB09FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21A125F2392B5075A1A47444 /* Pods-ShareExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = LKQG38MYK9;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.willread.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/ShareExtension-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1066,6 +1324,15 @@
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3783F22C25583A8A00DB09FF /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3783F22D25583A8A00DB09FF /* Debug */,
+				3783F22E25583A8A00DB09FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

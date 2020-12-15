@@ -26,7 +26,7 @@ export interface InitialState {
 }
 
 const defaultArticleDraft = () => ({
-  uri: 'https://blog.logrocket.com/caching-clash-useswr-vs-react-query/',
+  uri: '',
   title: '',
   description: '',
 });
@@ -54,7 +54,7 @@ const slice = createSlice({
         1,
       );
     },
-    updateArticle: (state, action: PayloadAction<{id: string, article: Article}>) => {
+    updateArticle: (state, action: PayloadAction<{id: string; article: Article}>) => {
       state.articles = state.articles.map((article) => {
         if (article.id === action.payload.id) {
           return {
