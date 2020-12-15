@@ -7,5 +7,5 @@ import ShareExtensionScreen from './src/screens/ShareExtensionScreen';
 
 AppRegistry.registerComponent(
   'ShareMenuModuleComponent',
-  () => ShareExtensionScreen
+  () => ShareExtensionScreen,
 );
