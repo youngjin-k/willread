@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "icon-ios": "react-native set-icon --platform ios --path ./assets/icon-ios.png",
+    "icon-android": "react-native set-icon --platform android --path ./assets/icon-android.png --background \"#FFFFFF\""
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
@@ -42,6 +44,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
+    "@bam.tech/react-native-make": "^3.0.0",
     "@types/jest": "^25.2.3",
     "@types/react-native": "^0.63.2",
     "@types/react-test-renderer": "^16.9.2",
