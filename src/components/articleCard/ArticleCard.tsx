@@ -33,7 +33,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
 
   return (
     <>
-      <ReccomendTitle>추천</ReccomendTitle>
+      <ReccomendTitle>🔥 12분 31초 후에 사라져요!</ReccomendTitle>
       <PressableWrapper
         onPress={handlePress}
         onLongPress={handleLongPress}
@@ -63,9 +63,9 @@ const RecommendCardBlock = styled.View`
 
 const ReccomendTitle = styled.Text`
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   color: ${(props) => props.theme.colors.primary};
-  margin: 0 0 4px 24px;
+  margin: 0 0 4px 16px;
   font-weight: bold;
 `;
 
@@ -81,7 +81,7 @@ const Content = styled.View`
 
 const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
   width: 100%;
-  height: 240px;
+  aspect-ratio: ${1.9 / 1};
   border-radius: 16px;
 
   ${(props) => props.scheme === 'dark'
