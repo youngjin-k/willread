@@ -182,7 +182,7 @@ const HomeScrollView = styled.ScrollView`
 `;
 
 const Header = styled.View`
-  padding: 32px 16px;
+  padding: 32px 16px 16px 16px;
 `;
 
 export default HomeScreen;
