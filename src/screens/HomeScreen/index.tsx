@@ -20,6 +20,7 @@ import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import AddFromClipboard from './AddFromClipboard';
 import ArticleMenu from './ArticleMenu';
 
 type SharedItem = {
@@ -144,6 +145,8 @@ function HomeScreen(): React.ReactElement {
         <View style={{ paddingVertical: 16 }}>
           <Line />
         </View>
+
+        <AddFromClipboard />
 
         {articles
           && articles.map((article) => (
