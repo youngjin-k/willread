@@ -1,9 +1,11 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLinkPreview } from 'link-preview-js';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import {
-  KeyboardAvoidingView, Platform, Text, useColorScheme,
+  KeyboardAvoidingView, Platform, Text, TextInput as NativeTextInput, useColorScheme, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
@@ -28,6 +30,8 @@ function NewArticleScreen(): React.ReactElement {
   const [link, setLink] = useState('');
   const scheme = useColorScheme();
   const [useExpandedLinkInput, setUseExpandedLinkInput] = useState(false);
+  const linkInputRef = useRef<NativeTextInput>(null);
+  const linkExpandInputRef = useRef<NativeTextInput>(null);
 
   useEffect(() => {
     if (route?.params?.uri) {
@@ -43,8 +47,34 @@ function NewArticleScreen(): React.ReactElement {
     setLink(uri);
   };
 
+  const setFocusLinkInput = () => {
+    setTimeout(() => {
+      if (linkInputRef.current) {
+        linkInputRef.current.focus();
+      }
+    }, Platform.OS === 'ios' ? 160 : 0);
+  };
+
+  const setFocusExpandLinkInput = () => {
+    setTimeout(() => {
+      if (linkExpandInputRef.current) {
+        linkExpandInputRef.current.focus();
+      }
+    }, Platform.OS === 'ios' ? 160 : 0);
+  };
+
+  useEffect(() => {
+    setFocusLinkInput();
+  }, []);
+
   const handleExpandButtonClick = () => {
     setUseExpandedLinkInput(true);
+    setFocusExpandLinkInput();
+  };
+
+  const handleContractButtonClick = () => {
+    setUseExpandedLinkInput(false);
+    setFocusLinkInput();
   };
 
   const handleOnPress = useCallback(async () => {
@@ -91,38 +121,56 @@ function NewArticleScreen(): React.ReactElement {
         ) : (
           <Content>
             {useExpandedLinkInput ? (
-              <LinkInput
-                placeholder="링크를 입력하세요"
-                placeholderTextColor={
-                  themes[scheme === 'dark' ? 'dark' : 'light'].colors.typography
-                    .secondary
-                }
-                autoFocus
-                keyboardType="url"
-                onChangeText={handleChangeLink}
-                defaultValue={link}
-                value={link}
-                multiline
-                textAlignVertical="top"
-              />
-            ) : (
               <>
-                <FormLabel>링크를 입력하세요</FormLabel>
-                <TextInput
-                  autoFocus
-                  keyboardType="url"
-                  onChangeText={handleChangeLink}
-                />
-                <ExpandButtonWrapper>
+                <ContractButtonWrapper>
                   <Button
-                    onPress={handleExpandButtonClick}
+                    onPress={handleContractButtonClick}
                     size={ButtonSize.Small}
-                    variant={ButtonVariant.PrimaryTenderContained}
+                    variant={ButtonVariant.PrimaryText}
                     style={{ paddingHorizontal: 8 }}
                   >
-                    <MaximizeIcon name="maximize-2" />
+                    <MaximizeIcon name="minimize-2" />
                   </Button>
-                </ExpandButtonWrapper>
+                </ContractButtonWrapper>
+                <LinkInput
+                  ref={linkExpandInputRef}
+                  placeholder="링크를 입력하세요"
+                  placeholderTextColor={
+                    themes[scheme === 'dark' ? 'dark' : 'light'].colors.typography.secondary
+                  }
+                  keyboardType="url"
+                  onChangeText={handleChangeLink}
+                  defaultValue={link}
+                  value={link}
+                  multiline
+                  textAlignVertical="top"
+                />
+              </>
+            ) : (
+              <>
+                <View>
+                  <FormLabel>링크를 입력하세요</FormLabel>
+                </View>
+                <TextInputWrapper>
+                  <TextInput
+                    ref={linkInputRef}
+                    keyboardType="url"
+                    defaultValue={link}
+                    value={link}
+                    onChangeText={handleChangeLink}
+                    style={{ paddingRight: 60 }}
+                  />
+                  <ExpandButtonWrapper>
+                    <Button
+                      onPress={handleExpandButtonClick}
+                      size={ButtonSize.Medium}
+                      variant={ButtonVariant.PrimaryText}
+                      style={{ paddingHorizontal: 16 }}
+                    >
+                      <MaximizeIcon name="maximize-2" />
+                    </Button>
+                  </ExpandButtonWrapper>
+                </TextInputWrapper>
               </>
             )}
 
@@ -181,6 +229,8 @@ const Content = styled.View`
   padding: 0 16px 72px 16px;
 `;
 
+const TextInputWrapper = styled.View``;
+
 const LinkInput = styled.TextInput`
   flex: 1;
   font-size: 18px;
@@ -189,8 +239,15 @@ const LinkInput = styled.TextInput`
 `;
 
 const ExpandButtonWrapper = styled.View`
+  position: absolute;
+  top: 0;
+  right: 0;
   align-items: flex-end;
-  padding: 12px 0;
+  padding: 4px;
+`;
+
+const ContractButtonWrapper = styled.View`
+  align-items: flex-end;
 `;
 
 const MaximizeIcon = styled(Icon)`
