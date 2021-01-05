@@ -4,7 +4,7 @@ import Clipboard from '@react-native-community/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import urlRegex from 'url-regex';
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
 import VALID_URL from '../../lib/regex/validUrl';
@@ -41,8 +41,7 @@ function AddFromClipboard() {
 
   useEffect(() => {
     const checkClipboard = async () => {
-      const cb = clipboardData;
-      const URLs = cb.match(urlRegex());
+      const URLs = clipboardData.match(urlRegex());
 
       if (URLs === null) {
         setClipBoardURL('');
