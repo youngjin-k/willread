@@ -105,11 +105,13 @@ const Content = styled.View`
 const Title = styled.Text`
   color: ${(props) => props.theme.colors.typography.title};
   font-weight: bold;
+  font-size: 16px;
 `;
 
 const URL = styled.Text`
   color: ${(props) => props.theme.colors.typography.secondary};
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 4px;
 `;
 
 export default AddFromClipboard;
