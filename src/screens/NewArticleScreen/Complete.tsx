@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components/native';
 
+import { View } from 'react-native';
 import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
@@ -37,8 +38,10 @@ function Complete(): ReactElement {
         <IconWrapper>
           <CheckIcon name="check" />
         </IconWrapper>
-        <Title>윌리드 등록 완료</Title>
-        <SubTitle>윌리드와 함께 성장하세요</SubTitle>
+        <View style={{ alignItems: 'center' }}>
+          <Title>윌리드 등록 완료</Title>
+          <SubTitle>윌리드와 함께 성장하세요</SubTitle>
+        </View>
         <NotificationButtonWrapper>
           <Button
             onPress={handlePressNewNotification}

@@ -42,6 +42,10 @@ function ArticleListCard({
       pressable={Boolean(onPress || onLongPress)}
     >
       <ArticleListCardBlock>
+        <Content>
+          <Title numberOfLines={2}>{title}</Title>
+          <ArticleCardDescription uri={uri} />
+        </Content>
         <ThumbnailWrapper>
           <Thumbnail
             source={{
@@ -50,10 +54,6 @@ function ArticleListCard({
             scheme={scheme}
           />
         </ThumbnailWrapper>
-        <Content>
-          <Title numberOfLines={2}>{title}</Title>
-          <ArticleCardDescription uri={uri} />
-        </Content>
       </ArticleListCardBlock>
     </PressableWrapper>
   );
@@ -71,7 +71,7 @@ const ThumbnailWrapper = styled.View`
 
 const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
   width: 96px;
-  height: 96px;
+  height: 80px;
   border-radius: 16px;
 
   ${(props) => props.scheme === 'dark'
@@ -82,7 +82,7 @@ const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
 
 const Content = styled.View`
   flex: 1;
-  padding-left: 16px;
+  padding: 0 16px 0 0;
 `;
 
 const Title = styled.Text`

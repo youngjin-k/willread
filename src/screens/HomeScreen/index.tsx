@@ -20,6 +20,7 @@ import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import AddFromClipboard from './AddFromClipboard';
 import ArticleMenu from './ArticleMenu';
 
 type SharedItem = {
@@ -145,6 +146,8 @@ function HomeScreen(): React.ReactElement {
           <Line />
         </View>
 
+        <AddFromClipboard />
+
         {articles
           && articles.map((article) => (
             <ArticleListCard
@@ -182,7 +185,7 @@ const HomeScrollView = styled.ScrollView`
 `;
 
 const Header = styled.View`
-  padding: 32px 16px;
+  padding: 32px 16px 16px 16px;
 `;
 
 export default HomeScreen;
