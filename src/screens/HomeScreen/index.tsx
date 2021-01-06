@@ -28,14 +28,6 @@ type SharedItem = {
   data: string;
 };
 
-const recommendItem: Article = {
-  id: '',
-  url: 'https://meetup.toast.com/posts/242',
-  image:
-    'https://image.toast.com/aaaadh/real/2020/repimg/main(18)_thumbnail.png',
-  title: '라이트하우스 6.0에서 바뀐 성능 지표변화',
-};
-
 function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
@@ -43,6 +35,7 @@ function HomeScreen(): React.ReactElement {
   const { articles } = useArticle();
   const [selectedArticle, setSelectedArticle] = useState<Article>();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
+  const [mainArticle] = useState<Article>();
 
   const visibleArticleMenu = !!selectedArticle;
 
@@ -55,7 +48,9 @@ function HomeScreen(): React.ReactElement {
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
       async (response) => {
-        const { article } = response.notification.request.content.data as {article: Article};
+        const { article } = response.notification.request.content.data as {
+          article: Article;
+        };
         if (article) {
           handlePressArticle(article);
         }
@@ -64,20 +59,20 @@ function HomeScreen(): React.ReactElement {
     return () => subscription.remove();
   }, []);
 
-  const handleShare = useCallback((item?: SharedItem) => {
-    if (!item) {
-      return;
-    }
+  const handleShare = useCallback(
+    (item?: SharedItem) => {
+      if (!item) {
+        return;
+      }
 
-    const { mimeType, data } = item;
+      const { data } = item;
 
-    console.log(data);
-    console.log(mimeType);
-
-    navigation.navigate('NewArticle', {
-      url: data,
-    });
-  }, []);
+      navigation.navigate('NewArticle', {
+        url: data,
+      });
+    },
+    [navigation],
+  );
 
   useEffect(() => {
     ShareMenu.getInitialShare(handleShare);
@@ -136,15 +131,19 @@ function HomeScreen(): React.ReactElement {
           />
         </Header>
 
-        <ArticleCard
-          article={recommendItem}
-          onPress={handlePressArticle}
-          onLongPress={handleLongPressArticle}
-        />
+        {mainArticle && (
+          <>
+            <ArticleCard
+              article={mainArticle}
+              onPress={handlePressArticle}
+              onLongPress={handleLongPressArticle}
+            />
 
-        <View style={{ paddingVertical: 16 }}>
-          <Line />
-        </View>
+            <View style={{ paddingVertical: 16 }}>
+              <Line />
+            </View>
+          </>
+        )}
 
         <AddFromClipboard />
 
