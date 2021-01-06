@@ -64,7 +64,7 @@ const slice = createSlice({
         if (article.id === action.payload.id) {
           return {
             ...article,
-            ...action.payload,
+            ...action.payload.article,
           };
         }
         return article;

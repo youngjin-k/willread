@@ -32,7 +32,7 @@ function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
-  const { articles } = useArticle();
+  const { articles, setRead } = useArticle();
   const [selectedArticle, setSelectedArticle] = useState<Article>();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [mainArticle] = useState<Article>();
@@ -87,6 +87,7 @@ function HomeScreen(): React.ReactElement {
   }, [handleShare]);
 
   const handlePressArticle = async (article: Article) => {
+    setRead(article);
     if (await InAppBrowser.isAvailable()) {
       await InAppBrowser.open(article.url, {
         // iOS Properties

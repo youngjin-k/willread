@@ -23,7 +23,7 @@ function ArticleMenu({
   onClose,
 }: ArticleMenuProps): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { removeArticle } = useArticle();
+  const { removeArticle, setRead } = useArticle();
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
 
   const openRemoveAlert = () => setVisibleRemoveAlert(true);
@@ -47,6 +47,11 @@ function ArticleMenu({
     });
   }, [article]);
 
+  const handlePressSetUnread = useCallback(() => {
+    setRead(article, false);
+    onClose();
+  }, [article, onClose, setRead]);
+
   return (
     <>
       <ArticleCardWrapper>
@@ -56,7 +61,6 @@ function ArticleMenu({
       <Line />
 
       <MenuList>
-
         <ButtonWrapper>
           <Button
             variant={ButtonVariant.DefaultText}
@@ -84,6 +88,18 @@ function ArticleMenu({
         <ButtonWrapper>
           <Button
             variant={ButtonVariant.DefaultText}
+            onPress={handlePressSetUnread}
+          >
+            <ButtonContent>
+              <ButtonIcon name="book" />
+              <ButtonText>읽지 않은 상태로 변경</ButtonText>
+            </ButtonContent>
+          </Button>
+        </ButtonWrapper>
+
+        <ButtonWrapper>
+          <Button
+            variant={ButtonVariant.DefaultText}
             onPress={openRemoveAlert}
           >
             <ButtonContent>
@@ -96,17 +112,24 @@ function ArticleMenu({
 
       <Alert
         visible={visibleRemoveAlert}
-        title={article.title.length < 40 ? article.title : `${article.title.slice(0, 40)}...`}
+        title={
+          article.title.length < 40
+            ? article.title
+            : `${article.title.slice(0, 40)}...`
+        }
         message="이 아티클을 삭제할까요?"
         onClose={closeRemoveAlert}
-        buttons={[{
-          text: '취소',
-          style: 'cancel',
-        }, {
-          text: '삭제',
-          style: 'destructive',
-          onPress: handleRemoveArticle,
-        }]}
+        buttons={[
+          {
+            text: '취소',
+            style: 'cancel',
+          },
+          {
+            text: '삭제',
+            style: 'destructive',
+            onPress: handleRemoveArticle,
+          },
+        ]}
       />
     </>
   );
