@@ -1,4 +1,6 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  RouteProp, useNavigation, useRoute, useScrollToTop,
+} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
 import React, {
@@ -38,6 +40,8 @@ function HomeScreen(): React.ReactElement {
   const [mainArticle] = useState<Article>();
 
   const visibleArticleMenu = !!selectedArticle;
+
+  useScrollToTop(scrollViewRef);
 
   useEffect(() => {
     if (route?.params?.setScrollBottom && scrollViewRef.current) {
