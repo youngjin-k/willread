@@ -85,17 +85,19 @@ function ArticleMenu({
           </Button>
         </ButtonWrapper>
 
-        <ButtonWrapper>
-          <Button
-            variant={ButtonVariant.DefaultText}
-            onPress={handlePressSetUnread}
-          >
-            <ButtonContent>
-              <ButtonIcon name="book" />
-              <ButtonText>읽지 않은 상태로 변경</ButtonText>
-            </ButtonContent>
-          </Button>
-        </ButtonWrapper>
+        {article.read && (
+          <ButtonWrapper>
+            <Button
+              variant={ButtonVariant.DefaultText}
+              onPress={handlePressSetUnread}
+            >
+              <ButtonContent>
+                <ButtonIcon name="book" />
+                <ButtonText>읽지 않은 상태로 변경</ButtonText>
+              </ButtonContent>
+            </Button>
+          </ButtonWrapper>
+        )}
 
         <ButtonWrapper>
           <Button
