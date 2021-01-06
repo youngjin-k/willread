@@ -12,11 +12,15 @@ export interface ArticleCardProps {
   onLongPress?: (article: Article) => void;
 }
 
-function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): ReactElement {
+function ArticleCard({
+  article,
+  onPress,
+  onLongPress,
+}: ArticleCardProps): ReactElement {
   const scheme = useColorScheme();
 
   const {
-    url, title, image,
+    url, title, image, read,
   } = article;
 
   const handlePress = () => {
@@ -48,7 +52,12 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
             />
           </ThumbnailWrapper>
           <Content>
-            <Title numberOfLines={2}>{title}</Title>
+            <Title
+              numberOfLines={2}
+              read={read}
+            >
+              {title}
+            </Title>
             <ArticleCardDescription url={url} />
           </Content>
         </RecommendCardBlock>
@@ -90,9 +99,11 @@ const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
     `}
 `;
 
-const Title = styled.Text`
+const Title = styled.Text<{read: boolean}>`
   font-size: 18px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => (props.read
+    ? props.theme.colors.typography.secondary
+    : props.theme.colors.typography.title)};
   font-weight: bold;
 `;
 

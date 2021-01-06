@@ -32,7 +32,7 @@ function ArticleListCard({
   };
 
   const {
-    url, title, image,
+    url, title, image, read,
   } = article;
 
   return (
@@ -43,7 +43,12 @@ function ArticleListCard({
     >
       <ArticleListCardBlock>
         <Content>
-          <Title numberOfLines={2}>{title}</Title>
+          <Title
+            numberOfLines={2}
+            read={read}
+          >
+            {title}
+          </Title>
           <ArticleCardDescription url={url} />
         </Content>
         <ThumbnailWrapper>
@@ -85,10 +90,12 @@ const Content = styled.View`
   padding: 8px 16px 0 0;
 `;
 
-const Title = styled.Text`
+const Title = styled.Text<{ read: boolean }>`
   font-size: 16px;
-  color: ${(props) => props.theme.colors.typography.title};
-  font-weight: 700;
+  color: ${(props) => (props.read
+    ? props.theme.colors.typography.secondary
+    : props.theme.colors.typography.title)};
+  font-weight: bold;
 `;
 
 export default ArticleListCard;
