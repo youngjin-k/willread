@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 import articles from '../../data/articles';
 
 export interface Article {
@@ -9,6 +10,7 @@ export interface Article {
   description?: string;
   image?: string;
   favicon?: string;
+  createdAt: string;
 }
 
 export interface ArticleDraft {
@@ -26,7 +28,7 @@ export interface InitialState {
 }
 
 const defaultArticleDraft = () => ({
-  uri: '',
+  url: '',
   title: '',
   description: '',
 });
@@ -44,6 +46,7 @@ const slice = createSlice({
       const article: Article = {
         ...action.payload,
         id: nanoid(),
+        createdAt: dayjs().format(),
       };
       state.articles.push(article);
       state.lastAddedArticle = article;
@@ -65,9 +68,6 @@ const slice = createSlice({
         return article;
       });
     },
-    setArticleDraft: (state, action: PayloadAction<ArticleDraft>) => {
-      state.articleDraft = action.payload;
-    },
   },
 });
 export default slice.reducer;
@@ -76,5 +76,4 @@ export const {
   addArticle,
   removeArticle,
   updateArticle,
-  setArticleDraft,
 } = slice.actions;

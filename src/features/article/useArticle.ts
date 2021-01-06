@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import {
-  setArticleDraft, ArticleDraft, addArticle, removeArticle, Article,
+  ArticleDraft, addArticle, removeArticle, Article,
 } from './articles';
 
 function useArticle() {
@@ -15,7 +15,6 @@ function useArticle() {
     articleDraft,
     lastAddedArticle,
     addArticle: (draft: ArticleDraft) => dispatch(addArticle(draft)),
-    setArticleDraft: (draft: ArticleDraft) => dispatch(setArticleDraft(draft)),
     removeArticle: (article: Article) => dispatch(removeArticle(article)),
   };
 }
