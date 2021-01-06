@@ -4,7 +4,7 @@ import articles from '../../data/articles';
 
 export interface Article {
   id: string;
-  uri: string;
+  url: string;
   title: string;
   description?: string;
   image?: string;
@@ -12,7 +12,7 @@ export interface Article {
 }
 
 export interface ArticleDraft {
-  uri: string;
+  url: string;
   title: string;
   description: string;
   image?: string;

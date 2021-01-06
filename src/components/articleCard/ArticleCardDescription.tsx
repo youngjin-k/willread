@@ -17,15 +17,15 @@ const extractHostname = (url: string) => {
 };
 
 export interface ArticleCardDescriptionProps {
-  uri: string;
+  url: string;
 }
 
 function ArticleCardDescription({
-  uri,
+  url,
 }: ArticleCardDescriptionProps): ReactElement {
   return (
     <WillreadCardDescriptionBlock>
-      <Description>{extractHostname(uri)}</Description>
+      <Description>{extractHostname(url)}</Description>
     </WillreadCardDescriptionBlock>
   );
 }

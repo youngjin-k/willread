@@ -32,7 +32,7 @@ function ArticleListCard({
   };
 
   const {
-    uri, title, image,
+    url, title, image,
   } = article;
 
   return (
@@ -44,7 +44,7 @@ function ArticleListCard({
       <ArticleListCardBlock>
         <Content>
           <Title numberOfLines={2}>{title}</Title>
-          <ArticleCardDescription uri={uri} />
+          <ArticleCardDescription url={url} />
         </Content>
         <ThumbnailWrapper>
           <Thumbnail
@@ -82,13 +82,13 @@ const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
 
 const Content = styled.View`
   flex: 1;
-  padding: 0 16px 0 0;
+  padding: 8px 16px 0 0;
 `;
 
 const Title = styled.Text`
   font-size: 16px;
   color: ${(props) => props.theme.colors.typography.title};
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 export default ArticleListCard;

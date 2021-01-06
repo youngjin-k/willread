@@ -30,7 +30,7 @@ type SharedItem = {
 
 const recommendItem: Article = {
   id: '',
-  uri: 'https://meetup.toast.com/posts/242',
+  url: 'https://meetup.toast.com/posts/242',
   image:
     'https://image.toast.com/aaaadh/real/2020/repimg/main(18)_thumbnail.png',
   title: '라이트하우스 6.0에서 바뀐 성능 지표변화',
@@ -75,7 +75,7 @@ function HomeScreen(): React.ReactElement {
     console.log(mimeType);
 
     navigation.navigate('NewArticle', {
-      uri: data,
+      url: data,
     });
   }, []);
 
@@ -93,7 +93,7 @@ function HomeScreen(): React.ReactElement {
 
   const handlePressArticle = async (article: Article) => {
     if (await InAppBrowser.isAvailable()) {
-      await InAppBrowser.open(article.uri, {
+      await InAppBrowser.open(article.url, {
         // iOS Properties
         readerMode: false,
         animated: true,
@@ -109,7 +109,7 @@ function HomeScreen(): React.ReactElement {
         forceCloseOnRedirection: false,
       });
     } else {
-      Linking.openURL(article.uri);
+      Linking.openURL(article.url);
     }
   };
 

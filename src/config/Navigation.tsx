@@ -130,7 +130,7 @@ function AppTabsScreen() {
 export type RootStackParamList = {
   AppTabsScreen: undefined;
   NewArticle: {
-    uri?: string;
+    url?: string;
   };
   NewNotification: {
     article: Article;

@@ -4,7 +4,7 @@ import Clipboard from '@react-native-community/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import urlRegex from 'url-regex';
-import { AppState, Platform } from 'react-native';
+import { AppState } from 'react-native';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
 import VALID_URL from '../../lib/regex/validUrl';
@@ -53,7 +53,7 @@ function AddFromClipboard() {
         return;
       }
 
-      if (articles.some(({ uri }) => uri === URLs[0])) {
+      if (articles.some(({ url }) => url === URLs[0])) {
         setClipBoardURL('');
         return;
       }
@@ -66,7 +66,7 @@ function AddFromClipboard() {
 
   const handlePress = () => {
     navigation.navigate('NewArticle', {
-      uri: clipBoardURL,
+      url: clipBoardURL,
     });
   };
 

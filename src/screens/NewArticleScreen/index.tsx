@@ -34,8 +34,8 @@ function NewArticleScreen(): React.ReactElement {
   const linkExpandInputRef = useRef<NativeTextInput>(null);
 
   useEffect(() => {
-    if (route?.params?.uri) {
-      setLink(route.params.uri);
+    if (route?.params?.url) {
+      setLink(route.params.url);
     }
   }, [route]);
 
@@ -43,8 +43,8 @@ function NewArticleScreen(): React.ReactElement {
     setDisabled(!VALID_URL.test(link));
   }, [link]);
 
-  const handleChangeLink = (uri: string) => {
-    setLink(uri);
+  const handleChangeLink = (url: string) => {
+    setLink(url);
   };
 
   const setFocusLinkInput = () => {
@@ -83,7 +83,7 @@ function NewArticleScreen(): React.ReactElement {
     try {
       const response = (await getLinkPreview(link)) as any;
       addArticle({
-        uri: link,
+        url: link,
         title: response.title,
         description: response.description,
         image: response.images.length > 0 ? response.images[0] : '',

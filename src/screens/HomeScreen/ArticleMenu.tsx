@@ -43,7 +43,7 @@ function ArticleMenu({
 
   const handlePressSharing = useCallback(() => {
     Share.share({
-      message: `${article.title} - ${article.uri}`,
+      message: `${article.title} - ${article.url}`,
     });
   }, [article]);
 

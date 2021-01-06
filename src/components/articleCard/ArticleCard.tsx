@@ -16,7 +16,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
   const scheme = useColorScheme();
 
   const {
-    uri, title, image,
+    url, title, image,
   } = article;
 
   const handlePress = () => {
@@ -49,7 +49,7 @@ function ArticleCard({ article, onPress, onLongPress }: ArticleCardProps): React
           </ThumbnailWrapper>
           <Content>
             <Title numberOfLines={2}>{title}</Title>
-            <ArticleCardDescription uri={uri} />
+            <ArticleCardDescription url={url} />
           </Content>
         </RecommendCardBlock>
       </PressableWrapper>
