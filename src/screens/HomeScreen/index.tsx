@@ -45,20 +45,6 @@ function HomeScreen(): React.ReactElement {
     }
   }, [route]);
 
-  useEffect(() => {
-    const subscription = Notifications.addNotificationResponseReceivedListener(
-      async (response) => {
-        const { article } = response.notification.request.content.data as {
-          article: Article;
-        };
-        if (article) {
-          handlePressArticle(article);
-        }
-      },
-    );
-    return () => subscription.remove();
-  }, []);
-
   const handleShare = useCallback(
     (item?: SharedItem) => {
       if (!item) {
@@ -86,7 +72,11 @@ function HomeScreen(): React.ReactElement {
     };
   }, [handleShare]);
 
-  const handlePressArticle = async (article: Article) => {
+  const handlePressArticle = (article: Article) => {
+    readArticle(article);
+  };
+
+  const readArticle = useCallback(async (article: Article) => {
     setRead(article);
     if (await InAppBrowser.isAvailable()) {
       await InAppBrowser.open(article.url, {
@@ -107,7 +97,9 @@ function HomeScreen(): React.ReactElement {
     } else {
       Linking.openURL(article.url);
     }
-  };
+
+    setSelectedArticle({ ...article, read: true });
+  }, [setRead]);
 
   const handleLongPressArticle = (article: Article) => {
     setSelectedArticle(article);
@@ -116,6 +108,20 @@ function HomeScreen(): React.ReactElement {
   const closeArticleMenu = () => {
     setSelectedArticle(undefined);
   };
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      async (response) => {
+        const { article } = response.notification.request.content.data as {
+          article: Article;
+        };
+        if (article) {
+          readArticle(article);
+        }
+      },
+    );
+    return () => subscription.remove();
+  }, [readArticle]);
 
   return (
     <Container>
