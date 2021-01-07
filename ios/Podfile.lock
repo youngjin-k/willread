@@ -332,6 +332,8 @@ PODS:
     - React-Core
   - RNShareMenu (5.0.2):
     - React
+  - RNSVG (12.1.0):
+    - React
   - RNVectorIcons (7.1.0):
     - React
   - UMAppLoader (1.3.0)
@@ -417,6 +419,7 @@ DEPENDENCIES:
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -529,6 +532,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNShareMenu:
     :path: "../node_modules/react-native-share-menu"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   UMAppLoader:
@@ -612,6 +617,7 @@ SPEC CHECKSUMS:
   RNInAppBrowser: 48b95ba7a4eaff5cc223bca338d3e319561dbd1b
   RNScreens: 13f23e5498fb4aa749d19a5eda7f8792fbb9d01f
   RNShareMenu: fefca627ce5cbe7999655b7126ba4d07193fd2b9
+  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
   UMBarCodeScannerInterface: 017672479f93de88d94c3a50dfb66b5348b65989
