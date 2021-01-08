@@ -1,5 +1,8 @@
 import {
-  RouteProp, useNavigation, useRoute, useScrollToTop,
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -17,6 +20,7 @@ import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
+import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import BottomModal from '../../components/BottomModal';
 import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
@@ -25,10 +29,24 @@ import useArticle from '../../features/article/useArticle';
 import AddFromClipboard from './AddFromClipboard';
 import ArticleMenu from './ArticleMenu';
 
-type SharedItem = {
+export interface SharedItem {
   mimeType: string;
   data: string;
-};
+}
+
+export interface ArticleTimeLeft {
+  second: number;
+  day: number;
+  hour: number;
+  minute: number;
+  label: string;
+  detailLabel: string;
+}
+
+export interface DisplayItem {
+  article: Article;
+  timeLeft: ArticleTimeLeft;
+}
 
 function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -37,7 +55,8 @@ function HomeScreen(): React.ReactElement {
   const { articles, setRead } = useArticle();
   const [selectedArticle, setSelectedArticle] = useState<Article>();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
-  const [mainArticle] = useState<Article>();
+  const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
+  const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
 
   const visibleArticleMenu = !!selectedArticle;
 
@@ -76,34 +95,65 @@ function HomeScreen(): React.ReactElement {
     };
   }, [handleShare]);
 
+  useEffect(() => {
+    const updater = () => {
+      if (articles.length < 1) {
+        setDisplayMainItem(undefined);
+        setDisplayItems(undefined);
+        return;
+      }
+
+      const items: DisplayItem[] = articles.map((article) => ({
+        article,
+        timeLeft: calculateTimeLeft(article.createdAt),
+      }));
+
+      // if (items.some((item) => item.timeLeft.day < 1)) {
+      setDisplayMainItem(items.shift());
+      // }
+
+      setDisplayItems(items);
+    };
+
+    updater();
+    const timer = setInterval(updater, 1000 * 60);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [articles]);
+
   const handlePressArticle = (article: Article) => {
     readArticle(article);
   };
 
-  const readArticle = useCallback(async (article: Article) => {
-    setRead(article);
-    if (await InAppBrowser.isAvailable()) {
-      await InAppBrowser.open(article.url, {
-        // iOS Properties
-        readerMode: false,
-        animated: true,
-        modalPresentationStyle: 'fullScreen',
-        modalTransitionStyle: 'coverVertical',
-        modalEnabled: false,
-        enableBarCollapsing: true,
+  const readArticle = useCallback(
+    async (article: Article) => {
+      setRead(article);
+      if (await InAppBrowser.isAvailable()) {
+        await InAppBrowser.open(article.url, {
+          // iOS Properties
+          readerMode: false,
+          animated: true,
+          modalPresentationStyle: 'fullScreen',
+          modalTransitionStyle: 'coverVertical',
+          modalEnabled: false,
+          enableBarCollapsing: true,
 
-        // Android Properties
-        showTitle: true,
-        enableUrlBarHiding: true,
-        enableDefaultShare: true,
-        forceCloseOnRedirection: false,
-      });
-    } else {
-      Linking.openURL(article.url);
-    }
+          // Android Properties
+          showTitle: true,
+          enableUrlBarHiding: true,
+          enableDefaultShare: true,
+          forceCloseOnRedirection: false,
+        });
+      } else {
+        Linking.openURL(article.url);
+      }
 
-    setSelectedArticle({ ...article, read: true });
-  }, [setRead]);
+      setSelectedArticle({ ...article, read: true });
+    },
+    [setRead],
+  );
 
   const handleLongPressArticle = (article: Article) => {
     setSelectedArticle(article);
@@ -142,10 +192,11 @@ function HomeScreen(): React.ReactElement {
           />
         </Header>
 
-        {mainArticle && (
+        {displayMainItem && (
           <>
             <ArticleCard
-              article={mainArticle}
+              article={displayMainItem.article}
+              timeLeft={displayMainItem.timeLeft}
               onPress={handlePressArticle}
               onLongPress={handleLongPressArticle}
             />
@@ -158,11 +209,12 @@ function HomeScreen(): React.ReactElement {
 
         <AddFromClipboard />
 
-        {articles
-          && articles.map((article) => (
+        {displayItems
+          && displayItems.map(({ article, timeLeft }) => (
             <ArticleListCard
               key={article.id}
               article={article}
+              timeLeft={timeLeft}
               onPress={handlePressArticle}
               onLongPress={handleLongPressArticle}
             />

@@ -3,17 +3,21 @@ import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
+import { ArticleTimeLeft } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
+import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
 export interface ArticleListCardProps {
   article: Article;
+  timeLeft: ArticleTimeLeft;
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
 
 function ArticleListCard({
   article,
+  timeLeft,
   onPress,
   onLongPress,
 }: ArticleListCardProps): ReactElement {
@@ -49,7 +53,10 @@ function ArticleListCard({
           >
             {title}
           </Title>
-          <ArticleCardDescription url={url} />
+          <ArticleCardDescription
+            url={url}
+            timeLeft={timeLeft}
+          />
         </Content>
         <ThumbnailWrapper>
           <Thumbnail
@@ -58,6 +65,7 @@ function ArticleListCard({
             }}
             scheme={scheme}
           />
+          <NotificationTag />
         </ThumbnailWrapper>
       </ArticleListCardBlock>
     </PressableWrapper>

@@ -3,17 +3,20 @@ import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
+import { ArticleTimeLeft } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
 import PressableWrapper from './PressableWrapper';
 
 export interface ArticleCardProps {
   article: Article;
+  timeLeft: ArticleTimeLeft;
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
 
 function ArticleCard({
   article,
+  timeLeft,
   onPress,
   onLongPress,
 }: ArticleCardProps): ReactElement {
@@ -37,7 +40,7 @@ function ArticleCard({
 
   return (
     <>
-      <ReccomendTitle>🔥 12분 31초 후에 사라져요!</ReccomendTitle>
+      <ReccomendTitle>{timeLeft.detailLabel}</ReccomendTitle>
       <PressableWrapper
         onPress={handlePress}
         onLongPress={handleLongPress}
