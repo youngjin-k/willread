@@ -1,10 +1,9 @@
-import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useCallback, useState } from 'react';
 import { Share } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
-import Alert from '../../components/Alert';
 
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import Button, { ButtonVariant } from '../../components/Button';
@@ -12,6 +11,7 @@ import Line from '../../components/Line';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import RemoveConfirm from './RemoveConfirm';
 
 export interface ArticleMenuProps {
   article: Article;
@@ -112,26 +112,11 @@ function ArticleMenu({
         </ButtonWrapper>
       </MenuList>
 
-      <Alert
+      <RemoveConfirm
         visible={visibleRemoveAlert}
-        title={
-          article.title.length < 40
-            ? article.title
-            : `${article.title.slice(0, 40)}...`
-        }
-        message="이 아티클을 삭제할까요?"
+        article={article}
         onClose={closeRemoveAlert}
-        buttons={[
-          {
-            text: '취소',
-            style: 'cancel',
-          },
-          {
-            text: '삭제',
-            style: 'destructive',
-            onPress: handleRemoveArticle,
-          },
-        ]}
+        onConfirm={handleRemoveArticle}
       />
     </>
   );
