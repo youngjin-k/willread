@@ -10,7 +10,7 @@ import PressableWrapper from './PressableWrapper';
 
 export interface ArticleListCardProps {
   article: Article;
-  timeLeft: ArticleTimeLeft;
+  timeLeft?: ArticleTimeLeft;
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }

@@ -10,12 +10,19 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  Image, Linking, ScrollView, useColorScheme, View,
+  Dimensions,
+  Image,
+  Linking,
+  ScrollView,
+  Text,
+  useColorScheme,
+  View,
 } from 'react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
 
+import { SwipeRow } from 'react-native-swipe-list-view';
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
 import ArticleCard from '../../components/articleCard/ArticleCard';
@@ -28,6 +35,7 @@ import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import AddFromClipboard from './AddFromClipboard';
 import ArticleMenu from './ArticleMenu';
+import ListItem from './ListItem';
 
 export interface SharedItem {
   mimeType: string;
@@ -57,6 +65,9 @@ function HomeScreen(): React.ReactElement {
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
   const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
+  const [scrollEnable, setScrollEnabled] = useState(true);
+  const rowRefs = useRef<any>([]);
+  const swipeMenuOpenRowIndex = useRef<number | null>(null);
 
   const visibleArticleMenu = !!selectedArticle;
 
@@ -82,6 +93,26 @@ function HomeScreen(): React.ReactElement {
     },
     [navigation],
   );
+
+  const handleSwipeMenuOpen = (index: number | null) => {
+    if (swipeMenuOpenRowIndex.current !== null && swipeMenuOpenRowIndex.current !== index) {
+      const rowRef = rowRefs.current[swipeMenuOpenRowIndex.current];
+      if (rowRef) {
+        rowRef.closeRow();
+      }
+    }
+    swipeMenuOpenRowIndex.current = index;
+  };
+
+  const closeOpenedSwipeMenu = () => {
+    handleSwipeMenuOpen(null);
+  };
+
+  const handleScrollView = () => {
+    if (swipeMenuOpenRowIndex.current !== null) {
+      closeOpenedSwipeMenu();
+    }
+  };
 
   useEffect(() => {
     ShareMenu.getInitialShare(handleShare);
@@ -177,12 +208,19 @@ function HomeScreen(): React.ReactElement {
     return () => subscription.remove();
   }, [readArticle]);
 
+  useEffect(() => {
+    rowRefs.current = rowRefs.current.slice(0, articles.length);
+  }, [articles]);
+
   return (
     <Container>
       <HomeScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 8 }}
+        scrollEnabled={scrollEnable}
+        onScroll={handleScrollView}
+        scrollEventThrottle={1000}
       >
         <Header>
           <Image
@@ -194,11 +232,16 @@ function HomeScreen(): React.ReactElement {
 
         {displayMainItem && (
           <>
-            <ArticleCard
-              article={displayMainItem.article}
-              timeLeft={displayMainItem.timeLeft}
+            <ListItem
+              ref={(el) => { rowRefs.current[0] = el; }}
+              item={displayMainItem}
+              setScrollEnabled={setScrollEnabled}
               onPress={handlePressArticle}
               onLongPress={handleLongPressArticle}
+              onSwipeMenuOpen={() => {
+                handleSwipeMenuOpen(0);
+              }}
+              isMainCard
             />
 
             <View style={{ paddingVertical: 16 }}>
@@ -210,13 +253,17 @@ function HomeScreen(): React.ReactElement {
         <AddFromClipboard />
 
         {displayItems
-          && displayItems.map(({ article, timeLeft }) => (
-            <ArticleListCard
-              key={article.id}
-              article={article}
-              timeLeft={timeLeft}
+          && displayItems.map((item, i) => (
+            <ListItem
+              ref={(el) => { rowRefs.current[i + 1] = el; }}
+              key={item.article.id}
+              item={item}
+              setScrollEnabled={setScrollEnabled}
               onPress={handlePressArticle}
               onLongPress={handleLongPressArticle}
+              onSwipeMenuOpen={() => {
+                handleSwipeMenuOpen(i + 1);
+              }}
             />
           ))}
       </HomeScrollView>
@@ -242,9 +289,7 @@ const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-const HomeScrollView = styled.ScrollView`
-  flex: 1;
-`;
+const HomeScrollView = styled.ScrollView``;
 
 const Header = styled.View`
   padding: 32px 16px 16px 16px;
