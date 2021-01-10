@@ -74,7 +74,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
       <SwipeRow
         ref={rootRef}
         setScrollEnabled={setScrollEnabled}
-        rightOpenValue={-1 * (64 * 3 + 16)}
+        rightOpenValue={-1 * ((64 * 3) + (16 * 2) + 1)}
         disableRightSwipe
         swipeGestureBegan={onSwipeMenuOpen}
       >
@@ -148,8 +148,10 @@ const SwipeMenu = styled.View`
 `;
 
 const SwipeMenuButtons = styled.View`
-  padding: 0 16px 0 0;
+  padding: 0 16px;
   flex-direction: row;
+  border-left-width: 1px;
+  border-left-color: ${(props) => props.theme.colors.border};
 `;
 
 const SwipeMenuButton = styled(Button)`
@@ -157,7 +159,7 @@ const SwipeMenuButton = styled(Button)`
 `;
 
 const ListBehindViewIcon = styled(Icon)`
-  font-size: 18px;
+  font-size: 20px;
   color: ${(props) => props.theme.colors.typography.title};
 `;
 
