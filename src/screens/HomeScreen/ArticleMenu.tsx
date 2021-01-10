@@ -144,7 +144,7 @@ const ButtonContent = styled.View`
 `;
 
 const ButtonIcon = styled(Icon)`
-  font-size: 18px;
+  font-size: 20px;
   color: ${(props) => props.theme.colors.typography.title};
   margin-right: 16px;
 `;
