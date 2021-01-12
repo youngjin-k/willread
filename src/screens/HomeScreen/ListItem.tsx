@@ -1,19 +1,20 @@
-import React, {
-  forwardRef, useCallback, useImperativeHandle, useRef, useState,
-} from 'react';
-import styled from 'styled-components/native';
-import { SwipeRow } from 'react-native-swipe-list-view';
-import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import React, {
+  forwardRef, useImperativeHandle, useRef, useState,
+} from 'react';
+import { SwipeRow } from 'react-native-swipe-list-view';
+import Icon from 'react-native-vector-icons/Feather';
+import styled from 'styled-components/native';
+
 import { DisplayItem } from '.';
+import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
-import { Article } from '../../features/article/articles';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
-import RemoveConfirm from './RemoveConfirm';
+import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
-import ArticleCard from '../../components/articleCard/ArticleCard';
+import RemoveConfirm from './RemoveConfirm';
 
 export interface ListItemProps {
   item: DisplayItem;

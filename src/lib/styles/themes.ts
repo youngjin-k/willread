@@ -16,7 +16,7 @@ declare module 'styled-components' {
       typography: {
         title: string;
         secondary: string;
-      },
+      };
       category: {
         default: string;
         red: string;
@@ -25,8 +25,8 @@ declare module 'styled-components' {
         green: string;
         yellow: string;
         pink: string;
-      },
-    },
+      };
+    };
   }
 }
 
