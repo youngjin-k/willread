@@ -10,23 +10,14 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  Dimensions,
-  Image,
-  Linking,
-  ScrollView,
-  Text,
-  useColorScheme,
-  View,
+  Image, Linking, ScrollView, useColorScheme, View,
 } from 'react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
 
-import { SwipeRow } from 'react-native-swipe-list-view';
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
-import ArticleCard from '../../components/articleCard/ArticleCard';
-import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import BottomModal from '../../components/BottomModal';
 import Line from '../../components/Line';
@@ -36,6 +27,7 @@ import useArticle from '../../features/article/useArticle';
 import AddFromClipboard from './AddFromClipboard';
 import ArticleMenu from './ArticleMenu';
 import ListItem from './ListItem';
+import SpaceIndicator from './SpaceIndicator';
 
 export interface SharedItem {
   mimeType: string;
@@ -95,7 +87,10 @@ function HomeScreen(): React.ReactElement {
   );
 
   const handleSwipeMenuOpen = (index: number | null) => {
-    if (swipeMenuOpenRowIndex.current !== null && swipeMenuOpenRowIndex.current !== index) {
+    if (
+      swipeMenuOpenRowIndex.current !== null
+      && swipeMenuOpenRowIndex.current !== index
+    ) {
       const rowRef = rowRefs.current[swipeMenuOpenRowIndex.current];
       if (rowRef) {
         rowRef.closeRow();
@@ -228,12 +223,21 @@ function HomeScreen(): React.ReactElement {
             resizeMode="contain"
             source={scheme === 'dark' ? willreadDark : willreadLight}
           />
+          <SpaceIndicator
+            usage={
+              // TODO 정리 필요
+              (displayItems ? displayItems.length : 0)
+              + (displayMainItem ? 1 : 0)
+            }
+          />
         </Header>
 
         {displayMainItem && (
           <>
             <ListItem
-              ref={(el) => { rowRefs.current[0] = el; }}
+              ref={(el) => {
+                rowRefs.current[0] = el;
+              }}
               item={displayMainItem}
               setScrollEnabled={setScrollEnabled}
               onPress={handlePressArticle}
@@ -255,7 +259,9 @@ function HomeScreen(): React.ReactElement {
         {displayItems
           && displayItems.map((item, i) => (
             <ListItem
-              ref={(el) => { rowRefs.current[i + 1] = el; }}
+              ref={(el) => {
+                rowRefs.current[i + 1] = el;
+              }}
               key={item.article.id}
               item={item}
               setScrollEnabled={setScrollEnabled}
@@ -293,6 +299,9 @@ const HomeScrollView = styled.ScrollView``;
 
 const Header = styled.View`
   padding: 32px 16px 16px 16px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default HomeScreen;
