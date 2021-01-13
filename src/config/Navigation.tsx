@@ -20,6 +20,7 @@ import { Article } from '../features/article/articles';
 import HomeScreen from '../screens/HomeScreen';
 import NewArticleScreen from '../screens/NewArticleScreen';
 import NewNotificationScreen from '../screens/NewNotificationScreen';
+import SuccessSaveArticleScreen from '../screens/SuccessSaveArticleScreen';
 
 export type TabParamList = {
   Home: {
@@ -135,6 +136,7 @@ export type RootStackParamList = {
   NewNotification: {
     article: Article;
   };
+  SuccessSaveArticle: undefined;
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -161,6 +163,14 @@ export default function Navigation(): ReactElement {
           component={NewArticleScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+          }}
+        />
+        <RootStack.Screen
+          name="SuccessSaveArticle"
+          component={SuccessSaveArticleScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            gestureDirection: 'horizontal',
           }}
         />
         <RootStack.Screen

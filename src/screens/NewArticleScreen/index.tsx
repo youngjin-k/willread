@@ -6,7 +6,12 @@ import React, {
 } from 'react';
 import {
   Keyboard,
-  KeyboardAvoidingView, Platform, Text, TextInput as NativeTextInput, useColorScheme, View,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TextInput as NativeTextInput,
+  useColorScheme,
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
@@ -19,14 +24,12 @@ import useArticle from '../../features/article/useArticle';
 import VALID_URL from '../../lib/regex/validUrl';
 import themes from '../../lib/styles/themes';
 import Actions from './Actions';
-import Complete from './Complete';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { addArticle } = useArticle();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [complete, setComplete] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'NewArticle'>>();
   const [link, setLink] = useState('');
   const scheme = useColorScheme();
@@ -90,11 +93,13 @@ function NewArticleScreen(): React.ReactElement {
         image: response.images.length > 0 ? response.images[0] : '',
         favicon: response.favicons.length > 0 ? response.favicons[0] : '',
       });
-      setComplete(true);
+
+      navigation.replace('SuccessSaveArticle');
     } catch (e) {
       setLoading(false);
     }
-  }, [link, addArticle]);
+  }, [link, addArticle, navigation]);
+
   const handleModalClosePress = () => {
     Keyboard.dismiss();
     navigation.pop();
@@ -119,77 +124,73 @@ function NewArticleScreen(): React.ReactElement {
           </CloseButtonWrapper>
         </Header>
 
-        {complete ? (
-          <Content>
-            <Complete />
-          </Content>
-        ) : (
-          <Content>
-            {useExpandedLinkInput ? (
-              <>
-                <ContractButtonWrapper>
-                  <Button
-                    onPress={handleContractButtonClick}
-                    size={ButtonSize.Small}
-                    variant={ButtonVariant.PrimaryText}
-                    style={{ paddingHorizontal: 8 }}
-                  >
-                    <MaximizeIcon name="minimize-2" />
-                  </Button>
-                </ContractButtonWrapper>
-                <LinkInput
-                  ref={linkExpandInputRef}
-                  placeholder="링크를 입력하세요"
-                  placeholderTextColor={
+        <Content>
+          {useExpandedLinkInput ? (
+            <>
+              <ContractButtonWrapper>
+                <Button
+                  onPress={handleContractButtonClick}
+                  size={ButtonSize.Small}
+                  variant={ButtonVariant.PrimaryText}
+                  style={{ paddingHorizontal: 8 }}
+                >
+                  <MaximizeIcon name="minimize-2" />
+                </Button>
+              </ContractButtonWrapper>
+              <LinkInput
+                ref={linkExpandInputRef}
+                placeholder="링크를 입력하세요"
+                placeholderTextColor={
                     themes[scheme === 'dark' ? 'dark' : 'light'].colors.typography.secondary
                   }
+                keyboardType="url"
+                onChangeText={handleChangeLink}
+                defaultValue={link}
+                value={link}
+                multiline
+                textAlignVertical="top"
+                editable={!loading}
+              />
+            </>
+          ) : (
+            <>
+              <View>
+                <FormLabel>링크를 입력하세요</FormLabel>
+              </View>
+              <TextInputWrapper>
+                <TextInput
+                  ref={linkInputRef}
                   keyboardType="url"
-                  onChangeText={handleChangeLink}
                   defaultValue={link}
                   value={link}
-                  multiline
-                  textAlignVertical="top"
+                  onChangeText={handleChangeLink}
+                  style={{ paddingRight: 60 }}
+                  editable={!loading}
                 />
-              </>
-            ) : (
-              <>
-                <View>
-                  <FormLabel>링크를 입력하세요</FormLabel>
-                </View>
-                <TextInputWrapper>
-                  <TextInput
-                    ref={linkInputRef}
-                    keyboardType="url"
-                    defaultValue={link}
-                    value={link}
-                    onChangeText={handleChangeLink}
-                    style={{ paddingRight: 60 }}
-                  />
-                  <ExpandButtonWrapper>
-                    <Button
-                      onPress={handleExpandButtonClick}
-                      size={ButtonSize.Medium}
-                      variant={ButtonVariant.PrimaryText}
-                      style={{ paddingHorizontal: 16 }}
-                    >
-                      <MaximizeIcon name="maximize-2" />
-                    </Button>
-                  </ExpandButtonWrapper>
-                </TextInputWrapper>
-              </>
-            )}
+                <ExpandButtonWrapper>
+                  <Button
+                    onPress={handleExpandButtonClick}
+                    size={ButtonSize.Medium}
+                    variant={ButtonVariant.PrimaryText}
+                    style={{ paddingHorizontal: 16 }}
+                  >
+                    <MaximizeIcon name="maximize-2" />
+                  </Button>
+                </ExpandButtonWrapper>
+              </TextInputWrapper>
+            </>
+          )}
 
-            <Actions>
-              <Button
-                onPress={handleOnPress}
-                loading={loading}
-                disabled={disabled}
-                label="다음"
-                size={ButtonSize.Large}
-              />
-            </Actions>
-          </Content>
-        )}
+          <Actions>
+            <Button
+              onPress={handleOnPress}
+              loading={loading}
+              disabled={disabled}
+              label="다음"
+              size={ButtonSize.Large}
+            />
+          </Actions>
+        </Content>
       </KeyboardAvoidingView>
     </Container>
   );
