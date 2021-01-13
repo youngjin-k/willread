@@ -186,7 +186,7 @@ function NewArticleScreen(): React.ReactElement {
               onPress={handleOnPress}
               loading={loading}
               disabled={disabled}
-              label="다음"
+              label="등록"
               size={ButtonSize.Large}
             />
           </Actions>
