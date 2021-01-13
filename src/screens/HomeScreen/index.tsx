@@ -1,8 +1,5 @@
 import {
-  RouteProp,
-  useNavigation,
-  useRoute,
-  useScrollToTop,
+  RouteProp, useNavigation, useRoute, useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -19,13 +16,11 @@ import styled from 'styled-components/native';
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
-import BottomModal from '../../components/BottomModal';
 import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import AddFromClipboard from './AddFromClipboard';
-import ArticleMenu from './ArticleMenu';
 import ListItem from './ListItem';
 import SpaceIndicator from './SpaceIndicator';
 
@@ -53,15 +48,12 @@ function HomeScreen(): React.ReactElement {
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
   const { articles, setRead } = useArticle();
-  const [selectedArticle, setSelectedArticle] = useState<Article>();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
   const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
   const [scrollEnable, setScrollEnabled] = useState(true);
   const rowRefs = useRef<any>([]);
   const swipeMenuOpenRowIndex = useRef<number | null>(null);
-
-  const visibleArticleMenu = !!selectedArticle;
 
   useScrollToTop(scrollViewRef);
 
@@ -175,19 +167,9 @@ function HomeScreen(): React.ReactElement {
       } else {
         Linking.openURL(article.url);
       }
-
-      setSelectedArticle({ ...article, read: true });
     },
     [setRead],
   );
-
-  const handleLongPressArticle = (article: Article) => {
-    setSelectedArticle(article);
-  };
-
-  const closeArticleMenu = () => {
-    setSelectedArticle(undefined);
-  };
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
@@ -241,7 +223,6 @@ function HomeScreen(): React.ReactElement {
               item={displayMainItem}
               setScrollEnabled={setScrollEnabled}
               onPress={handlePressArticle}
-              onLongPress={handleLongPressArticle}
               onSwipeMenuOpen={() => {
                 handleSwipeMenuOpen(0);
               }}
@@ -266,27 +247,12 @@ function HomeScreen(): React.ReactElement {
               item={item}
               setScrollEnabled={setScrollEnabled}
               onPress={handlePressArticle}
-              onLongPress={handleLongPressArticle}
               onSwipeMenuOpen={() => {
                 handleSwipeMenuOpen(i + 1);
               }}
             />
           ))}
       </HomeScrollView>
-
-      <BottomModal
-        isVisible={visibleArticleMenu}
-        onClose={closeArticleMenu}
-      >
-        {selectedArticle ? (
-          <ArticleMenu
-            article={selectedArticle}
-            onClose={closeArticleMenu}
-          />
-        ) : (
-          <></>
-        )}
-      </BottomModal>
     </Container>
   );
 }

@@ -10,16 +10,17 @@ import styled from 'styled-components/native';
 import { DisplayItem } from '.';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
+import BottomModal from '../../components/BottomModal';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import ArticleMenu from './ArticleMenu';
 import RemoveConfirm from './RemoveConfirm';
 
 export interface ListItemProps {
   item: DisplayItem;
   onPress: (article: Article) => void;
-  onLongPress: (article: Article) => void;
   setScrollEnabled: (enable: boolean) => void;
   onSwipeMenuOpen: () => void;
   isMainCard?: boolean;
@@ -31,28 +32,43 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     timeLeft,
   },
   onPress,
-  onLongPress,
   setScrollEnabled,
   onSwipeMenuOpen,
   isMainCard = false,
 }, ref) => {
   const rootRef = useRef<SwipeRow<any>>(null);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const [visibleArticleMenu, setVisibleArticleMenu] = useState(false);
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
   const { removeArticle } = useArticle();
 
   const handleRemoveButtonPress = () => {
-    closeMenu();
+    closeSwipeMenu();
     setVisibleRemoveAlert(true);
   };
-  const closeRemoveAlert = () => setVisibleRemoveAlert(false);
+
+  const closeRemoveAlert = () => {
+    setVisibleRemoveAlert(false);
+  };
+
+  const openArticleMenu = () => {
+    setVisibleArticleMenu(true);
+  };
+
+  const closeArticleMenu = () => {
+    setVisibleArticleMenu(false);
+  };
 
   const handleRemoveArticle = () => {
     removeArticle(article);
   };
 
+  const handleLongPressArticle = () => {
+    openArticleMenu();
+  };
+
   const handlePressNewNotification = () => {
-    closeMenu();
+    closeSwipeMenu();
     navigation.navigate('NewNotification', {
       article,
     });
@@ -60,15 +76,15 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
 
   useImperativeHandle<SwipeRow<any> | null, SwipeRow<any> | null>(ref, () => rootRef.current);
 
-  const closeMenu = () => {
+  const closeSwipeMenu = () => {
     if (rootRef.current) {
       rootRef.current.closeRow();
     }
   };
 
   const handleMenuButtonPress = () => {
-    closeMenu();
-    onLongPress(article);
+    closeSwipeMenu();
+    openArticleMenu();
   };
   return (
     <>
@@ -112,14 +128,14 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
               article={article}
               timeLeft={timeLeft}
               onPress={onPress}
-              onLongPress={onLongPress}
+              onLongPress={handleLongPressArticle}
             />
           ) : (
             <ArticleListCard
               article={article}
               timeLeft={timeLeft}
               onPress={onPress}
-              onLongPress={onLongPress}
+              onLongPress={handleLongPressArticle}
             />
           )}
         </ArticleCardWrapper>
@@ -131,6 +147,16 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
         onClose={closeRemoveAlert}
         onConfirm={handleRemoveArticle}
       />
+
+      <BottomModal
+        isVisible={visibleArticleMenu}
+        onClose={closeArticleMenu}
+      >
+        <ArticleMenu
+          article={article}
+          onClose={closeArticleMenu}
+        />
+      </BottomModal>
     </>
   );
 });
