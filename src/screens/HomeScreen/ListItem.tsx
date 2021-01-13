@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, {
-  forwardRef, useImperativeHandle, useRef, useState,
+  forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState,
 } from 'react';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Feather';
@@ -16,6 +16,7 @@ import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import ArticleMenu from './ArticleMenu';
+import CancelNotificationConfirm from './CancelNotificationConfirm';
 import RemoveConfirm from './RemoveConfirm';
 
 export interface ListItemProps {
@@ -30,6 +31,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   item: {
     article,
     timeLeft,
+    isSetNotification,
   },
   onPress,
   setScrollEnabled,
@@ -40,7 +42,15 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [visibleArticleMenu, setVisibleArticleMenu] = useState(false);
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
-  const { removeArticle } = useArticle();
+  const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
+  const { removeArticle, scheduledNotifications, removeScheduledNotification } = useArticle();
+
+  const scheduledNotification = useMemo(
+    () => scheduledNotifications.find(
+      (notification) => notification.articleId === article.id,
+    ),
+    [scheduledNotifications, article],
+  );
 
   const handleRemoveButtonPress = () => {
     closeSwipeMenu();
@@ -49,6 +59,15 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
 
   const closeRemoveAlert = () => {
     setVisibleRemoveAlert(false);
+  };
+
+  const handleCancelNotificationButtonPress = () => {
+    closeSwipeMenu();
+    setVisibleCancelNotificationAlert(true);
+  };
+
+  const closeCancelNotificationAlert = () => {
+    setVisibleCancelNotificationAlert(false);
   };
 
   const openArticleMenu = () => {
@@ -60,14 +79,25 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   };
 
   const handleRemoveArticle = () => {
+    closeRemoveAlert();
     removeArticle(article);
   };
+
+  const handleCancelNotification = useCallback(() => {
+    if (!scheduledNotification) {
+      closeCancelNotificationAlert();
+      return;
+    }
+
+    closeCancelNotificationAlert();
+    removeScheduledNotification(scheduledNotification.id);
+  }, [scheduledNotification, removeScheduledNotification]);
 
   const handleLongPressArticle = () => {
     openArticleMenu();
   };
 
-  const handlePressNewNotification = () => {
+  const handleNewNotificationPress = () => {
     closeSwipeMenu();
     navigation.navigate('NewNotification', {
       article,
@@ -105,13 +135,23 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
               <ListBehindViewIcon name="trash" />
             </SwipeMenuButton>
 
-            <SwipeMenuButton
-              onPress={handlePressNewNotification}
-              variant={ButtonVariant.DefaultText}
-              size={ButtonSize.Large}
-            >
-              <ListBehindViewIcon name="bell" />
-            </SwipeMenuButton>
+            {isSetNotification ? (
+              <SwipeMenuButton
+                onPress={handleCancelNotificationButtonPress}
+                variant={ButtonVariant.DefaultText}
+                size={ButtonSize.Large}
+              >
+                <ListBehindViewIcon name="bell-off" />
+              </SwipeMenuButton>
+            ) : (
+              <SwipeMenuButton
+                onPress={handleNewNotificationPress}
+                variant={ButtonVariant.DefaultText}
+                size={ButtonSize.Large}
+              >
+                <ListBehindViewIcon name="bell" />
+              </SwipeMenuButton>
+            )}
 
             <SwipeMenuButton
               onPress={handleMenuButtonPress}
@@ -127,6 +167,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
             <ArticleCard
               article={article}
               timeLeft={timeLeft}
+              isSetNotification={isSetNotification}
               onPress={onPress}
               onLongPress={handleLongPressArticle}
             />
@@ -134,6 +175,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
             <ArticleListCard
               article={article}
               timeLeft={timeLeft}
+              isSetNotification={isSetNotification}
               onPress={onPress}
               onLongPress={handleLongPressArticle}
             />
@@ -146,6 +188,12 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
         article={article}
         onClose={closeRemoveAlert}
         onConfirm={handleRemoveArticle}
+      />
+
+      <CancelNotificationConfirm
+        visible={visiblCancelNotificationAlert}
+        onClose={closeCancelNotificationAlert}
+        onConfirm={handleCancelNotification}
       />
 
       <BottomModal

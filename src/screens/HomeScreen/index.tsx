@@ -1,5 +1,8 @@
 import {
-  RouteProp, useNavigation, useRoute, useScrollToTop,
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -41,13 +44,14 @@ export interface ArticleTimeLeft {
 export interface DisplayItem {
   article: Article;
   timeLeft: ArticleTimeLeft;
+  isSetNotification: boolean;
 }
 
 function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
-  const { articles, setRead } = useArticle();
+  const { articles, setRead, scheduledNotifications } = useArticle();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
   const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
@@ -124,6 +128,9 @@ function HomeScreen(): React.ReactElement {
       const items: DisplayItem[] = articles.map((article) => ({
         article,
         timeLeft: calculateTimeLeft(article.createdAt),
+        isSetNotification: scheduledNotifications.some(
+          (notification) => notification.articleId === article.id,
+        ),
       }));
 
       // if (items.some((item) => item.timeLeft.day < 1)) {
@@ -139,7 +146,7 @@ function HomeScreen(): React.ReactElement {
     return () => {
       clearInterval(timer);
     };
-  }, [articles]);
+  }, [articles, scheduledNotifications]);
 
   const handlePressArticle = (article: Article) => {
     readArticle(article);

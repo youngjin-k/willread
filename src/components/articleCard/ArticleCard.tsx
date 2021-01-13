@@ -5,11 +5,13 @@ import styled, { css } from 'styled-components/native';
 import { Article } from '../../features/article/articles';
 import { ArticleTimeLeft } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
+import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
 export interface ArticleCardProps {
   article: Article;
   timeLeft: ArticleTimeLeft;
+  isSetNotification: boolean;
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
@@ -17,6 +19,7 @@ export interface ArticleCardProps {
 function ArticleCard({
   article,
   timeLeft,
+  isSetNotification,
   onPress,
   onLongPress,
 }: ArticleCardProps): ReactElement {
@@ -53,6 +56,7 @@ function ArticleCard({
               }}
               scheme={scheme}
             />
+            {isSetNotification && <NotificationTag />}
           </ThumbnailWrapper>
           <Content>
             <Title
