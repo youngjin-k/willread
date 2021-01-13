@@ -5,6 +5,7 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
+  Keyboard,
   KeyboardAvoidingView, Platform, Text, TextInput as NativeTextInput, useColorScheme, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -94,6 +95,10 @@ function NewArticleScreen(): React.ReactElement {
       setLoading(false);
     }
   }, [link, addArticle]);
+  const handleModalClosePress = () => {
+    Keyboard.dismiss();
+    navigation.pop();
+  };
 
   return (
     <Container>
@@ -105,7 +110,7 @@ function NewArticleScreen(): React.ReactElement {
           <HeaderTitle>새로운 윌리드</HeaderTitle>
           <CloseButtonWrapper>
             <Button
-              onPress={() => navigation.pop()}
+              onPress={handleModalClosePress}
               variant={ButtonVariant.DefaultText}
               size={ButtonSize.Small}
             >
