@@ -23,6 +23,7 @@ function SuccessSaveArticleScreen(): React.ReactElement {
   const handlePressNewNotification = () => {
     navigation.replace('NewNotification', {
       article: lastAddedArticle as Article,
+      isNewArticle: true,
     });
   };
 

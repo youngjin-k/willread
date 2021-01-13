@@ -135,6 +135,7 @@ export type RootStackParamList = {
   };
   NewNotification: {
     article: Article;
+    isNewArticle?: boolean;
   };
   SuccessSaveArticle: undefined;
 };

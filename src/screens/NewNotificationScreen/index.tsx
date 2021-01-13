@@ -10,7 +10,7 @@ import styled, { css } from 'styled-components/native';
 
 import Button, { ButtonSize } from '../../components/Button';
 import DateTimePicker from './DateTimePicker';
-import { RootStackParamList } from '../../config/Navigation';
+import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
@@ -136,7 +136,7 @@ interface NotificationTime {
 
 function NewNotificationScreen(): ReactElement {
   const route = useRoute<RouteProp<RootStackParamList, 'NewNotification'>>();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList & TabParamList>>();
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [activeTimeIndex, setActiveTimeIndex] = useState<number>();
@@ -206,6 +206,12 @@ function NewNotificationScreen(): ReactElement {
 
     await setNotification(notificationDate.date.toDate(), route.params.article);
 
+    if (route.params.isNewArticle) {
+      navigation.navigate('Home', {
+        setScrollBottom: true,
+      });
+      return;
+    }
     navigation.pop();
   }, [permissionStatus, notificationDate, route, navigation]);
 
