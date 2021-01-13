@@ -23,7 +23,6 @@ import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
 import VALID_URL from '../../lib/regex/validUrl';
 import themes from '../../lib/styles/themes';
-import Actions from './Actions';
 
 function NewArticleScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -259,6 +258,15 @@ const ContractButtonWrapper = styled.View`
 const MaximizeIcon = styled(Icon)`
   font-size: 20px;
   color: ${(props) => props.theme.colors.primary};
+`;
+
+const Actions = styled.View`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  height: ${64 + 16 + 16}px;
 `;
 
 export default NewArticleScreen;

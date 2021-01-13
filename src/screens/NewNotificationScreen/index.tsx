@@ -9,7 +9,6 @@ import { AppState, TouchableWithoutFeedback } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 import Button, { ButtonSize } from '../../components/Button';
-import Actions from '../NewArticleScreen/Actions';
 import DateTimePicker from './DateTimePicker';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
@@ -327,6 +326,15 @@ const TimeItemLabel = styled.Text<{ active: boolean }>`
     && css`
       color: ${props.theme.colors.primary};
     `}
+`;
+
+const Actions = styled.View`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  height: ${64 + 16 + 16}px;
 `;
 
 export default NewNotificationScreen;
