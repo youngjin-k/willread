@@ -21,6 +21,7 @@ function BottomModal({
       onSwipeComplete={onClose}
       onBackButtonPress={onClose}
       swipeDirection="down"
+      backdropTransitionOutTiming={0}
       propagateSwipe
       style={{
         justifyContent: 'flex-end',

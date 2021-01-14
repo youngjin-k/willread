@@ -32,6 +32,7 @@ function Alert({
     <Modal
       isVisible={visible}
       onBackButtonPress={onClose}
+      backdropTransitionOutTiming={0}
       style={{
         justifyContent: 'flex-end',
         alignSelf: 'center',
