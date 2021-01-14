@@ -15,6 +15,7 @@ import { Article } from '../../features/article/articles';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
 import BottomModal from '../../components/BottomModal';
+import useArticle from '../../features/article/useArticle';
 
 export enum PermissionStatus {
   GRANTED = 'granted',
@@ -25,7 +26,7 @@ export enum PermissionStatus {
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
@@ -98,21 +99,6 @@ const formatTimeFromNow = (
   };
 };
 
-const setNotification = async (date: Date, article: Article) => {
-  const id = await Notifications.scheduleNotificationAsync({
-    content: {
-      title: '윌리드할 시간이에요!',
-      body: article.title,
-      sound: 'default',
-      data: {
-        article,
-      },
-    },
-    trigger: date,
-  });
-  return id;
-};
-
 const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
   ios: {
     allowAlert: true,
@@ -145,6 +131,7 @@ function NewNotificationScreen(): ReactElement {
   );
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
   const [now] = useState(dayjs());
+  const { addScheduledNotification } = useArticle();
 
   const handlePressTime = useCallback(
     (hour: number, index: number) => {
@@ -204,7 +191,10 @@ function NewNotificationScreen(): ReactElement {
       }
     }
 
-    await setNotification(notificationDate.date.toDate(), route.params.article);
+    await addScheduledNotification({
+      article: route.params.article,
+      date: notificationDate.date.toDate(),
+    });
 
     if (route.params.isNewArticle) {
       navigation.navigate('Home', {
@@ -213,7 +203,7 @@ function NewNotificationScreen(): ReactElement {
       return;
     }
     navigation.pop();
-  }, [permissionStatus, notificationDate, route, navigation]);
+  }, [permissionStatus, notificationDate, route, navigation, addScheduledNotification]);
 
   if (permissionStatus === PermissionStatus.DENIED) {
     return <PermissionSettingGuide />;

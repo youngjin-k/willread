@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useCallback, useState } from 'react';
+import dayjs from 'dayjs';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Share } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
@@ -11,6 +12,7 @@ import Line from '../../components/Line';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import CancelNotificationConfirm from './CancelNotificationConfirm';
 import RemoveConfirm from './RemoveConfirm';
 
 export interface ArticleMenuProps {
@@ -23,11 +25,46 @@ function ArticleMenu({
   onClose,
 }: ArticleMenuProps): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { removeArticle, setRead } = useArticle();
+  const {
+    removeArticle, setRead, scheduledNotifications, removeScheduledNotification,
+  } = useArticle();
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
+  const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
 
-  const openRemoveAlert = () => setVisibleRemoveAlert(true);
-  const closeRemoveAlert = () => setVisibleRemoveAlert(false);
+  const openRemoveAlert = () => {
+    setVisibleRemoveAlert(true);
+  };
+  const closeRemoveAlert = () => {
+    setVisibleRemoveAlert(false);
+  };
+
+  const openCancelNotificationAlert = () => {
+    setVisibleCancelNotificationAlert(true);
+  };
+  const closeCancelNotificationAlert = () => {
+    setVisibleCancelNotificationAlert(false);
+  };
+
+  const scheduledNotification = useMemo(
+    () => scheduledNotifications.find(
+      (notification) => notification.articleId === article.id,
+    ),
+    [scheduledNotifications, article],
+  );
+
+  const isSetNotification = !!scheduledNotification;
+
+  const notificationDate = useMemo(() => {
+    if (!scheduledNotification) {
+      return null;
+    }
+
+    const date = dayjs(scheduledNotification.date);
+
+    return date.format(
+      `M월 D일 ${date.format('a') === 'am' ? '오전' : '오후'} h:mm`,
+    );
+  }, [scheduledNotification]);
 
   const handlePressNewNotification = useCallback(() => {
     onClose();
@@ -37,9 +74,20 @@ function ArticleMenu({
   }, [navigation, article, onClose]);
 
   const handleRemoveArticle = useCallback(() => {
+    closeRemoveAlert();
     removeArticle(article);
     onClose();
   }, [article, onClose, removeArticle]);
+
+  const handleCancelNotification = useCallback(() => {
+    if (!scheduledNotification) {
+      closeCancelNotificationAlert();
+      return;
+    }
+
+    closeCancelNotificationAlert();
+    removeScheduledNotification(scheduledNotification.id);
+  }, [scheduledNotification, removeScheduledNotification]);
 
   const handlePressSharing = useCallback(() => {
     Share.share({
@@ -73,17 +121,32 @@ function ArticleMenu({
           </Button>
         </ButtonWrapper>
 
-        <ButtonWrapper>
-          <Button
-            variant={ButtonVariant.DefaultText}
-            onPress={handlePressNewNotification}
-          >
-            <ButtonContent>
-              <ButtonIcon name="bell" />
-              <ButtonText>알림 설정</ButtonText>
-            </ButtonContent>
-          </Button>
-        </ButtonWrapper>
+        {isSetNotification ? (
+          <ButtonWrapper>
+            <Button
+              variant={ButtonVariant.DefaultText}
+              onPress={openCancelNotificationAlert}
+            >
+              <ButtonContent>
+                <ButtonIcon name="bell-off" />
+                <ButtonText>알림 해제</ButtonText>
+                <ButtonSubText>{notificationDate}</ButtonSubText>
+              </ButtonContent>
+            </Button>
+          </ButtonWrapper>
+        ) : (
+          <ButtonWrapper>
+            <Button
+              variant={ButtonVariant.DefaultText}
+              onPress={handlePressNewNotification}
+            >
+              <ButtonContent>
+                <ButtonIcon name="bell" />
+                <ButtonText>알림 설정</ButtonText>
+              </ButtonContent>
+            </Button>
+          </ButtonWrapper>
+        )}
 
         {article.read && (
           <ButtonWrapper>
@@ -117,6 +180,12 @@ function ArticleMenu({
         article={article}
         onClose={closeRemoveAlert}
         onConfirm={handleRemoveArticle}
+      />
+
+      <CancelNotificationConfirm
+        visible={visiblCancelNotificationAlert}
+        onClose={closeCancelNotificationAlert}
+        onConfirm={handleCancelNotification}
       />
     </>
   );
@@ -153,6 +222,12 @@ const ButtonText = styled.Text`
   font-size: 16px;
   color: ${(props) => props.theme.colors.typography.title};
   flex: 1;
+`;
+
+const ButtonSubText = styled.Text`
+  font-size: 12px;
+  color: ${(props) => props.theme.colors.typography.secondary};
+  margin-left: 8px;
 `;
 
 export default ArticleMenu;

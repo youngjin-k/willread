@@ -11,6 +11,7 @@ import PressableWrapper from './PressableWrapper';
 export interface ArticleListCardProps {
   article: Article;
   timeLeft?: ArticleTimeLeft;
+  isSetNotification?: boolean;
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
@@ -18,6 +19,7 @@ export interface ArticleListCardProps {
 function ArticleListCard({
   article,
   timeLeft,
+  isSetNotification,
   onPress,
   onLongPress,
 }: ArticleListCardProps): ReactElement {
@@ -65,7 +67,7 @@ function ArticleListCard({
             }}
             scheme={scheme}
           />
-          <NotificationTag />
+          {isSetNotification && <NotificationTag />}
         </ThumbnailWrapper>
       </ArticleListCardBlock>
     </PressableWrapper>
