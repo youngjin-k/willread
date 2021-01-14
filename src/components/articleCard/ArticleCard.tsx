@@ -56,7 +56,7 @@ function ArticleCard({
               }}
               scheme={scheme}
             />
-            {isSetNotification && <NotificationTag />}
+            <NotificationTag visible={isSetNotification} />
           </ThumbnailWrapper>
           <Content>
             <Title

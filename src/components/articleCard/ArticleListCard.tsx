@@ -19,7 +19,7 @@ export interface ArticleListCardProps {
 function ArticleListCard({
   article,
   timeLeft,
-  isSetNotification,
+  isSetNotification = false,
   onPress,
   onLongPress,
 }: ArticleListCardProps): ReactElement {
@@ -67,7 +67,7 @@ function ArticleListCard({
             }}
             scheme={scheme}
           />
-          {isSetNotification && <NotificationTag />}
+          <NotificationTag visible={isSetNotification} />
         </ThumbnailWrapper>
       </ArticleListCardBlock>
     </PressableWrapper>
