@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useColorScheme, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { useColorScheme } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import Svg, { Path } from 'react-native-svg';
 import styled from 'styled-components/native';
-import * as Animatable from 'react-native-animatable';
 
 import themes from '../../lib/styles/themes';
 
