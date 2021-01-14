@@ -3,6 +3,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, {
   forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState,
 } from 'react';
+import { Dimensions, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
@@ -44,6 +46,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
   const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
   const { removeArticle, scheduledNotifications, removeScheduledNotification } = useArticle();
+  const animatableViewRef = useRef<Animatable.View & View>(null);
 
   const scheduledNotification = useMemo(
     () => scheduledNotifications.find(
@@ -78,9 +81,46 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     setVisibleArticleMenu(false);
   };
 
-  const handleRemoveArticle = () => {
+  const handleRemoveArticle = async () => {
     closeRemoveAlert();
-    removeArticle(article);
+
+    if (isMainCard) {
+      await (animatableViewRef.current as any).animate({
+        0: {
+          translateX: 0,
+        },
+        1: {
+          translateX: Dimensions.get('window').width * -1,
+        },
+      }, 300);
+    } else {
+      await (animatableViewRef.current as any).animate({
+        0: {
+          translateX: 0,
+        },
+        0.5: {
+          translateX: Dimensions.get('window').width * -1,
+          height: 96,
+        },
+        1: {
+          translateX: Dimensions.get('window').width * -1,
+          height: 0,
+        },
+      }, 600);
+    }
+
+    await removeArticle(article);
+
+    if (isMainCard) {
+      await (animatableViewRef.current as any).animate({
+        0: {
+          translateX: Dimensions.get('window').width,
+        },
+        1: {
+          translateX: 0,
+        },
+      }, 300);
+    }
   };
 
   const handleCancelNotification = useCallback(() => {
@@ -118,70 +158,72 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   };
   return (
     <>
-      <SwipeRow
-        ref={rootRef}
-        setScrollEnabled={setScrollEnabled}
-        rightOpenValue={-1 * ((64 * 3) + (16 * 2) + 1)}
-        disableRightSwipe
-        swipeGestureBegan={onSwipeMenuOpen}
-      >
-        <SwipeMenu>
-          <SwipeMenuButtons>
-            <SwipeMenuButton
-              onPress={handleRemoveButtonPress}
-              variant={ButtonVariant.DefaultText}
-              size={ButtonSize.Large}
-            >
-              <ListBehindViewIcon name="trash" />
-            </SwipeMenuButton>
-
-            {isSetNotification ? (
+      <Animatable.View ref={animatableViewRef}>
+        <SwipeRow
+          ref={rootRef}
+          setScrollEnabled={setScrollEnabled}
+          rightOpenValue={-1 * ((64 * 3) + (16 * 2) + 1)}
+          disableRightSwipe
+          swipeGestureBegan={onSwipeMenuOpen}
+        >
+          <SwipeMenu>
+            <SwipeMenuButtons>
               <SwipeMenuButton
-                onPress={handleCancelNotificationButtonPress}
+                onPress={handleRemoveButtonPress}
                 variant={ButtonVariant.DefaultText}
                 size={ButtonSize.Large}
               >
-                <ListBehindViewIcon name="bell-off" />
+                <ListBehindViewIcon name="trash" />
               </SwipeMenuButton>
+
+              {isSetNotification ? (
+                <SwipeMenuButton
+                  onPress={handleCancelNotificationButtonPress}
+                  variant={ButtonVariant.DefaultText}
+                  size={ButtonSize.Large}
+                >
+                  <ListBehindViewIcon name="bell-off" />
+                </SwipeMenuButton>
+              ) : (
+                <SwipeMenuButton
+                  onPress={handleNewNotificationPress}
+                  variant={ButtonVariant.DefaultText}
+                  size={ButtonSize.Large}
+                >
+                  <ListBehindViewIcon name="bell" />
+                </SwipeMenuButton>
+              )}
+
+              <SwipeMenuButton
+                onPress={handleMenuButtonPress}
+                variant={ButtonVariant.DefaultText}
+                size={ButtonSize.Large}
+              >
+                <ListBehindViewIcon name="more-horizontal" />
+              </SwipeMenuButton>
+            </SwipeMenuButtons>
+          </SwipeMenu>
+          <ArticleCardWrapper>
+            {isMainCard ? (
+              <ArticleCard
+                article={article}
+                timeLeft={timeLeft}
+                isSetNotification={isSetNotification}
+                onPress={onPress}
+                onLongPress={handleLongPressArticle}
+              />
             ) : (
-              <SwipeMenuButton
-                onPress={handleNewNotificationPress}
-                variant={ButtonVariant.DefaultText}
-                size={ButtonSize.Large}
-              >
-                <ListBehindViewIcon name="bell" />
-              </SwipeMenuButton>
+              <ArticleListCard
+                article={article}
+                timeLeft={timeLeft}
+                isSetNotification={isSetNotification}
+                onPress={onPress}
+                onLongPress={handleLongPressArticle}
+              />
             )}
-
-            <SwipeMenuButton
-              onPress={handleMenuButtonPress}
-              variant={ButtonVariant.DefaultText}
-              size={ButtonSize.Large}
-            >
-              <ListBehindViewIcon name="more-horizontal" />
-            </SwipeMenuButton>
-          </SwipeMenuButtons>
-        </SwipeMenu>
-        <ArticleCardWrapper>
-          {isMainCard ? (
-            <ArticleCard
-              article={article}
-              timeLeft={timeLeft}
-              isSetNotification={isSetNotification}
-              onPress={onPress}
-              onLongPress={handleLongPressArticle}
-            />
-          ) : (
-            <ArticleListCard
-              article={article}
-              timeLeft={timeLeft}
-              isSetNotification={isSetNotification}
-              onPress={onPress}
-              onLongPress={handleLongPressArticle}
-            />
-          )}
-        </ArticleCardWrapper>
-      </SwipeRow>
+          </ArticleCardWrapper>
+        </SwipeRow>
+      </Animatable.View>
 
       <RemoveConfirm
         visible={visibleRemoveAlert}
@@ -203,6 +245,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
         <ArticleMenu
           article={article}
           onClose={closeArticleMenu}
+          onRemove={() => handleRemoveArticle()}
         />
       </BottomModal>
     </>
