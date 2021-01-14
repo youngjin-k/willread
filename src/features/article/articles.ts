@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
-import articles from '../../data/articles';
 
 export interface Article {
   id: string;
@@ -42,7 +41,7 @@ const defaultArticleDraft = () => ({
 });
 
 const initialState: InitialState = {
-  articles,
+  articles: [],
   articleDraft: defaultArticleDraft(),
   scheduledNotifications: [],
 };
