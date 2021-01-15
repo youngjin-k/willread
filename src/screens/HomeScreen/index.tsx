@@ -236,7 +236,7 @@ function HomeScreen(): React.ReactElement {
               isMainCard
             />
 
-            <View style={{ paddingVertical: 16 }}>
+            <View style={{ paddingTop: 16, paddingBottom: 8 }}>
               <Line />
             </View>
           </>
