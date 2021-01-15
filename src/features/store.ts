@@ -3,7 +3,6 @@ import { combineReducers, createStore } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 
 import articlesReducer from './article/articles';
-import homeCategoryFiltersReducer from './homeCategoryFilters';
 
 const persistConfig = {
   key: 'root',
@@ -13,7 +12,6 @@ const persistConfig = {
 
 const reducer = combineReducers({
   articles: articlesReducer,
-  homeCategoryFilters: homeCategoryFiltersReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

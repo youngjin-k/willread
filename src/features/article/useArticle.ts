@@ -9,7 +9,6 @@ import {
   removeArticle as removeArticleSlice,
   Article,
   updateArticle,
-  ScheduledNotification,
   addScheduledNotification as addScheduledNotificationSlice,
   removeScheduledNotification as removeScheduledNotificationSlice,
 } from './articles';
