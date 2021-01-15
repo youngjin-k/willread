@@ -113,7 +113,8 @@ function DateTimePicker({
   const [time, setTime] = useState(
     initialDate || dayjs().add(3, 'hour').set('minute', 0),
   );
-  const [invalidDate, setInvalidDate] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const hourScrollViewRef = useRef<ScrollView>(null);
   const minuteScrollViewRef = useRef<ScrollView>(null);
   const isFixedScroll = useRef(false);
@@ -192,11 +193,19 @@ function DateTimePicker({
   }, [time, visible]);
 
   useEffect(() => {
-    setInvalidDate(dayjs().isAfter(time));
-  }, [time]);
+    const minErrorMessage = '과거로는 설정할 수 없어요 😅';
+    const maxErrorMessage = '설정할 수 없는 시간이에요 😅';
 
-  useEffect(() => {
-    // console.log(maxDate.isAfter(time));
+    const isValidMinDate = dayjs().isAfter(time);
+    const isValidMaxDate = maxDate.isBefore(time);
+
+    if (isValidMinDate || isValidMaxDate) {
+      setIsInvalid(true);
+      setErrorMessage(isValidMinDate ? minErrorMessage : maxErrorMessage);
+    } else {
+      setIsInvalid(false);
+      setErrorMessage(null);
+    }
   }, [time, maxDate]);
 
   return (
@@ -289,8 +298,8 @@ function DateTimePicker({
         <ButtonWrapper>
           <Button
             onPress={handlePressSubmit}
-            disabled={invalidDate}
-            label={!invalidDate ? '완료' : '과거로는 설정할 수 없어요 😅'}
+            disabled={isInvalid}
+            label={isInvalid ? errorMessage : '완료'}
           />
         </ButtonWrapper>
       </Content>
