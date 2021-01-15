@@ -18,15 +18,17 @@ import RemoveConfirm from './RemoveConfirm';
 export interface ArticleMenuProps {
   article: Article;
   onClose: () => void;
+  onRemove: () => void;
 }
 
 function ArticleMenu({
   article,
   onClose,
+  onRemove,
 }: ArticleMenuProps): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const {
-    removeArticle, setRead, scheduledNotifications, removeScheduledNotification,
+    setRead, scheduledNotifications, removeScheduledNotification,
   } = useArticle();
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
   const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
@@ -75,19 +77,22 @@ function ArticleMenu({
 
   const handleRemoveArticle = useCallback(() => {
     closeRemoveAlert();
-    removeArticle(article);
-    onClose();
-  }, [article, onClose, removeArticle]);
+    setTimeout(() => {
+      onClose();
+      onRemove();
+    });
+  }, [onRemove, onClose]);
 
   const handleCancelNotification = useCallback(() => {
+    closeCancelNotificationAlert();
+    onClose();
+
     if (!scheduledNotification) {
-      closeCancelNotificationAlert();
       return;
     }
 
-    closeCancelNotificationAlert();
     removeScheduledNotification(scheduledNotification.id);
-  }, [scheduledNotification, removeScheduledNotification]);
+  }, [scheduledNotification, removeScheduledNotification, onClose]);
 
   const handlePressSharing = useCallback(() => {
     Share.share({
