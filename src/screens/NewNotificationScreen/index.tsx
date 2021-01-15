@@ -133,6 +133,8 @@ function NewNotificationScreen(): ReactElement {
   const [now] = useState(dayjs());
   const { addScheduledNotification } = useArticle();
 
+  const { article } = route.params;
+
   const handlePressTime = useCallback(
     (hour: number, index: number) => {
       setActiveTimeIndex(index);
@@ -192,7 +194,7 @@ function NewNotificationScreen(): ReactElement {
     }
 
     await addScheduledNotification({
-      article: route.params.article,
+      article,
       date: notificationDate.date.toDate(),
     });
 
@@ -203,7 +205,7 @@ function NewNotificationScreen(): ReactElement {
       return;
     }
     navigation.pop();
-  }, [permissionStatus, notificationDate, route, navigation, addScheduledNotification]);
+  }, [permissionStatus, notificationDate, route, article, navigation, addScheduledNotification]);
 
   if (permissionStatus === PermissionStatus.DENIED) {
     return <PermissionSettingGuide />;
@@ -239,7 +241,7 @@ function NewNotificationScreen(): ReactElement {
           <TouchableWithoutFeedback onPress={openModal}>
             <TimeItem active={activeTimeIndex === timeList.length}>
               <TimeItemLabel active={activeTimeIndex === timeList.length}>
-                직접 선택할게요
+                직접 선택
               </TimeItemLabel>
             </TimeItem>
           </TouchableWithoutFeedback>
@@ -266,6 +268,8 @@ function NewNotificationScreen(): ReactElement {
               : undefined
           }
           setManualTime={setManualTime}
+          articleCreatedAt={article.createdAt}
+          visible={modalVisible}
         />
       </BottomModal>
     </Container>
