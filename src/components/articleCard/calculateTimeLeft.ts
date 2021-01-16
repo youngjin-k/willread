@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 function calculateTimeLeft(time: string) {
   const now = dayjs();
-  const deadline = dayjs(time).add(14, 'day');
+  const deadline = dayjs(time).add(7, 'day');
 
   const day = deadline.diff(now, 'day');
   const hour = deadline.diff(now, 'hour');
@@ -12,7 +12,7 @@ function calculateTimeLeft(time: string) {
   let label = `${day}일 남음`;
   let detailLabel = `🌱 ${day}일 남았어요!`;
 
-  if (day < 7) {
+  if (day < 4) {
     detailLabel = `🌼 ${day}일 남았어요!`;
   }
 

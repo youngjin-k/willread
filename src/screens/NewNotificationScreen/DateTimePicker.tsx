@@ -1,7 +1,13 @@
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import {
-  NativeScrollEvent, NativeSyntheticEvent, ScrollView, TouchableWithoutFeedback,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { DefaultTheme } from 'styled-components';
 import styled, { css } from 'styled-components/native';
@@ -42,7 +48,7 @@ type DateValue = {
 };
 
 const items = {
-  date: Array(14)
+  date: Array(7)
     .fill(0)
     .map((_, i) => {
       const date = dayjs().add(3, 'hour').add(i, 'day');
@@ -94,18 +100,24 @@ const fixScrollPosition = (
 export interface DateTimePickerProps {
   initialDate?: Dayjs;
   setManualTime: (date: Dayjs) => void;
+  articleCreatedAt: string;
+  visible: boolean;
 }
 
 function DateTimePicker({
   initialDate,
   setManualTime,
+  articleCreatedAt,
+  visible,
 }: DateTimePickerProps): JSX.Element {
   const [time, setTime] = useState(
     initialDate || dayjs().add(3, 'hour').set('minute', 0),
   );
-  const [invalidDate, setInvalidDate] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const hourScrollViewRef = useRef<ScrollView>(null);
   const minuteScrollViewRef = useRef<ScrollView>(null);
+  const isFixedScroll = useRef(false);
 
   const date = time.format('YYYY-MM-DD');
   const hour = time.format('HH');
@@ -113,6 +125,10 @@ function DateTimePicker({
   const displayTime = time.format(
     `M월 D일 ${time.format('a') === 'am' ? '오전' : '오후'} h:mm`,
   );
+
+  const maxDate = useMemo(() => dayjs(articleCreatedAt).add(7, 'day'), [
+    articleCreatedAt,
+  ]);
 
   const setDate = (values: DateValue) => {
     setTime(
@@ -140,28 +156,57 @@ function DateTimePicker({
     targetType: string,
   ) => {
     if (targetType === 'hour') {
-      setHour(
-        items.hour[getScrollTargetIndex(event.nativeEvent.contentOffset.y)]
-          .value,
+      const index = Math.max(
+        0,
+        Math.min(
+          23,
+          getScrollTargetIndex(event.nativeEvent.contentOffset.y),
+        ),
       );
+      const { value } = items.hour[index];
+      setHour(value);
     } else if (targetType === 'minute') {
-      setMinute(
-        items.minute[getScrollTargetIndex(event.nativeEvent.contentOffset.y)]
-          .value,
+      const index = Math.max(
+        0,
+        Math.min(
+          11,
+          getScrollTargetIndex(event.nativeEvent.contentOffset.y),
+        ),
       );
+      const { value } = items.minute[index];
+      setMinute(value);
     }
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      fixScrollPosition(hourScrollViewRef, time.get('hour'));
-      fixScrollPosition(minuteScrollViewRef, time.get('minute') / 5);
-    });
-  });
+    if (visible && !isFixedScroll.current) {
+      setTimeout(() => {
+        isFixedScroll.current = true;
+        fixScrollPosition(hourScrollViewRef, time.get('hour'));
+        fixScrollPosition(minuteScrollViewRef, time.get('minute') / 5);
+      }, 200);
+    }
+
+    if (!visible) {
+      isFixedScroll.current = false;
+    }
+  }, [time, visible]);
 
   useEffect(() => {
-    setInvalidDate((dayjs().isAfter(time)));
-  }, [time]);
+    const minErrorMessage = '과거로는 설정할 수 없어요 😅';
+    const maxErrorMessage = '설정할 수 없는 시간이에요 😅';
+
+    const isValidMinDate = dayjs().isAfter(time);
+    const isValidMaxDate = maxDate.isBefore(time);
+
+    if (isValidMinDate || isValidMaxDate) {
+      setIsInvalid(true);
+      setErrorMessage(isValidMinDate ? minErrorMessage : maxErrorMessage);
+    } else {
+      setIsInvalid(false);
+      setErrorMessage(null);
+    }
+  }, [time, maxDate]);
 
   return (
     <>
@@ -204,7 +249,9 @@ function DateTimePicker({
             />
             <List
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'hour'); }}
+              onMomentumScrollEnd={(event) => {
+                handleScrollEnd(event, 'hour');
+              }}
               snapToInterval={ITEM_HEIGHT}
               decelerationRate="fast"
               ref={hourScrollViewRef}
@@ -228,9 +275,12 @@ function DateTimePicker({
             />
             <List
               showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => { handleScrollEnd(event, 'minute'); }}
+              onMomentumScrollEnd={(event) => {
+                handleScrollEnd(event, 'minute');
+              }}
               snapToInterval={ITEM_HEIGHT}
               decelerationRate="fast"
+              bouncesZoom
               ref={minuteScrollViewRef}
             >
               <ListSpacing />
@@ -248,8 +298,8 @@ function DateTimePicker({
         <ButtonWrapper>
           <Button
             onPress={handlePressSubmit}
-            disabled={invalidDate}
-            label={!invalidDate ? '완료' : '과거로는 설정할 수 없어요 😅'}
+            disabled={isInvalid}
+            label={isInvalid ? errorMessage : '완료'}
           />
         </ButtonWrapper>
       </Content>
@@ -267,8 +317,7 @@ const Time = styled.Text`
   color: ${(props) => props.theme.colors.typography.title};
 `;
 
-const Content = styled.View`
-`;
+const Content = styled.View``;
 
 const DatePickerContainer = styled.View`
   margin-bottom: 16px;
@@ -325,7 +374,7 @@ const DateLabel = styled.Text<{ active: boolean }>`
 
 const TimePickerContainer = styled.View`
   flex-direction: row;
-  height: ${ITEM_HEIGHT * 3}px;
+  height: ${ITEM_HEIGHT * 5}px;
 `;
 
 const HoursScrollWrapper = styled.View`
@@ -353,30 +402,34 @@ const ItemLabel = styled.Text<{ active: boolean }>`
     : props.theme.colors.typography.title)};
 `;
 
-const ListSpacing = styled.View`
-  height: ${ITEM_HEIGHT}px;
-`;
+const ListSpacing = () => (
+  <TouchableWithoutFeedback>
+    <View style={{ height: ITEM_HEIGHT * 2 }} />
+  </TouchableWithoutFeedback>
+);
 
-const Overlay = styled.View<{position: 'left' | 'right'}>`
+const Overlay = styled.View<{ position: 'left' | 'right' }>`
   position: absolute;
-  top: ${ITEM_HEIGHT}px;
+  top: ${ITEM_HEIGHT * 2}px;
   height: ${ITEM_HEIGHT}px;
   z-index: 1;
   background-color: ${(props) => props.theme.colors.primaryTender};
-  
-  ${(props) => props.position === 'left' && css`
-    border-top-left-radius: 16px;
-    border-bottom-left-radius: 16px;
-    left: 16px;
-    right: 0;
-  `}
 
-  ${(props) => props.position === 'right' && css`
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
-    left: 0;
-    right: 16px;
-  `}
+  ${(props) => props.position === 'left'
+    && css`
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+      left: 16px;
+      right: 0;
+    `}
+
+  ${(props) => props.position === 'right'
+    && css`
+      border-top-right-radius: 16px;
+      border-bottom-right-radius: 16px;
+      left: 0;
+      right: 16px;
+    `}
 `;
 
 const ButtonWrapper = styled.View`
