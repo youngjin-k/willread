@@ -122,7 +122,9 @@ interface NotificationTime {
 
 function NewNotificationScreen(): ReactElement {
   const route = useRoute<RouteProp<RootStackParamList, 'NewNotification'>>();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList & TabParamList>>();
+  const navigation = useNavigation<
+    StackNavigationProp<RootStackParamList & TabParamList>
+  >();
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [activeTimeIndex, setActiveTimeIndex] = useState<number>();
@@ -205,7 +207,14 @@ function NewNotificationScreen(): ReactElement {
       return;
     }
     navigation.pop();
-  }, [permissionStatus, notificationDate, route, article, navigation, addScheduledNotification]);
+  }, [
+    permissionStatus,
+    notificationDate,
+    route,
+    article,
+    navigation,
+    addScheduledNotification,
+  ]);
 
   if (permissionStatus === PermissionStatus.DENIED) {
     return <PermissionSettingGuide />;
@@ -241,7 +250,9 @@ function NewNotificationScreen(): ReactElement {
           <TouchableWithoutFeedback onPress={openModal}>
             <TimeItem active={activeTimeIndex === timeList.length}>
               <TimeItemLabel active={activeTimeIndex === timeList.length}>
-                직접 선택
+                {activeTimeIndex === timeList.length
+                  ? notificationDate.dateStr
+                  : '직접 선택'}
               </TimeItemLabel>
             </TimeItem>
           </TouchableWithoutFeedback>
