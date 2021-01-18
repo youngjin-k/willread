@@ -35,7 +35,7 @@ const willreadLightTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: themes.light.colors.typography.title,
+    primary: themes.light.colors.typography.primary,
     background: themes.light.colors.background,
     card: themes.light.colors.background,
     text: themes.light.colors.typography.secondary,
@@ -46,7 +46,7 @@ const willreadDarkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    primary: themes.dark.colors.typography.title,
+    primary: themes.dark.colors.typography.primary,
     background: themes.dark.colors.background,
     card: themes.dark.colors.secondary,
     text: themes.dark.colors.typography.secondary,

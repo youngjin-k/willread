@@ -219,13 +219,13 @@ const ButtonContent = styled.View`
 
 const ButtonIcon = styled(Icon)`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   margin-right: 16px;
 `;
 
 const ButtonText = styled.Text`
   font-size: 16px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   flex: 1;
 `;
 

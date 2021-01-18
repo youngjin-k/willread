@@ -80,7 +80,7 @@ const RecommendCardBlock = styled.View`
 const ReccomendTitle = styled.Text`
   font-weight: bold;
   font-size: 16px;
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.typography.point};
   margin: 0 0 4px 16px;
   font-weight: bold;
 `;
@@ -110,7 +110,7 @@ const Title = styled.Text<{read: boolean}>`
   font-size: 18px;
   color: ${(props) => (props.read
     ? props.theme.colors.typography.secondary
-    : props.theme.colors.typography.title)};
+    : props.theme.colors.typography.primary)};
   font-weight: bold;
 `;
 

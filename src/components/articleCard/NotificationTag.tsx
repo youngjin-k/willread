@@ -23,7 +23,7 @@ const outAnimation = {
 
 function NotificationTag({ visible }: NotificationTagProps) {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const color = themes[scheme].colors.primary;
+  const color = themes[scheme].colors.typography.point;
   const viewRef = useRef<any>(null);
   const isFirstRender = useRef(true);
 

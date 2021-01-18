@@ -172,7 +172,7 @@ const Content = styled.View`
 `;
 
 const Title = styled.Text`
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   font-weight: bold;
   font-size: 16px;
 `;

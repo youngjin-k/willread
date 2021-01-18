@@ -13,7 +13,7 @@ function FormLabel({ children }: FormLabelProps): ReactElement {
 
 const FormLabelBlock = styled.Text`
     font-size: 16px;
-    color: ${(props) => props.theme.colors.typography.title};
+    color: ${(props) => props.theme.colors.typography.primary};
     margin: 0 0 12px 8px;
     font-weight: bold;
 `;

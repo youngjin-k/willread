@@ -304,7 +304,7 @@ const Header = styled.View`
 
 const TimeFromNow = styled.Text`
   font-size: 22px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   margin: 0 0 8px 0;
 `;
 
@@ -335,7 +335,7 @@ const TimeItemLabel = styled.Text<{ active: boolean }>`
 
   ${(props) => props.active
     && css`
-      color: ${props.theme.colors.primary};
+      color: ${props.theme.colors.typography.point};
     `}
 `;
 

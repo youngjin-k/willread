@@ -36,12 +36,12 @@ const SpaceIndicatorBlock = styled.View`
 
 const BookmarkIcon = styled(Icon)`
   font-size: 14px;
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.typography.point};
   margin: 1px 6px 0 0;
 `;
 
 const Usage = styled.Text<{ isOver: boolean }>`
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.typography.point};
   font-weight: 700;
   font-size: 12px;
 
