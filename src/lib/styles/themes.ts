@@ -1,34 +1,6 @@
 import { DefaultTheme } from 'styled-components/native';
 
 declare module 'styled-components' {
-  // export interface DefaultTheme {
-  //   dark: boolean;
-  //   colors: {
-  //     background: string;
-  //     primary: string;
-  //     primaryTender: string;
-  //     secondary: string;
-  //     grey1: string;
-  //     grey2: string;
-  //     danger: string;
-  //     dangerTender: string;
-  //     border: string;
-  //     typography: {
-  //       title: string;
-  //       secondary: string;
-  //     };
-  //     category: {
-  //       default: string;
-  //       red: string;
-  //       blue: string;
-  //       orange: string;
-  //       green: string;
-  //       yellow: string;
-  //       pink: string;
-  //     };
-  //   };
-  // }
-
   export interface DefaultTheme {
     dark: boolean;
     colors: {
