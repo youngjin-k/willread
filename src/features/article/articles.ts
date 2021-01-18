@@ -10,7 +10,7 @@ export interface Article {
   image?: string;
   favicon?: string;
   createdAt: string;
-  read: boolean;
+  lastReadAt?: string;
 }
 
 export interface ArticleDraft {
@@ -55,7 +55,6 @@ const slice = createSlice({
         ...action.payload,
         id: nanoid(),
         createdAt: dayjs().format(),
-        read: false,
       };
       state.articles.push(article);
       state.lastAddedArticle = article;

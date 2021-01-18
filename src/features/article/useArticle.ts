@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import { useCallback } from 'react';
 import dayjs from 'dayjs';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
+import { Linking } from 'react-native';
 import { RootState } from '../store';
 import {
   ArticleDraft,
@@ -37,11 +39,20 @@ function useArticle() {
     scheduledNotifications,
   } = useSelector((state: RootState) => state.articles);
 
-  const setRead = (article: Article, read = true) => {
+  const setLastReadAt = useCallback((article: Article) => {
     dispatch(
       updateArticle({
         id: article.id,
-        article: { ...article, read },
+        article: { ...article, lastReadAt: dayjs().toString() },
+      }),
+    );
+  }, [dispatch]);
+
+  const resetLastReadAt = (article: Article) => {
+    dispatch(
+      updateArticle({
+        id: article.id,
+        article: { ...article, lastReadAt: undefined },
       }),
     );
   };
@@ -92,6 +103,42 @@ function useArticle() {
     [dispatch, removeDeviceNotification],
   );
 
+  const readArticle = useCallback(async (article: Article) => {
+    setLastReadAt(article);
+
+    const scheduledNotification = scheduledNotifications.find(
+      (notification) => notification.articleId === article.id,
+    );
+
+    if (scheduledNotification) {
+      const now = dayjs();
+
+      if (dayjs(scheduledNotification.date).isBefore(now)) {
+        dispatch(removeScheduledNotificationSlice(article.id));
+      }
+    }
+
+    if (await InAppBrowser.isAvailable()) {
+      await InAppBrowser.open(article.url, {
+        // iOS Properties
+        readerMode: false,
+        animated: true,
+        modalPresentationStyle: 'fullScreen',
+        modalTransitionStyle: 'coverVertical',
+        modalEnabled: false,
+        enableBarCollapsing: true,
+
+        // Android Properties
+        showTitle: true,
+        enableUrlBarHiding: true,
+        enableDefaultShare: true,
+        forceCloseOnRedirection: false,
+      });
+    } else {
+      Linking.openURL(article.url);
+    }
+  }, [dispatch, setLastReadAt, scheduledNotifications]);
+
   return {
     articles,
     articleDraft,
@@ -101,7 +148,9 @@ function useArticle() {
     removeArticle,
     addScheduledNotification,
     removeScheduledNotification,
-    setRead,
+    setLastReadAt,
+    resetLastReadAt,
+    readArticle,
   };
 }
 

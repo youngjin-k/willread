@@ -34,6 +34,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     article,
     timeLeft,
     isSetNotification,
+    notificationTagType,
   },
   onPress,
   setScrollEnabled,
@@ -176,7 +177,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
                 <ListBehindViewIcon name="trash" />
               </SwipeMenuButton>
 
-              {isSetNotification ? (
+              {(isSetNotification && notificationTagType === 'default') ? (
                 <SwipeMenuButton
                   onPress={handleCancelNotificationButtonPress}
                   variant={ButtonVariant.DefaultText}
@@ -209,6 +210,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
                 article={article}
                 timeLeft={timeLeft}
                 isSetNotification={isSetNotification}
+                notificationTagType={notificationTagType}
                 onPress={onPress}
                 onLongPress={handleLongPressArticle}
               />
@@ -217,6 +219,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
                 article={article}
                 timeLeft={timeLeft}
                 isSetNotification={isSetNotification}
+                notificationTagType={notificationTagType}
                 onPress={onPress}
                 onLongPress={handleLongPressArticle}
               />

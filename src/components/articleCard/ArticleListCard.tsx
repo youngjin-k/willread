@@ -3,15 +3,12 @@ import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
-import { ArticleTimeLeft } from '../../screens/HomeScreen';
+import { DisplayItem } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
 import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
-export interface ArticleListCardProps {
-  article: Article;
-  timeLeft?: ArticleTimeLeft;
-  isSetNotification?: boolean;
+export interface ArticleListCardProps extends DisplayItem {
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
@@ -38,7 +35,7 @@ function ArticleListCard({
   };
 
   const {
-    url, title, image, read,
+    url, title, image, lastReadAt,
   } = article;
 
   return (
@@ -51,7 +48,7 @@ function ArticleListCard({
         <Content>
           <Title
             numberOfLines={2}
-            read={read}
+            read={!!lastReadAt}
           >
             {title}
           </Title>

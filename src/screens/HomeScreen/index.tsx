@@ -5,6 +5,7 @@ import {
   useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import React, {
   useCallback, useEffect, useRef, useState,
@@ -45,13 +46,14 @@ export interface DisplayItem {
   article: Article;
   timeLeft: ArticleTimeLeft;
   isSetNotification: boolean;
+  notificationTagType: 'default' | 'danger';
 }
 
 function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
-  const { articles, setRead, scheduledNotifications } = useArticle();
+  const { articles, readArticle, scheduledNotifications } = useArticle();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
   const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
@@ -125,13 +127,30 @@ function HomeScreen(): React.ReactElement {
         return;
       }
 
-      const items: DisplayItem[] = articles.map((article) => ({
-        article,
-        timeLeft: calculateTimeLeft(article.createdAt),
-        isSetNotification: scheduledNotifications.some(
+      const items: DisplayItem[] = articles.map((article) => {
+        const scheduledNotification = scheduledNotifications.find(
           (notification) => notification.articleId === article.id,
-        ),
-      }));
+        );
+
+        let isSetNotification = false;
+        let notificationTagType: DisplayItem['notificationTagType'] = 'default';
+
+        if (scheduledNotification) {
+          isSetNotification = true;
+          const now = dayjs();
+
+          if (dayjs(scheduledNotification.date).isBefore(now)) {
+            notificationTagType = 'danger';
+          }
+        }
+
+        return {
+          article,
+          timeLeft: calculateTimeLeft(article.createdAt),
+          isSetNotification,
+          notificationTagType,
+        };
+      });
 
       // if (items.some((item) => item.timeLeft.day < 1)) {
       setDisplayMainItem(items.shift());
@@ -141,7 +160,7 @@ function HomeScreen(): React.ReactElement {
     };
 
     updater();
-    const timer = setInterval(updater, 1000 * 60);
+    const timer = setInterval(updater, 1000 * 30);
 
     return () => {
       clearInterval(timer);
@@ -151,32 +170,6 @@ function HomeScreen(): React.ReactElement {
   const handlePressArticle = (article: Article) => {
     readArticle(article);
   };
-
-  const readArticle = useCallback(
-    async (article: Article) => {
-      setRead(article);
-      if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open(article.url, {
-          // iOS Properties
-          readerMode: false,
-          animated: true,
-          modalPresentationStyle: 'fullScreen',
-          modalTransitionStyle: 'coverVertical',
-          modalEnabled: false,
-          enableBarCollapsing: true,
-
-          // Android Properties
-          showTitle: true,
-          enableUrlBarHiding: true,
-          enableDefaultShare: true,
-          forceCloseOnRedirection: false,
-        });
-      } else {
-        Linking.openURL(article.url);
-      }
-    },
-    [setRead],
-  );
 
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(

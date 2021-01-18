@@ -28,7 +28,7 @@ function ArticleMenu({
 }: ArticleMenuProps): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const {
-    setRead, scheduledNotifications, removeScheduledNotification,
+    setLastReadAt, scheduledNotifications, removeScheduledNotification,
   } = useArticle();
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
   const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
@@ -49,7 +49,10 @@ function ArticleMenu({
 
   const scheduledNotification = useMemo(
     () => scheduledNotifications.find(
-      (notification) => notification.articleId === article.id,
+      (notification) => {
+        const now = dayjs();
+        return notification.articleId === article.id && !dayjs(notification.date).isBefore(now);
+      },
     ),
     [scheduledNotifications, article],
   );
@@ -101,9 +104,9 @@ function ArticleMenu({
   }, [article]);
 
   const handlePressSetUnread = useCallback(() => {
-    setRead(article, false);
+    setLastReadAt(article);
     onClose();
-  }, [article, onClose, setRead]);
+  }, [article, onClose, setLastReadAt]);
 
   return (
     <>
@@ -153,7 +156,7 @@ function ArticleMenu({
           </ButtonWrapper>
         )}
 
-        {article.read && (
+        {!!article.lastReadAt && (
           <ButtonWrapper>
             <Button
               variant={ButtonVariant.DefaultText}

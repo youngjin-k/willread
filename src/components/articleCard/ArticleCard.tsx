@@ -3,15 +3,12 @@ import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
-import { ArticleTimeLeft } from '../../screens/HomeScreen';
+import { DisplayItem } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
 import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
-export interface ArticleCardProps {
-  article: Article;
-  timeLeft: ArticleTimeLeft;
-  isSetNotification: boolean;
+export interface ArticleCardProps extends DisplayItem {
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
@@ -20,13 +17,14 @@ function ArticleCard({
   article,
   timeLeft,
   isSetNotification,
+  notificationTagType,
   onPress,
   onLongPress,
 }: ArticleCardProps): ReactElement {
   const scheme = useColorScheme();
 
   const {
-    url, title, image, read,
+    url, title, image, lastReadAt,
   } = article;
 
   const handlePress = () => {
@@ -56,12 +54,15 @@ function ArticleCard({
               }}
               scheme={scheme}
             />
-            <NotificationTag visible={isSetNotification} />
+            <NotificationTag
+              visible={isSetNotification}
+              type={notificationTagType}
+            />
           </ThumbnailWrapper>
           <Content>
             <Title
               numberOfLines={2}
-              read={read}
+              read={!!lastReadAt}
             >
               {title}
             </Title>
