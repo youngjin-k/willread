@@ -45,12 +45,12 @@ const CloseButtonWrapper = styled.View`
 
 const BackIcon = styled(Icon)`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
 `;
 
 const HeaderTitle = styled.Text`
   font-size: 18px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   font-weight: bold;
 `;
 

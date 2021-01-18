@@ -104,7 +104,7 @@ const Title = styled.Text<{ read: boolean }>`
   font-size: 16px;
   color: ${(props) => (props.read
     ? props.theme.colors.typography.secondary
-    : props.theme.colors.typography.title)};
+    : props.theme.colors.typography.primary)};
   font-weight: bold;
 `;
 

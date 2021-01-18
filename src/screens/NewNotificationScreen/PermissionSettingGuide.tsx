@@ -44,7 +44,7 @@ const ButtonWrapper = styled.View`
 `;
 
 const Title = styled.Text`
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   font-size: 16px;
 `;
 

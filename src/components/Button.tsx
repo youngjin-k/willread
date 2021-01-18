@@ -53,9 +53,9 @@ export const buttonBackgroundColor = (
       case ButtonVariant.DangerText:
         return 'transparent';
       case ButtonVariant.PrimaryContained:
-        return themes[appearance].colors.grey1;
+        return themes[appearance].colors.typography.disabled;
       case ButtonVariant.PrimaryTenderContained:
-        return themes[appearance].colors.grey1;
+        return themes[appearance].colors.typography.disabled;
       default:
         return '';
     }
@@ -90,15 +90,15 @@ export const buttonTextColor = (
 
   switch (variant) {
     case ButtonVariant.DefaultText:
-      return themes[appearance].colors.typography.title;
+      return themes[appearance].colors.typography.primary;
     case ButtonVariant.PrimaryText:
-      return themes[appearance].colors.primary;
+      return themes[appearance].colors.typography.point;
     case ButtonVariant.DangerText:
       return themes[appearance].colors.danger;
     case ButtonVariant.PrimaryContained:
       return '#ffffff';
     case ButtonVariant.PrimaryTenderContained:
-      return themes[appearance].colors.primary;
+      return themes[appearance].colors.typography.point;
     default:
       return '';
   }
