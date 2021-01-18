@@ -5,6 +5,7 @@ import React, {
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   View,
@@ -158,20 +159,14 @@ function DateTimePicker({
     if (targetType === 'hour') {
       const index = Math.max(
         0,
-        Math.min(
-          23,
-          getScrollTargetIndex(event.nativeEvent.contentOffset.y),
-        ),
+        Math.min(23, getScrollTargetIndex(event.nativeEvent.contentOffset.y)),
       );
       const { value } = items.hour[index];
       setHour(value);
     } else if (targetType === 'minute') {
       const index = Math.max(
         0,
-        Math.min(
-          11,
-          getScrollTargetIndex(event.nativeEvent.contentOffset.y),
-        ),
+        Math.min(11, getScrollTargetIndex(event.nativeEvent.contentOffset.y)),
       );
       const { value } = items.minute[index];
       setMinute(value);
@@ -191,6 +186,20 @@ function DateTimePicker({
       isFixedScroll.current = false;
     }
   }, [time, visible]);
+
+  const handleHourItemPress = (value: string) => {
+    fixScrollPosition(hourScrollViewRef, Number(value));
+    if (Platform.OS === 'android') {
+      setHour(value);
+    }
+  };
+
+  const handleMinuteItemPress = (value: string) => {
+    fixScrollPosition(minuteScrollViewRef, Number(value) / 5);
+    if (Platform.OS === 'android') {
+      setMinute(value);
+    }
+  };
 
   useEffect(() => {
     const minErrorMessage = '과거로는 설정할 수 없어요 😅';
@@ -258,7 +267,12 @@ function DateTimePicker({
             >
               <ListSpacing />
               {items.hour.map(({ label, value }) => (
-                <TouchableWithoutFeedback key={value}>
+                <TouchableWithoutFeedback
+                  key={value}
+                  onPress={() => {
+                    handleHourItemPress(value);
+                  }}
+                >
                   <Item>
                     <ItemLabel active={value === hour}>{label}</ItemLabel>
                   </Item>
@@ -285,7 +299,12 @@ function DateTimePicker({
             >
               <ListSpacing />
               {items.minute.map(({ label, value }) => (
-                <TouchableWithoutFeedback key={value}>
+                <TouchableWithoutFeedback
+                  key={value}
+                  onPress={() => {
+                    handleMinuteItemPress(value);
+                  }}
+                >
                   <Item>
                     <ItemLabel active={value === minute}>{label}</ItemLabel>
                   </Item>
@@ -299,7 +318,7 @@ function DateTimePicker({
           <Button
             onPress={handlePressSubmit}
             disabled={isInvalid}
-            label={isInvalid ? errorMessage : '완료'}
+            label={isInvalid ? (errorMessage as string) : '완료'}
           />
         </ButtonWrapper>
       </Content>
