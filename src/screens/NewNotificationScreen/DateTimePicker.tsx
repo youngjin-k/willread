@@ -52,7 +52,7 @@ const items = {
   date: Array(7)
     .fill(0)
     .map((_, i) => {
-      const date = dayjs().add(3, 'hour').add(i, 'day');
+      const date = dayjs().add(i, 'day');
       return {
         label: date.format('DD'),
         value: {
