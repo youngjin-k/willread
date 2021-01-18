@@ -90,7 +90,7 @@ const CheckIcon = styled(Icon)`
 const Title = styled.Text`
   font-size: 24px;
   font-weight: bold;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   margin-bottom: 8px;
 `;
 

@@ -1,6 +1,34 @@
 import { DefaultTheme } from 'styled-components/native';
 
 declare module 'styled-components' {
+  // export interface DefaultTheme {
+  //   dark: boolean;
+  //   colors: {
+  //     background: string;
+  //     primary: string;
+  //     primaryTender: string;
+  //     secondary: string;
+  //     grey1: string;
+  //     grey2: string;
+  //     danger: string;
+  //     dangerTender: string;
+  //     border: string;
+  //     typography: {
+  //       title: string;
+  //       secondary: string;
+  //     };
+  //     category: {
+  //       default: string;
+  //       red: string;
+  //       blue: string;
+  //       orange: string;
+  //       green: string;
+  //       yellow: string;
+  //       pink: string;
+  //     };
+  //   };
+  // }
+
   export interface DefaultTheme {
     dark: boolean;
     colors: {
@@ -13,9 +41,12 @@ declare module 'styled-components' {
       danger: string;
       dangerTender: string;
       border: string;
+      inputBackground: string;
       typography: {
-        title: string;
+        primary: string;
         secondary: string;
+        point: string;
+        disabled: string;
       };
       category: {
         default: string;
@@ -34,17 +65,20 @@ const light: DefaultTheme = {
   dark: false,
   colors: {
     background: '#ffffff',
-    primary: '#4B2FFF',
-    primaryTender: 'rgba(75, 47, 255, 0.1)',
+    primary: '#6E57FF',
+    primaryTender: 'rgba(110, 87, 255, 0.1)',
     secondary: '#F0F1F3',
     grey1: '#DFDFE6',
     grey2: '#72717D',
     danger: '#FF0745',
     dangerTender: 'rgba(255, 7, 69, 0.1)',
-    border: '#DCDCDC',
+    border: '#E4E4EB',
+    inputBackground: '#EBEBF1',
     typography: {
-      title: '#121214',
+      primary: '#121214',
       secondary: '#81808B',
+      point: '#543DE8',
+      disabled: '#BAB9C6',
     },
     category: {
       default: '#EAEAEA',
@@ -62,17 +96,20 @@ const dark: DefaultTheme = {
   dark: true,
   colors: {
     background: '#121214',
-    primary: '#745DFF',
-    primaryTender: 'rgba(116, 93, 255, 0.1)',
+    primary: '#5E4AD9',
+    primaryTender: 'rgba(94, 74, 217, 0.1)',
     secondary: '#212126',
     grey1: '#333338',
     grey2: '#82808B',
     danger: '#CC3834',
     dangerTender: 'rgba(204, 56, 52, 0.07)',
-    border: '#232323',
+    border: '#2C2C34',
+    inputBackground: '#2C2C34',
     typography: {
-      title: '#F9F9FD',
+      primary: '#F9F9FD',
       secondary: '#81808B',
+      point: '#7463D9',
+      disabled: '#42424A',
     },
     category: {
       default: '#B4B4B4',

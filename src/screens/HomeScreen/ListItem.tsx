@@ -278,7 +278,7 @@ const SwipeMenuButton = styled(Button)`
 
 const ListBehindViewIcon = styled(Icon)`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
 `;
 
 export default ListItem;

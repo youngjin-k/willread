@@ -314,7 +314,7 @@ const TimeView = styled.View`
 
 const Time = styled.Text`
   font-size: 26px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
 `;
 
 const Content = styled.View``;
@@ -335,7 +335,7 @@ const DateItem = styled.View`
 const getDayOfWeekLabelColor = (day: number, theme: DefaultTheme) => {
   switch (day) {
     case 6:
-      return theme.colors.primary;
+      return theme.colors.typography.point;
     case 0:
       return theme.colors.category.red;
     default:
@@ -368,8 +368,8 @@ const DateLabelWrapper = styled.View<{ active: boolean }>`
 const DateLabel = styled.Text<{ active: boolean }>`
   font-size: 22px;
   color: ${(props) => (props.active
-    ? props.theme.colors.primary
-    : props.theme.colors.typography.title)};
+    ? props.theme.colors.typography.point
+    : props.theme.colors.typography.primary)};
 `;
 
 const TimePickerContainer = styled.View`
@@ -398,8 +398,8 @@ const Item = styled.View`
 const ItemLabel = styled.Text<{ active: boolean }>`
   font-size: 20px;
   color: ${(props) => (props.active
-    ? props.theme.colors.primary
-    : props.theme.colors.typography.title)};
+    ? props.theme.colors.typography.point
+    : props.theme.colors.typography.primary)};
 `;
 
 const ListSpacing = () => (

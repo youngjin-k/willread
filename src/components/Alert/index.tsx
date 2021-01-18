@@ -90,7 +90,7 @@ const TitleWrapper = styled.View`
 
 const Title = styled.Text`
   font-size: 20px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
   font-weight: 700;
 `;
 
@@ -100,7 +100,7 @@ const MessageWrapper = styled.View`
 
 const Message = styled.Text`
   font-size: 16px;
-  color: ${(props) => props.theme.colors.typography.title};
+  color: ${(props) => props.theme.colors.typography.primary};
 `;
 
 const Actions = styled.View`

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: themes.dark.colors.background,
   },
   text: {
-    color: themes.dark.colors.typography.title,
+    color: themes.dark.colors.typography.primary,
   },
 });
 
