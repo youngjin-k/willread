@@ -60,9 +60,8 @@ const slice = createSlice({
       state.lastAddedArticle = article;
     },
     removeArticle: (state, action: PayloadAction<Article>) => {
-      state.articles.splice(
-        state.articles.findIndex((article) => article.id === action.payload.id),
-        1,
+      state.articles = state.articles.filter(
+        (article) => article.id !== action.payload.id,
       );
     },
     updateArticle: (
@@ -86,11 +85,8 @@ const slice = createSlice({
       state.scheduledNotifications.push(action.payload);
     },
     removeScheduledNotification: (state, action: PayloadAction<string>) => {
-      state.scheduledNotifications.splice(
-        state.scheduledNotifications.findIndex(
-          (scheduledNotification) => scheduledNotification.id === action.payload,
-        ),
-        1,
+      state.scheduledNotifications = state.scheduledNotifications.filter(
+        (scheduledNotification) => scheduledNotification.id !== action.payload,
       );
     },
   },
