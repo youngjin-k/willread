@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
 import styled, { css } from 'styled-components/native';
 
@@ -39,12 +39,15 @@ function ArticleCard({
     }
   };
 
+  const isPressable = useMemo(() => !!onPress && !!onLongPress, [onPress, onLongPress]);
+
   return (
     <>
-      <ReccomendTitle>{timeLeft.detailLabel}</ReccomendTitle>
+      {timeLeft && <ReccomendTitle>{timeLeft.detailLabel}</ReccomendTitle>}
       <PressableWrapper
         onPress={handlePress}
         onLongPress={handleLongPress}
+        pressable={isPressable}
       >
         <RecommendCardBlock>
           <ThumbnailWrapper>
@@ -107,7 +110,7 @@ const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
     `}
 `;
 
-const Title = styled.Text<{read: boolean}>`
+const Title = styled.Text<{ read: boolean }>`
   font-size: 18px;
   color: ${(props) => (props.read
     ? props.theme.colors.typography.secondary
