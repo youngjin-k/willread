@@ -46,7 +46,7 @@ export interface DisplayItem {
   article: Article;
   timeLeft: ArticleTimeLeft;
   isSetNotification: boolean;
-  notificationTagType: 'default' | 'danger';
+  notificationTagType: 'default' | 'accent';
 }
 
 function HomeScreen(): React.ReactElement {
@@ -127,6 +127,8 @@ function HomeScreen(): React.ReactElement {
         return;
       }
 
+      let badgeCount = 0;
+
       const items: DisplayItem[] = articles.map((article) => {
         const scheduledNotification = scheduledNotifications.find(
           (notification) => notification.articleId === article.id,
@@ -140,7 +142,8 @@ function HomeScreen(): React.ReactElement {
           const now = dayjs();
 
           if (dayjs(scheduledNotification.date).isBefore(now)) {
-            notificationTagType = 'danger';
+            notificationTagType = 'accent';
+            badgeCount += 1;
           }
         }
 
@@ -152,11 +155,9 @@ function HomeScreen(): React.ReactElement {
         };
       });
 
-      // if (items.some((item) => item.timeLeft.day < 1)) {
       setDisplayMainItem(items.shift());
-      // }
-
       setDisplayItems(items);
+      Notifications.setBadgeCountAsync(badgeCount);
     };
 
     updater();

@@ -24,6 +24,7 @@ const setNotification = async (date: Date, article: Article) => {
       data: {
         article,
       },
+      badge: 1,
     },
     trigger: date,
   });
@@ -114,7 +115,7 @@ function useArticle() {
       const now = dayjs();
 
       if (dayjs(scheduledNotification.date).isBefore(now)) {
-        dispatch(removeScheduledNotificationSlice(article.id));
+        dispatch(removeScheduledNotificationSlice(scheduledNotification.id));
       }
     }
 

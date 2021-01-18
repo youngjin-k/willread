@@ -76,8 +76,8 @@ function NotificationTag({ visible, type = 'default' }: NotificationTagProps) {
         </Svg>
 
         <BellIconWrapper
-          iterationCount={type === 'danger' ? 'infinite' : undefined}
-          animation={type === 'danger' ? 'swing' : undefined}
+          iterationCount={type === 'accent' ? 'infinite' : undefined}
+          animation={type === 'accent' ? 'swing' : undefined}
         >
           <Svg
             width="20"

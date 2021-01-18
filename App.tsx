@@ -7,11 +7,20 @@ import { ThemeProvider } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { PersistGate } from 'redux-persist/integration/react';
+import * as Notifications from 'expo-notifications';
 import Navigation from './src/config/Navigation';
 import store, { persistor } from './src/features/store';
 import themes from './src/lib/styles/themes';
 
 Icon.loadFont();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export default function App(): ReactElement {
   const scheme = useColorScheme();

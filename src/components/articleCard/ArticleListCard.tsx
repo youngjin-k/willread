@@ -17,6 +17,7 @@ function ArticleListCard({
   article,
   timeLeft,
   isSetNotification = false,
+  notificationTagType,
   onPress,
   onLongPress,
 }: ArticleListCardProps): ReactElement {
@@ -64,7 +65,10 @@ function ArticleListCard({
             }}
             scheme={scheme}
           />
-          <NotificationTag visible={isSetNotification} />
+          <NotificationTag
+            visible={isSetNotification}
+            type={notificationTagType}
+          />
         </ThumbnailWrapper>
       </ArticleListCardBlock>
     </PressableWrapper>

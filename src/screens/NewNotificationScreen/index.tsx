@@ -11,7 +11,6 @@ import styled, { css } from 'styled-components/native';
 import Button, { ButtonSize } from '../../components/Button';
 import DateTimePicker from './DateTimePicker';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
-import { Article } from '../../features/article/articles';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
 import BottomModal from '../../components/BottomModal';
@@ -22,14 +21,6 @@ export enum PermissionStatus {
   UNDETERMINED = 'undetermined',
   DENIED = 'denied',
 }
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
 
 export interface Step4Props {
   nextStep: () => void;
