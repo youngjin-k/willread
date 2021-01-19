@@ -28,7 +28,7 @@ function ArticleMenu({
 }: ArticleMenuProps): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const {
-    setLastReadAt, scheduledNotifications, removeScheduledNotification,
+    resetLastReadAt, scheduledNotifications, removeScheduledNotification,
   } = useArticle();
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
   const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
@@ -104,9 +104,9 @@ function ArticleMenu({
   }, [article]);
 
   const handlePressSetUnread = useCallback(() => {
-    setLastReadAt(article);
+    resetLastReadAt(article);
     onClose();
-  }, [article, onClose, setLastReadAt]);
+  }, [article, onClose, resetLastReadAt]);
 
   return (
     <>
