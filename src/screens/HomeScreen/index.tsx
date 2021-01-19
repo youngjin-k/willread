@@ -1,8 +1,5 @@
 import {
-  RouteProp,
-  useNavigation,
-  useRoute,
-  useScrollToTop,
+  RouteProp, useNavigation, useRoute, useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import dayjs from 'dayjs';
@@ -11,9 +8,8 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  Image, Linking, ScrollView, useColorScheme, View,
+  Image, ScrollView, useColorScheme, View,
 } from 'react-native';
-import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
 

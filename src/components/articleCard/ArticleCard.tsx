@@ -1,10 +1,10 @@
 import React, { ReactElement, useMemo } from 'react';
-import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
 import { DisplayItem } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
+import ArticleThumbnail from './ArticleThumbnail';
 import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
@@ -21,8 +21,6 @@ function ArticleCard({
   onPress,
   onLongPress,
 }: ArticleCardProps): ReactElement {
-  const scheme = useColorScheme();
-
   const {
     url, title, image, lastReadAt,
   } = article;
@@ -39,7 +37,10 @@ function ArticleCard({
     }
   };
 
-  const isPressable = useMemo(() => !!onPress && !!onLongPress, [onPress, onLongPress]);
+  const isPressable = useMemo(() => !!onPress && !!onLongPress, [
+    onPress,
+    onLongPress,
+  ]);
 
   return (
     <>
@@ -51,11 +52,9 @@ function ArticleCard({
       >
         <RecommendCardBlock>
           <ThumbnailWrapper>
-            <Thumbnail
-              source={{
-                uri: image,
-              }}
-              scheme={scheme}
+            <ArticleThumbnail
+              size="fullWidth"
+              uri={image}
             />
             <NotificationTag
               visible={isSetNotification}
@@ -97,17 +96,6 @@ const ThumbnailWrapper = styled.View`
 const Content = styled.View`
   padding: 0 0 0 8px;
   margin: 16px 0 0 0;
-`;
-
-const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
-  width: 100%;
-  aspect-ratio: ${1.9 / 1};
-  border-radius: 16px;
-
-  ${(props) => props.scheme === 'dark'
-    && css`
-      opacity: 0.8;
-    `}
 `;
 
 const Title = styled.Text<{ read: boolean }>`
