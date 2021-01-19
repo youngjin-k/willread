@@ -10,6 +10,7 @@ import React, {
 import {
   Image, ScrollView, useColorScheme, View,
 } from 'react-native';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
 import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
 
@@ -70,6 +71,8 @@ function HomeScreen(): React.ReactElement {
       if (!item) {
         return;
       }
+
+      InAppBrowser.close();
 
       const { data } = item;
 
