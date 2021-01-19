@@ -21,6 +21,7 @@ import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import extractUrl from '../../lib/utils/extractUrl';
 import AddFromClipboard from './AddFromClipboard';
 import ListItem from './ListItem';
 import SpaceIndicator from './SpaceIndicator';
@@ -74,10 +75,14 @@ function HomeScreen(): React.ReactElement {
 
       InAppBrowser.close();
 
-      const { data } = item;
+      const url = extractUrl(item.data);
+
+      if (!url) {
+        return;
+      }
 
       navigation.navigate('NewArticle', {
-        url: data,
+        url,
       });
     },
     [navigation],
