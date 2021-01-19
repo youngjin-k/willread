@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
-import { ColorSchemeName, useColorScheme } from 'react-native-appearance';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
 import { DisplayItem } from '../../screens/HomeScreen';
 import ArticleCardDescription from './ArticleCardDescription';
+import ArticleThumbnail from './ArticleThumbnail';
 import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
@@ -21,8 +21,6 @@ function ArticleListCard({
   onPress,
   onLongPress,
 }: ArticleListCardProps): ReactElement {
-  const scheme = useColorScheme();
-
   const handlePress = () => {
     if (onPress) {
       onPress(article);
@@ -59,12 +57,7 @@ function ArticleListCard({
           />
         </Content>
         <ThumbnailWrapper>
-          <Thumbnail
-            source={{
-              uri: image,
-            }}
-            scheme={scheme}
-          />
+          <ArticleThumbnail uri={image} />
           <NotificationTag
             visible={isSetNotification}
             type={notificationTagType}
@@ -83,17 +76,6 @@ const ArticleListCardBlock = styled.View`
 const ThumbnailWrapper = styled.View`
   border-radius: 16px;
   background-color: ${(props) => props.theme.colors.secondary};
-`;
-
-const Thumbnail = styled.Image<{ scheme: ColorSchemeName }>`
-  width: 96px;
-  height: 80px;
-  border-radius: 16px;
-
-  ${(props) => props.scheme === 'dark'
-    && css`
-      opacity: 0.8;
-    `}
 `;
 
 const Content = styled.View`
