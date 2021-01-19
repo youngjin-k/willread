@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, {
   forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState,
 } from 'react';
-import { Dimensions, View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Feather';
@@ -48,6 +48,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   const [visiblCancelNotificationAlert, setVisibleCancelNotificationAlert] = useState(false);
   const { removeArticle, scheduledNotifications, removeScheduledNotification } = useArticle();
   const animatableViewRef = useRef<Animatable.View & View>(null);
+  const window = useWindowDimensions();
 
   const scheduledNotification = useMemo(
     () => scheduledNotifications.find(
@@ -91,7 +92,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
           translateX: 0,
         },
         1: {
-          translateX: Dimensions.get('window').width * -1,
+          translateX: window.width * -1,
         },
       }, 300);
     } else {
@@ -100,11 +101,11 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
           translateX: 0,
         },
         0.5: {
-          translateX: Dimensions.get('window').width * -1,
+          translateX: window.width * -1,
           height: 96,
         },
         1: {
-          translateX: Dimensions.get('window').width * -1,
+          translateX: window.width * -1,
           height: 0,
         },
       }, 600);
@@ -115,7 +116,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     if (isMainCard) {
       await (animatableViewRef.current as any).animate({
         0: {
-          translateX: Dimensions.get('window').width,
+          translateX: window.width,
         },
         1: {
           translateX: 0,
