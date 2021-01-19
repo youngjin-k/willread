@@ -1,17 +1,17 @@
-import React, {
-  useCallback, useEffect, useRef, useState,
-} from 'react';
-import styled from 'styled-components/native';
 import Clipboard from '@react-native-community/clipboard';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import urlRegex from 'url-regex';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { AppState } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import styled from 'styled-components/native';
+
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
-import VALID_URL from '../../lib/regex/validUrl';
 import useArticle from '../../features/article/useArticle';
+import extractUrl from '../../lib/utils/extractUrl';
 
 function AddFromClipboard() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -50,27 +50,20 @@ function AddFromClipboard() {
 
   useEffect(() => {
     const checkClipboard = async () => {
-      const URLs = clipboardData.match(urlRegex());
+      const url = extractUrl(clipboardData);
 
-      if (URLs === null) {
+      if (!url) {
         setClipboardURL('');
         return;
       }
 
-      const URL = URLs[0];
-
-      if (URL.match(VALID_URL) === null) {
+      if (articles.some((article) => article.url === url)) {
         setClipboardURL('');
         return;
       }
 
-      if (articles.some(({ url }) => url === URL)) {
-        setClipboardURL('');
-        return;
-      }
-
-      setClipboardURL(URL);
-      lastClipboardURL.current = URL;
+      setClipboardURL(url);
+      lastClipboardURL.current = url;
     };
 
     checkClipboard();
