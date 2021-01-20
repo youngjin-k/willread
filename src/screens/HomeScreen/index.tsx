@@ -128,6 +128,7 @@ function HomeScreen(): React.ReactElement {
       if (articles.length < 1) {
         setDisplayMainItem(undefined);
         setDisplayItems(undefined);
+        Notifications.setBadgeCountAsync(0);
         return;
       }
 
