@@ -2,26 +2,24 @@ import {
   RouteProp, useNavigation, useRoute, useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  Image, ScrollView, useColorScheme, View,
+  Image, RefreshControl, ScrollView, useColorScheme, View,
 } from 'react-native';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
 import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
 
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
-import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle, { DisplayItem } from '../../features/article/useArticle';
 import extractUrl from '../../lib/utils/extractUrl';
+import webBrowser from '../../lib/utils/webBrowser';
 import AddFromClipboard from './AddFromClipboard';
 import ListItem from './ListItem';
 import SpaceIndicator from './SpaceIndicator';
@@ -36,7 +34,10 @@ function HomeScreen(): React.ReactElement {
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
   const {
-    articles, readArticle, scheduledNotifications, getDisplayItems,
+    articles,
+    readArticle,
+    scheduledNotifications,
+    getDisplayItems,
   } = useArticle();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
@@ -44,6 +45,7 @@ function HomeScreen(): React.ReactElement {
   const [scrollEnable, setScrollEnabled] = useState(true);
   const rowRefs = useRef<any>([]);
   const swipeMenuOpenRowIndex = useRef<number | null>(null);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useScrollToTop(scrollViewRef);
 
@@ -59,7 +61,7 @@ function HomeScreen(): React.ReactElement {
         return;
       }
 
-      InAppBrowser.close();
+      webBrowser.close();
 
       const url = extractUrl(item.data);
 
@@ -115,9 +117,17 @@ function HomeScreen(): React.ReactElement {
     setDisplayItems(items);
   }, [getDisplayItems]);
 
+  const handleRefresh = useCallback(() => {
+    setRefreshing(true);
+    updateDisplayItems();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, [updateDisplayItems]);
+
   useEffect(() => {
     updateDisplayItems();
-    const timer = setInterval(updateDisplayItems, 1000 * 30);
+    const timer = setInterval(updateDisplayItems, 1000 * 60);
 
     return () => {
       clearInterval(timer);
@@ -155,6 +165,12 @@ function HomeScreen(): React.ReactElement {
         scrollEnabled={scrollEnable}
         onScroll={handleScrollView}
         scrollEventThrottle={1000}
+        refreshControl={(
+          <RefreshControl
+            onRefresh={handleRefresh}
+            refreshing={refreshing}
+          />
+        )}
       >
         <Header>
           <Image

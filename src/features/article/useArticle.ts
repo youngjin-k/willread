@@ -1,20 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import { useCallback } from 'react';
-import dayjs from 'dayjs';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
-import { Linking } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+
+import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
+import webBrowser from '../../lib/utils/webBrowser';
 import { RootState } from '../store';
 import {
-  ArticleDraft,
   addArticle,
-  removeArticle as removeArticleSlice,
-  Article,
-  updateArticle,
   addScheduledNotification as addScheduledNotificationSlice,
+  Article,
+  ArticleDraft,
+  removeArticle as removeArticleSlice,
   removeScheduledNotification as removeScheduledNotificationSlice,
+  updateArticle,
 } from './articles';
-import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 
 export interface ArticleTimeLeft {
   second: number;
@@ -145,25 +145,7 @@ function useArticle() {
         }
       }
 
-      if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open(article.url, {
-          // iOS Properties
-          readerMode: false,
-          animated: true,
-          modalPresentationStyle: 'fullScreen',
-          modalTransitionStyle: 'coverVertical',
-          modalEnabled: false,
-          enableBarCollapsing: true,
-
-          // Android Properties
-          showTitle: true,
-          enableUrlBarHiding: true,
-          enableDefaultShare: true,
-          forceCloseOnRedirection: false,
-        });
-      } else {
-        Linking.openURL(article.url);
-      }
+      webBrowser.open(article.url);
     },
     [dispatch, setLastReadAt, scheduledNotifications],
   );
@@ -172,12 +154,11 @@ function useArticle() {
     let badgeCount = 0;
     const now = dayjs();
 
-    const expiredItems = articles.filter((article) => now.isAfter(dayjs(article.expiredAt)));
-
-    console.log(expiredItems);
-    expiredItems.forEach((article) => {
-      removeArticle(article);
-    });
+    articles
+      .filter((article) => now.isAfter(dayjs(article.expiredAt)))
+      .forEach((article) => {
+        removeArticle(article);
+      });
 
     const displayItems: DisplayItem[] = articles
       .filter((article) => now.isBefore(dayjs(article.expiredAt)))
