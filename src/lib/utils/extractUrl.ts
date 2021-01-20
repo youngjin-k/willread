@@ -1,8 +1,8 @@
-import urlRegex from 'url-regex';
+import urlRegexSafe from 'url-regex-safe';
 import VALID_URL from '../regex/validUrl';
 
 const extractUrl = (text: string) => {
-  const urls = text.match(urlRegex());
+  const urls = text.match(urlRegexSafe());
 
   if (urls === null) {
     return null;
