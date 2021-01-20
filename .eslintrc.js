@@ -12,23 +12,42 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react', 'react-hooks', '@typescript-eslint'],
   rules: {
-    'react-hooks/rules-of-hooks': ERROR,
-    'react-hooks/exhaustive-deps': WARNING,
+    'no-unused-expressions': OFF,
+    quotes: [ERROR, 'single'],
+    semi: [ERROR, 'always'],
+    'no-use-before-define': OFF,
+    camelcase: OFF,
+    'no-shadow': OFF,
+
     'import/no-unresolved': OFF,
     'import/extensions': OFF,
+
+    'react-hooks/rules-of-hooks': ERROR,
+    'react-hooks/exhaustive-deps': WARNING,
+
     'react/jsx-props-no-spreading': OFF,
     'react/jsx-filename-extension': [
       ERROR,
-      {extensions: ['.js', '.jsx', '.ts', '.tsx']},
+      {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     ],
     'react/jsx-wrap-multilines': ERROR,
+    'react/no-array-index-key': OFF,
+    'react/jsx-max-props-per-line': [
+      ERROR,
+      {
+        maximum: 1,
+      },
+    ],
+
     '@typescript-eslint/no-inferrable-types': OFF,
     '@typescript-eslint/explicit-function-return-type': OFF,
-    '@typescript-eslint/no-use-before-define': OFF,
-    'react/no-array-index-key': OFF,
-    quotes: [WARNING, 'single'],
-    semi: [ERROR, 'always'],
-    'react/jsx-max-props-per-line': [ERROR, {maximum: 1}],
+    '@typescript-eslint/explicit-module-boundary-types': OFF,
+    '@typescript-eslint/no-unused-expressions': ERROR,
+    '@typescript-eslint/ban-ts-ignore': OFF,
+    '@typescript-eslint/no-var-requires': OFF,
+    '@typescript-eslint/no-shadow': ERROR,
   },
   overrides: [
     {
