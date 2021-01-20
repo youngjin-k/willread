@@ -23,6 +23,7 @@ import webBrowser from '../../lib/utils/webBrowser';
 import AddFromClipboard from './AddFromClipboard';
 import ListItem from './ListItem';
 import SpaceIndicator from './SpaceIndicator';
+import useTheme from '../../lib/styles/useTheme';
 
 export interface SharedItem {
   mimeType: string;
@@ -46,6 +47,7 @@ function HomeScreen(): React.ReactElement {
   const rowRefs = useRef<any>([]);
   const swipeMenuOpenRowIndex = useRef<number | null>(null);
   const [refreshing, setRefreshing] = React.useState(false);
+  const theme = useTheme();
 
   useScrollToTop(scrollViewRef);
 
@@ -169,6 +171,9 @@ function HomeScreen(): React.ReactElement {
           <RefreshControl
             onRefresh={handleRefresh}
             refreshing={refreshing}
+            tintColor={theme.colors.typography.point}
+            colors={[theme.colors.typography.point]}
+            // TODO progressBackgroundColor: backgroundElevated 적용
           />
         )}
       >
