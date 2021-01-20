@@ -22,8 +22,15 @@ function calculateTimeLeft(time: string) {
   }
 
   if (hour < 3) {
-    label = `${hour}시간 ${minute % 60}분 남음`;
-    detailLabel = `🔥 ${hour}시간 ${minute % 60}분 남았어요!`;
+    label = `${hour}시간`;
+    detailLabel = `🔥 ${hour}시간`;
+
+    if (minute % 60 > 0) {
+      label += ` ${minute % 60}분`;
+      detailLabel += ` ${minute % 60}분`;
+    }
+    label += ' 남음';
+    detailLabel += ' 남았어요!';
   }
 
   if (hour < 1) {
