@@ -14,8 +14,6 @@ const extractUrl = (text: string) => {
     return null;
   }
 
-  console.log(url);
-
   return url;
 };
 
