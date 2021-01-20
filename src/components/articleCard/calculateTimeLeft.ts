@@ -35,7 +35,7 @@ function calculateTimeLeft(time: string) {
 
   if (hour < 1) {
     label = `${minute}분 남음`;
-    detailLabel = `🔥 ${minute % 60}분 남았어요!`;
+    detailLabel = `🔥 ${minute}분 남았어요!`;
   }
 
   return {
