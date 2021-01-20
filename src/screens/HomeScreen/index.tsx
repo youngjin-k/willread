@@ -20,7 +20,7 @@ import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
-import useArticle from '../../features/article/useArticle';
+import useArticle, { DisplayItem } from '../../features/article/useArticle';
 import extractUrl from '../../lib/utils/extractUrl';
 import AddFromClipboard from './AddFromClipboard';
 import ListItem from './ListItem';
@@ -31,27 +31,13 @@ export interface SharedItem {
   data: string;
 }
 
-export interface ArticleTimeLeft {
-  second: number;
-  day: number;
-  hour: number;
-  minute: number;
-  label: string;
-  detailLabel: string;
-}
-
-export interface DisplayItem {
-  article: Article;
-  timeLeft: ArticleTimeLeft;
-  isSetNotification: boolean;
-  notificationTagType: 'default' | 'accent';
-}
-
 function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const scheme = useColorScheme();
-  const { articles, readArticle, scheduledNotifications } = useArticle();
+  const {
+    articles, readArticle, scheduledNotifications, getDisplayItems,
+  } = useArticle();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
   const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
@@ -123,55 +109,20 @@ function HomeScreen(): React.ReactElement {
     };
   }, [handleShare]);
 
+  const updateDisplayItems = useCallback(() => {
+    const items = getDisplayItems();
+    setDisplayMainItem(items.shift());
+    setDisplayItems(items);
+  }, [getDisplayItems]);
+
   useEffect(() => {
-    const updater = () => {
-      if (articles.length < 1) {
-        setDisplayMainItem(undefined);
-        setDisplayItems(undefined);
-        Notifications.setBadgeCountAsync(0);
-        return;
-      }
-
-      let badgeCount = 0;
-
-      const items: DisplayItem[] = articles.map((article) => {
-        const scheduledNotification = scheduledNotifications.find(
-          (notification) => notification.articleId === article.id,
-        );
-
-        let isSetNotification = false;
-        let notificationTagType: DisplayItem['notificationTagType'] = 'default';
-
-        if (scheduledNotification) {
-          isSetNotification = true;
-          const now = dayjs();
-
-          if (dayjs(scheduledNotification.date).isBefore(now)) {
-            notificationTagType = 'accent';
-            badgeCount += 1;
-          }
-        }
-
-        return {
-          article,
-          timeLeft: calculateTimeLeft(article.createdAt),
-          isSetNotification,
-          notificationTagType,
-        };
-      });
-
-      setDisplayMainItem(items.shift());
-      setDisplayItems(items);
-      Notifications.setBadgeCountAsync(badgeCount);
-    };
-
-    updater();
-    const timer = setInterval(updater, 1000 * 30);
+    updateDisplayItems();
+    const timer = setInterval(updateDisplayItems, 1000 * 30);
 
     return () => {
       clearInterval(timer);
     };
-  }, [articles, scheduledNotifications]);
+  }, [articles, scheduledNotifications, updateDisplayItems]);
 
   const handlePressArticle = (article: Article) => {
     readArticle(article);

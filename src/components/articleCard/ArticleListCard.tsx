@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
-import { DisplayItem } from '../../screens/HomeScreen';
+import { DisplayItem } from '../../features/article/useArticle';
 import ArticleCardDescription from './ArticleCardDescription';
 import ArticleThumbnail from './ArticleThumbnail';
 import NotificationTag from './NotificationTag';

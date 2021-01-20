@@ -9,14 +9,13 @@ import { SwipeRow } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
-import { DisplayItem } from '.';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import BottomModal from '../../components/BottomModal';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
-import useArticle from '../../features/article/useArticle';
+import useArticle, { DisplayItem } from '../../features/article/useArticle';
 import ArticleMenu from './ArticleMenu';
 import CancelNotificationConfirm from './CancelNotificationConfirm';
 import RemoveConfirm from './RemoveConfirm';

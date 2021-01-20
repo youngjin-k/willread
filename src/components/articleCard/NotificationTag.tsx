@@ -5,7 +5,7 @@ import Svg, { Path } from 'react-native-svg';
 import styled from 'styled-components/native';
 
 import themes from '../../lib/styles/themes';
-import { DisplayItem } from '../../screens/HomeScreen';
+import { DisplayItem } from '../../features/article/useArticle';
 
 export interface NotificationTagProps {
   visible: boolean;

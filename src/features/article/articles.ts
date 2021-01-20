@@ -11,6 +11,7 @@ export interface Article {
   favicon?: string;
   createdAt: string;
   lastReadAt?: string;
+  expiredAt: string;
 }
 
 export interface ArticleDraft {
@@ -51,10 +52,12 @@ const slice = createSlice({
   initialState,
   reducers: {
     addArticle: (state, action: PayloadAction<ArticleDraft>) => {
+      const now = dayjs();
       const article: Article = {
         ...action.payload,
         id: nanoid(),
-        createdAt: dayjs().format(),
+        createdAt: now.format(),
+        expiredAt: now.add(7, 'day').format(),
       };
       state.articles.push(article);
       state.lastAddedArticle = article;
@@ -89,6 +92,9 @@ const slice = createSlice({
         (scheduledNotification) => scheduledNotification.id !== action.payload,
       );
     },
+    DEVforceUpdateArticles: (state, action: PayloadAction<Article[]>) => {
+      state.articles = action.payload;
+    },
   },
 });
 export default slice.reducer;
@@ -99,4 +105,5 @@ export const {
   updateArticle,
   addScheduledNotification,
   removeScheduledNotification,
+  DEVforceUpdateArticles,
 } = slice.actions;
