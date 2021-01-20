@@ -173,7 +173,7 @@ function HomeScreen(): React.ReactElement {
             refreshing={refreshing}
             tintColor={theme.colors.typography.point}
             colors={[theme.colors.typography.point]}
-            // TODO progressBackgroundColor: backgroundElevated 적용
+            progressBackgroundColor={theme.colors.backgroundElevated}
           />
         )}
       >

@@ -53,9 +53,9 @@ export const buttonBackgroundColor = (
       case ButtonVariant.DangerText:
         return 'transparent';
       case ButtonVariant.PrimaryContained:
-        return themes[appearance].colors.typography.disabled;
+        return themes[appearance].colors.buttonDisabled;
       case ButtonVariant.PrimaryTenderContained:
-        return themes[appearance].colors.typography.disabled;
+        return themes[appearance].colors.buttonDisabled;
       default:
         return '';
     }
@@ -85,7 +85,7 @@ export const buttonTextColor = (
   const appearance = dark ? 'dark' : 'light';
 
   if (disabled) {
-    return themes[appearance].colors.grey2;
+    return themes[appearance].colors.typography.disabled;
   }
 
   switch (variant) {

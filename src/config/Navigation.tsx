@@ -21,6 +21,7 @@ import HomeScreen from '../screens/HomeScreen';
 import NewArticleScreen from '../screens/NewArticleScreen';
 import NewNotificationScreen from '../screens/NewNotificationScreen';
 import SuccessSaveArticleScreen from '../screens/SuccessSaveArticleScreen';
+import useTheme from '../lib/styles/useTheme';
 
 export type TabParamList = {
   Home: {
@@ -37,7 +38,7 @@ const willreadLightTheme = {
     ...DefaultTheme.colors,
     primary: themes.light.colors.typography.primary,
     background: themes.light.colors.background,
-    card: themes.light.colors.background,
+    card: themes.light.colors.backgroundElevated,
     text: themes.light.colors.typography.secondary,
   },
 };
@@ -48,7 +49,7 @@ const willreadDarkTheme = {
     ...DarkTheme.colors,
     primary: themes.dark.colors.typography.primary,
     background: themes.dark.colors.background,
-    card: themes.dark.colors.secondary,
+    card: themes.dark.colors.backgroundElevated,
     text: themes.dark.colors.typography.secondary,
   },
 };
@@ -56,7 +57,7 @@ const willreadDarkTheme = {
 const NewArticleScreenPlaceholder = () => null;
 
 function AppTabsScreen() {
-  const scheme = useColorScheme();
+  const theme = useTheme();
 
   return (
     <Tab.Navigator
@@ -88,17 +89,14 @@ function AppTabsScreen() {
               style={{
                 width: size,
                 height: size,
-                backgroundColor:
-                  themes[scheme === 'dark' ? 'dark' : 'light'].colors.primary,
+                backgroundColor: theme.colors.primary,
                 borderRadius: 6,
               }}
             >
               <Icon
                 name="plus"
                 size={size}
-                color={
-                  themes[scheme === 'dark' ? 'dark' : 'light'].colors.secondary
-                }
+                color={theme.colors.backgroundElevated}
               />
             </View>
           ),

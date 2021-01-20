@@ -19,7 +19,7 @@ const Handle = styled.View`
   width: 64px;
   height: 6px;
   border-radius: 4px;
-  background-color: ${(props) => props.theme.colors.grey1};
+  background-color: ${(props) => props.theme.colors.border};
 `;
 
 export default ModalHandle;

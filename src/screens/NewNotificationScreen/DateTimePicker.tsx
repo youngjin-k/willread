@@ -356,7 +356,7 @@ const getDayOfWeekLabelColor = (day: number, theme: DefaultTheme) => {
     case 6:
       return theme.colors.typography.point;
     case 0:
-      return theme.colors.category.red;
+      return theme.colors.danger;
     default:
       return theme.colors.typography.secondary;
   }

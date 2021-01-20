@@ -47,7 +47,7 @@ const BottomModalContainerBlock = styled.View`
 `;
 
 const SafeAreaView = styled.SafeAreaView`
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.backgroundElevated};
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   width: 100%;

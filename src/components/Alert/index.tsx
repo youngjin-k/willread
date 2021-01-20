@@ -74,7 +74,7 @@ function Alert({
 const AlertBlock = styled.View``;
 
 const SafeAreaView = styled.SafeAreaView`
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.backgroundElevated};
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   width: 100%;
@@ -111,7 +111,7 @@ const Actions = styled.View`
 const ActionSeparator = styled.View`
   width: 1px;
   margin: 8px 16px;
-  background-color: ${(props) => props.theme.colors.grey1};
+  background-color: ${(props) => props.theme.colors.border};
 `;
 
 const ActionWrapper = styled.View`
