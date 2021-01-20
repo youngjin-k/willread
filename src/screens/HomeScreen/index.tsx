@@ -119,8 +119,8 @@ function HomeScreen(): React.ReactElement {
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
-    updateDisplayItems();
     setTimeout(() => {
+      updateDisplayItems();
       setRefreshing(false);
     }, 1000);
   }, [updateDisplayItems]);
