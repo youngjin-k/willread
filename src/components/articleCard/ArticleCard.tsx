@@ -8,7 +8,11 @@ import ArticleThumbnail from './ArticleThumbnail';
 import NotificationTag from './NotificationTag';
 import PressableWrapper from './PressableWrapper';
 
-export interface ArticleCardProps extends DisplayItem {
+export interface ArticleCardProps {
+  article: DisplayItem['article'];
+  timeLeft?: DisplayItem['timeLeft'];
+  isSetNotification?: DisplayItem['isSetNotification'];
+  notificationTagType?: DisplayItem['notificationTagType'];
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
 }
