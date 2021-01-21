@@ -34,6 +34,7 @@ module.exports = {
     ],
     'react/jsx-wrap-multilines': ERROR,
     'react/no-array-index-key': OFF,
+    'react/require-default-props': OFF,
     'react/jsx-max-props-per-line': [
       ERROR,
       {

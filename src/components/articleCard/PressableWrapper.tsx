@@ -7,8 +7,8 @@ import { useColorScheme } from 'react-native-appearance';
 export interface PressableWrapperProps {
   children: ReactElement;
   pressable?: boolean;
-  onPress: (event: GestureResponderEvent) => void;
-  onLongPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
+  onLongPress?: (event: GestureResponderEvent) => void;
 }
 
 function PressableWrapper({
