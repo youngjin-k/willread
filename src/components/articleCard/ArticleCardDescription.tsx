@@ -1,20 +1,10 @@
 import React, { ReactElement } from 'react';
 import styled, { css } from 'styled-components/native';
-
-import { ArticleTimeLeft } from '../../screens/HomeScreen';
+import { URL } from 'react-native-url-polyfill';
+import { ArticleTimeLeft } from '../../features/article/useArticle';
 
 const extractHostname = (url: string) => {
-  let hostname: string;
-
-  if (url.indexOf('//') > -1) {
-    hostname = url.split('/')[2];
-  } else {
-    hostname = url.split('/')[0];
-  }
-
-  hostname = hostname.split(':')[0];
-  hostname = hostname.split('?')[0];
-
+  const { hostname } = new URL(url);
   return hostname;
 };
 

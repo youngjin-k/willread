@@ -43,6 +43,7 @@
     "react-native-svg": "^12.1.0",
     "react-native-swipe-list-view": "^3.2.5",
     "react-native-unimodules": "^0.11.0",
+    "react-native-url-polyfill": "^1.2.0",
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
