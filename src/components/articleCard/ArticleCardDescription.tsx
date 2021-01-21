@@ -41,7 +41,7 @@ const TimeLeft = styled.Text<{accent: boolean}>`
   color: ${(props) => props.theme.colors.typography.secondary};
 
   ${(props) => props.accent && css`
-    color: #FE4D4D;
+    color: ${props.theme.colors.danger};
   `};
 `;
 
