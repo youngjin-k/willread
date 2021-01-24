@@ -1,34 +1,27 @@
 /* eslint-disable react/display-name */
-import Icon from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-} from '@react-navigation/native';
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { ReactElement } from 'react';
 import { View } from 'react-native';
 import { useColorScheme } from 'react-native-appearance';
+import Icon from 'react-native-vector-icons/Feather';
 
-import themes from '../../src/lib/styles/themes';
-import MyScreen from '../../src/screens/MyScreen';
-import { Article } from '../features/article/articles';
-import HomeScreen from '../screens/HomeScreen';
-import NewArticleScreen from '../screens/NewArticleScreen';
-import NewNotificationScreen from '../screens/NewNotificationScreen';
-import SuccessSaveArticleScreen from '../screens/SuccessSaveArticleScreen';
-import useTheme from '../lib/styles/useTheme';
+import themes from '../../lib/styles/themes';
+import { Article } from '../../features/article/articles';
+import useTheme from '../../lib/styles/useTheme';
+import HomeScreen from '../../screens/HomeScreen';
+import NewArticleScreen from '../../screens/NewArticleScreen';
+import NewNotificationScreen from '../../screens/NewNotificationScreen';
+import SuccessSaveArticleScreen from '../../screens/SuccessSaveArticleScreen';
+import Menu from './Menu';
 
 export type TabParamList = {
   Home: {
     setScrollBottom?: boolean;
   };
   Add: undefined;
-  More: undefined;
+  Menu: undefined;
 };
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -109,8 +102,8 @@ function AppTabsScreen() {
         })}
       />
       <Tab.Screen
-        name="More"
-        component={MyScreen}
+        name="Menu"
+        component={Menu}
         options={{
           tabBarLabel: '더보기',
           tabBarIcon: ({ color, size }) => (
