@@ -131,7 +131,9 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     }
 
     closeCancelNotificationAlert();
-    removeScheduledNotification(scheduledNotification.id);
+    setTimeout(() => {
+      removeScheduledNotification(scheduledNotification.id);
+    }, 200);
   }, [scheduledNotification, removeScheduledNotification]);
 
   const handleLongPressArticle = () => {

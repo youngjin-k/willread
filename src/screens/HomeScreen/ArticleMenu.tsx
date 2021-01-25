@@ -94,7 +94,9 @@ function ArticleMenu({
       return;
     }
 
-    removeScheduledNotification(scheduledNotification.id);
+    setTimeout(() => {
+      removeScheduledNotification(scheduledNotification.id);
+    }, 200);
   }, [scheduledNotification, removeScheduledNotification, onClose]);
 
   const handlePressSharing = useCallback(() => {
