@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
 import { Article } from '../../features/article/articles';
@@ -15,6 +16,7 @@ export interface ArticleListCardProps {
   notificationTagType?: DisplayItem['notificationTagType'];
   onPress?: (article: Article) => void;
   onLongPress?: (article: Article) => void;
+  selected?: boolean;
 }
 
 function ArticleListCard({
@@ -24,6 +26,7 @@ function ArticleListCard({
   notificationTagType,
   onPress,
   onLongPress,
+  selected,
 }: ArticleListCardProps): ReactElement {
   const handlePress = () => {
     if (onPress) {
@@ -66,6 +69,11 @@ function ArticleListCard({
             visible={isSetNotification}
             type={notificationTagType}
           />
+          {selected && (
+          <SelectedIconWrapper>
+            <CheckIcon name="check" />
+          </SelectedIconWrapper>
+          )}
         </ThumbnailWrapper>
       </ArticleListCardBlock>
     </PressableWrapper>
@@ -93,6 +101,23 @@ const Title = styled.Text<{ read: boolean }>`
     ? props.theme.colors.typography.secondary
     : props.theme.colors.typography.primary)};
   font-weight: bold;
+`;
+
+const SelectedIconWrapper = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${(props) => props.theme.colors.primary};
+  border-radius: 16px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CheckIcon = styled(Icon)`
+  font-size: 24px;
+  color: ${(props) => props.theme.colors.typography.primary};
 `;
 
 export default ArticleListCard;
