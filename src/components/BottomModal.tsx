@@ -1,18 +1,21 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
+import { View } from 'react-native';
 import ModalHandle from './ModalHandle';
 
 export interface BottomModalProps {
   isVisible: boolean;
   onClose: () => void;
   children: React.ReactNode | React.ReactNode[];
+  useSafeAreaView?: boolean;
 }
 
 function BottomModal({
   isVisible,
   onClose,
   children,
+  useSafeAreaView = true,
 }: BottomModalProps): React.ReactElement {
   return (
     <Modal
@@ -32,7 +35,7 @@ function BottomModal({
       }}
     >
       <BottomModalContainerBlock>
-        <SafeAreaView>
+        <SafeAreaView as={useSafeAreaView === false ? View : undefined}>
           <ModalHandle />
           <Main>
             {children}
