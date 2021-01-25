@@ -8,7 +8,7 @@ import themes from '../../lib/styles/themes';
 import { DisplayItem } from '../../features/article/useArticle';
 
 export interface NotificationTagProps {
-  visible: boolean;
+  visible?: boolean;
   type?: DisplayItem['notificationTagType'];
 }
 
