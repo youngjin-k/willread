@@ -5,8 +5,8 @@ import * as Notifications from 'expo-notifications';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import useArticle from '../features/article/useArticle';
-import { DEVforceUpdateArticles } from '../features/article/articles';
+import useArticle from '../../../features/article/useArticle';
+import { DEVforceUpdateArticles } from '../../../features/article/articles';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,10 +26,11 @@ const cancelAllNotifications = async () => {
   await Notifications.cancelAllScheduledNotificationsAsync();
 };
 
-function MyScreen(): JSX.Element {
+function DeveloperScreen() {
   const dispatch = useDispatch();
   const {
     articles,
+    pendingList,
     scheduledNotifications,
     removeScheduledNotification,
   } = useArticle();
@@ -97,6 +98,13 @@ function MyScreen(): JSX.Element {
         }}
       />
 
+      <Button
+        title="log pendingList"
+        onPress={() => {
+          console.log(pendingList);
+        }}
+      />
+
       <Spacer />
 
       <Button
@@ -143,4 +151,4 @@ const Spacer = styled.View`
   height: 20px;
 `;
 
-export default MyScreen;
+export default DeveloperScreen;

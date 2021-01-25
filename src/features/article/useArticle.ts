@@ -1,19 +1,20 @@
 import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import webBrowser from '../../lib/utils/webBrowser';
 import { RootState } from '../store';
 import {
-  addArticle,
-  addScheduledNotification as addScheduledNotificationSlice,
+  addArticle as addArticleAction,
+  addScheduledNotification as addScheduledNotificationAction,
   Article,
   ArticleDraft,
-  removeArticle as removeArticleSlice,
-  removeScheduledNotification as removeScheduledNotificationSlice,
+  removeArticle as removeArticleAction,
+  removeScheduledNotification as removeScheduledNotificationAction,
   updateArticle,
+  addPendingList as addPendingListAction,
 } from './articles';
 
 export interface ArticleTimeLeft {
@@ -55,6 +56,7 @@ function useArticle() {
     articleDraft,
     lastAddedArticle,
     scheduledNotifications,
+    pendingList,
   } = useSelector((state: RootState) => state.articles);
 
   const setLastReadAt = useCallback(
@@ -91,7 +93,7 @@ function useArticle() {
       await Notifications.cancelScheduledNotificationAsync(
         scheduledNotification.id,
       );
-      dispatch(removeScheduledNotificationSlice(scheduledNotification.id));
+      dispatch(removeScheduledNotificationAction(scheduledNotification.id));
     },
     [dispatch, scheduledNotifications],
   );
@@ -99,7 +101,7 @@ function useArticle() {
   const removeArticle = useCallback(
     async (article: Article) => {
       await removeDeviceNotification(article);
-      dispatch(removeArticleSlice(article));
+      dispatch(removeArticleAction(article));
     },
     [dispatch, removeDeviceNotification],
   );
@@ -107,7 +109,7 @@ function useArticle() {
   const removeScheduledNotification = useCallback(
     async (id: string) => {
       await Notifications.cancelScheduledNotificationAsync(id);
-      dispatch(removeScheduledNotificationSlice(id));
+      dispatch(removeScheduledNotificationAction(id));
     },
     [dispatch],
   );
@@ -119,7 +121,7 @@ function useArticle() {
       const id = await setNotification(date, article);
 
       dispatch(
-        addScheduledNotificationSlice({
+        addScheduledNotificationAction({
           id,
           articleId: article.id,
           date: dayjs(date).toString(),
@@ -141,7 +143,7 @@ function useArticle() {
         const now = dayjs();
 
         if (dayjs(scheduledNotification.date).isBefore(now)) {
-          dispatch(removeScheduledNotificationSlice(scheduledNotification.id));
+          dispatch(removeScheduledNotificationAction(scheduledNotification.id));
         }
       }
 
@@ -191,12 +193,29 @@ function useArticle() {
     return displayItems;
   }, [articles, scheduledNotifications, removeArticle]);
 
+  const isArticleFull = useMemo(() => articles.length === 14, [articles]);
+
+  const addArticle = useCallback(
+    (draft: ArticleDraft) => {
+      if (isArticleFull) {
+        dispatch(addPendingListAction(draft));
+        return 'pendingList';
+      }
+
+      dispatch(addArticleAction(draft));
+      return 'articleList';
+    },
+    [dispatch, isArticleFull],
+  );
+
   return {
     articles,
     articleDraft,
     lastAddedArticle,
     scheduledNotifications,
-    addArticle: (draft: ArticleDraft) => dispatch(addArticle(draft)),
+    pendingList,
+    isArticleFull,
+    addArticle,
     removeArticle,
     addScheduledNotification,
     removeScheduledNotification,

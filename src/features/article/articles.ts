@@ -33,6 +33,7 @@ export interface InitialState {
   lastAddedArticle?: Article;
   articleDraft: ArticleDraft;
   scheduledNotifications: ScheduledNotification[];
+  pendingList: Article[];
 }
 
 const defaultArticleDraft = () => ({
@@ -45,6 +46,7 @@ const initialState: InitialState = {
   articles: [],
   articleDraft: defaultArticleDraft(),
   scheduledNotifications: [],
+  pendingList: [],
 };
 
 const slice = createSlice({
@@ -92,6 +94,17 @@ const slice = createSlice({
         (scheduledNotification) => scheduledNotification.id !== action.payload,
       );
     },
+    addPendingList: (state, action: PayloadAction<ArticleDraft>) => {
+      const now = dayjs();
+      const article: Article = {
+        ...action.payload,
+        id: nanoid(),
+        createdAt: now.format(),
+        expiredAt: now.add(1, 'day').format(),
+      };
+      state.pendingList.push(article);
+      state.lastAddedArticle = article;
+    },
     DEVforceUpdateArticles: (state, action: PayloadAction<Article[]>) => {
       state.articles = action.payload;
     },
@@ -105,5 +118,6 @@ export const {
   updateArticle,
   addScheduledNotification,
   removeScheduledNotification,
+  addPendingList,
   DEVforceUpdateArticles,
 } = slice.actions;

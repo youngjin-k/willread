@@ -1,5 +1,8 @@
 /* eslint-disable react/display-name */
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, useColorScheme, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,6 +11,7 @@ import styled from 'styled-components/native';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import themes from '../../lib/styles/themes';
 import MenuScreen from '../../screens/MenuScreen';
+import DeveloperScreen from '../../screens/MenuScreen/DeveloperScreen';
 import LanguageScreen from '../../screens/MenuScreen/LanguageScreen';
 import ThemeScreen from '../../screens/MenuScreen/ThemeScreen';
 
@@ -48,6 +52,7 @@ export type MenuStackParamList = {
   MenuScreen: undefined;
   ThemeScreen: undefined;
   LanguageScreen: undefined;
+  DeveloperScreen: undefined;
 };
 
 const MenuStack = createStackNavigator<MenuStackParamList>();
@@ -91,6 +96,22 @@ function Menu() {
           headerTitleStyle: styles[appearance].headerTitle,
         }}
       />
+
+      {__DEV__ && (
+        <MenuStack.Screen
+          name="DeveloperScreen"
+          component={DeveloperScreen}
+          options={{
+            title: 'DEVELOPER',
+            headerBackTitleVisible: false,
+            headerLeft: ({ onPress }) => <HeaderBackButton onPress={onPress} />,
+            headerTitleAlign: 'center',
+            headerBackground: () => <HeaderBackground />,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            headerTitleStyle: styles[appearance].headerTitle,
+          }}
+        />
+      )}
     </MenuStack.Navigator>
   );
 }

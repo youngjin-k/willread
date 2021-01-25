@@ -85,7 +85,8 @@ function NewArticleScreen(): React.ReactElement {
 
     try {
       const response = (await getLinkPreview(link)) as any;
-      addArticle({
+
+      const addedAt = addArticle({
         url: link,
         title: response.title,
         description: response.description,
@@ -93,7 +94,12 @@ function NewArticleScreen(): React.ReactElement {
         favicon: response.favicons.length > 0 ? response.favicons[0] : '',
       });
 
-      navigation.replace('SuccessSaveArticle');
+      if (addedAt === 'articleList') {
+        navigation.replace('SuccessSaveArticle');
+        return;
+      }
+
+      navigation.replace('SuccessSavePendingList');
     } catch (e) {
       setLoading(false);
     }
