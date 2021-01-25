@@ -163,36 +163,58 @@ function useArticle() {
         removeArticle(article);
       });
 
-    const displayItems: DisplayItem[] = articles
-      .filter((article) => now.isBefore(dayjs(article.expiredAt)))
-      .map((article) => {
-        const scheduledNotification = scheduledNotifications.find(
-          (notification) => notification.articleId === article.id,
-        );
+    const liveArticles = articles
+      .filter((article) => now.isBefore(dayjs(article.expiredAt)));
 
-        let isSetNotification = false;
-        let notificationTagType: DisplayItem['notificationTagType'] = 'default';
+    if (liveArticles.length < 14 && pendingList.length > 0) {
+      pendingList.slice(0, 14 - liveArticles.length).forEach((article) => {
+        const {
+          url,
+          title,
+          description = '',
+          image,
+          favicon,
+        } = article;
 
-        if (scheduledNotification) {
-          isSetNotification = true;
-
-          if (dayjs(scheduledNotification.date).isBefore(now)) {
-            notificationTagType = 'accent';
-            badgeCount += 1;
-          }
-        }
-
-        return {
-          article,
-          timeLeft: calculateTimeLeft(article.createdAt),
-          isSetNotification,
-          notificationTagType,
-        };
+        addArticle({
+          url,
+          title,
+          description,
+          image,
+          favicon,
+        });
+        removePendingList(article);
       });
+    }
+
+    const displayItems: DisplayItem[] = liveArticles.map((article) => {
+      const scheduledNotification = scheduledNotifications.find(
+        (notification) => notification.articleId === article.id,
+      );
+
+      let isSetNotification = false;
+      let notificationTagType: DisplayItem['notificationTagType'] = 'default';
+
+      if (scheduledNotification) {
+        isSetNotification = true;
+
+        if (dayjs(scheduledNotification.date).isBefore(now)) {
+          notificationTagType = 'accent';
+          badgeCount += 1;
+        }
+      }
+
+      return {
+        article,
+        timeLeft: calculateTimeLeft(article.createdAt),
+        isSetNotification,
+        notificationTagType,
+      };
+    });
 
     Notifications.setBadgeCountAsync(badgeCount);
     return displayItems;
-  }, [articles, scheduledNotifications, removeArticle]);
+  }, [articles, pendingList, scheduledNotifications, removeArticle]);
 
   const isArticleFull = useMemo(() => articles.length === 14, [articles]);
 
