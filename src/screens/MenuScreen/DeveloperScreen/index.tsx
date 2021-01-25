@@ -33,6 +33,7 @@ function DeveloperScreen() {
     pendingList,
     scheduledNotifications,
     removeScheduledNotification,
+    removePendingList,
   } = useArticle();
 
   const logScheduledNotifications = () => {
@@ -89,6 +90,12 @@ function DeveloperScreen() {
     dispatch(DEVforceUpdateArticles(data));
   };
 
+  const clearPendingList = () => {
+    pendingList.forEach((article) => {
+      removePendingList(article);
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Button
@@ -102,6 +109,13 @@ function DeveloperScreen() {
         title="log pendingList"
         onPress={() => {
           console.log(pendingList);
+        }}
+      />
+
+      <Button
+        title="clear pendingList"
+        onPress={() => {
+          clearPendingList();
         }}
       />
 
@@ -137,6 +151,7 @@ function DeveloperScreen() {
       />
 
       <Spacer />
+
       <Button
         title="force update articles"
         onPress={() => {

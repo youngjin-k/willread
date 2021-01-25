@@ -15,6 +15,7 @@ import {
   removeScheduledNotification as removeScheduledNotificationAction,
   updateArticle,
   addPendingList as addPendingListAction,
+  removePendingList as removePendingListAction,
 } from './articles';
 
 export interface ArticleTimeLeft {
@@ -208,6 +209,10 @@ function useArticle() {
     [dispatch, isArticleFull],
   );
 
+  const removePendingList = (article: Article) => {
+    dispatch(removePendingListAction(article));
+  };
+
   return {
     articles,
     articleDraft,
@@ -223,6 +228,7 @@ function useArticle() {
     resetLastReadAt,
     readArticle,
     getDisplayItems,
+    removePendingList,
   };
 }
 

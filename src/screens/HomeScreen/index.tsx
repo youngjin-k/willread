@@ -24,6 +24,8 @@ import AddFromClipboard from './AddFromClipboard';
 import ListItem from './ListItem';
 import SpaceIndicator from './SpaceIndicator';
 import useTheme from '../../lib/styles/useTheme';
+import PendingListAlert from './PendingListAlert';
+import PendingList from './PendingList';
 
 export interface SharedItem {
   mimeType: string;
@@ -48,6 +50,7 @@ function HomeScreen(): React.ReactElement {
   const swipeMenuOpenRowIndex = useRef<number | null>(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const theme = useTheme();
+  const [visiblePendingList, setVisiblePendingList] = useState(false);
 
   useScrollToTop(scrollViewRef);
 
@@ -140,6 +143,22 @@ function HomeScreen(): React.ReactElement {
     readArticle(article);
   };
 
+  const openPendingList = () => {
+    setVisiblePendingList(true);
+  };
+
+  const closePendingList = () => {
+    setVisiblePendingList(false);
+  };
+
+  const handlePendingListAlertPress = () => {
+    openPendingList();
+  };
+
+  const handlePendingListClose = () => {
+    closePendingList();
+  };
+
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
       async (response) => {
@@ -159,40 +178,43 @@ function HomeScreen(): React.ReactElement {
   }, [articles]);
 
   return (
-    <Container>
-      <HomeScrollView
-        ref={scrollViewRef}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 8 }}
-        scrollEnabled={scrollEnable}
-        onScroll={handleScrollView}
-        scrollEventThrottle={1000}
-        refreshControl={(
-          <RefreshControl
-            onRefresh={handleRefresh}
-            refreshing={refreshing}
-            tintColor={theme.colors.typography.point}
-            colors={[theme.colors.typography.point]}
-            progressBackgroundColor={theme.colors.backgroundElevated}
-          />
+    <>
+      <Container>
+        <HomeScrollView
+          ref={scrollViewRef}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 8 }}
+          scrollEnabled={scrollEnable}
+          onScroll={handleScrollView}
+          scrollEventThrottle={1000}
+          refreshControl={(
+            <RefreshControl
+              onRefresh={handleRefresh}
+              refreshing={refreshing}
+              tintColor={theme.colors.typography.point}
+              colors={[theme.colors.typography.point]}
+              progressBackgroundColor={theme.colors.backgroundElevated}
+            />
         )}
-      >
-        <Header>
-          <Image
-            style={{ width: 160 }}
-            resizeMode="contain"
-            source={scheme === 'dark' ? willreadDark : willreadLight}
-          />
-          <SpaceIndicator
-            usage={
+        >
+          <Header>
+            <Image
+              style={{ width: 160 }}
+              resizeMode="contain"
+              source={scheme === 'dark' ? willreadDark : willreadLight}
+            />
+            <SpaceIndicator
+              usage={
               // TODO 정리 필요
               (displayItems ? displayItems.length : 0)
               + (displayMainItem ? 1 : 0)
             }
-          />
-        </Header>
+            />
+          </Header>
 
-        {displayMainItem && (
+          <PendingListAlert onPress={handlePendingListAlertPress} />
+
+          {displayMainItem && (
           <>
             <ListItem
               ref={(el) => {
@@ -211,11 +233,11 @@ function HomeScreen(): React.ReactElement {
               <Line />
             </View>
           </>
-        )}
+          )}
 
-        <AddFromClipboard />
+          <AddFromClipboard />
 
-        {displayItems
+          {displayItems
           && displayItems.map((item, i) => (
             <ListItem
               ref={(el) => {
@@ -230,8 +252,14 @@ function HomeScreen(): React.ReactElement {
               }}
             />
           ))}
-      </HomeScrollView>
-    </Container>
+        </HomeScrollView>
+      </Container>
+
+      <PendingList
+        isVisible={visiblePendingList}
+        onClose={handlePendingListClose}
+      />
+    </>
   );
 }
 

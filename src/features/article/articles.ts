@@ -105,6 +105,11 @@ const slice = createSlice({
       state.pendingList.push(article);
       state.lastAddedArticle = article;
     },
+    removePendingList: (state, action: PayloadAction<Article>) => {
+      state.pendingList = state.pendingList.filter(
+        (article) => article.id !== action.payload.id,
+      );
+    },
     DEVforceUpdateArticles: (state, action: PayloadAction<Article[]>) => {
       state.articles = action.payload;
     },
@@ -119,5 +124,6 @@ export const {
   addScheduledNotification,
   removeScheduledNotification,
   addPendingList,
+  removePendingList,
   DEVforceUpdateArticles,
 } = slice.actions;

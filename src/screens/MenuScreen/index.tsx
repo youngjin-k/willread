@@ -77,6 +77,7 @@ function MenuScreen() {
             title="DEVELOPER"
             menuIconName="code"
             onPress={() => navigation.navigate('DeveloperScreen')}
+            hasSubMenu
           />
           )}
         </MenuList>

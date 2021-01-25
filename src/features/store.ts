@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { combineReducers, createStore } from 'redux';
 import {
-  createMigrate, PersistConfig, persistReducer, persistStore,
+  createMigrate, persistReducer, persistStore,
 } from 'redux-persist';
 
 import articlesReducer from './article/articles';
 import migrations from './migrations';
 
-const persistConfig: PersistConfig<unknown> = {
+const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   version: 2,
