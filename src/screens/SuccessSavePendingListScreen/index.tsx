@@ -31,11 +31,15 @@ function SuccessSavePendingListScreen() {
   const handlePressClose = () => {
     navigation.navigate('Home', {
       setScrollTop: true,
+      setScrollBottom: false,
+      openPendingList: false,
     });
   };
 
   const handlePendingListLinkPress = () => {
     navigation.navigate('Home', {
+      setScrollTop: true,
+      setScrollBottom: false,
       openPendingList: true,
     });
   };

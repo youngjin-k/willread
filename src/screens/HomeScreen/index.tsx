@@ -1,5 +1,8 @@
 import {
-  RouteProp, useNavigation, useRoute, useScrollToTop,
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -7,7 +10,11 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  Image, RefreshControl, ScrollView, useColorScheme, View,
+  Image,
+  RefreshControl,
+  ScrollView,
+  useColorScheme,
+  View,
 } from 'react-native';
 import ShareMenu from 'react-native-share-menu';
 import styled from 'styled-components/native';
@@ -55,10 +62,18 @@ function HomeScreen(): React.ReactElement {
   useScrollToTop(scrollViewRef);
 
   useEffect(() => {
-    if (route?.params?.setScrollBottom && scrollViewRef.current) {
+    if (route.params?.setScrollBottom && scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd();
     }
-  }, [route]);
+
+    if (route.params?.setScrollTop && scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    }
+
+    if (route.params?.openPendingList) {
+      setTimeout(openPendingList, 300);
+    }
+  }, [navigation, route]);
 
   const handleShare = useCallback(
     (item?: SharedItem) => {
@@ -195,7 +210,7 @@ function HomeScreen(): React.ReactElement {
               colors={[theme.colors.typography.point]}
               progressBackgroundColor={theme.colors.backgroundElevated}
             />
-        )}
+          )}
         >
           <Header>
             <Image
@@ -205,53 +220,53 @@ function HomeScreen(): React.ReactElement {
             />
             <SpaceIndicator
               usage={
-              // TODO 정리 필요
-              (displayItems ? displayItems.length : 0)
-              + (displayMainItem ? 1 : 0)
-            }
+                // TODO 정리 필요
+                (displayItems ? displayItems.length : 0)
+                + (displayMainItem ? 1 : 0)
+              }
             />
           </Header>
 
           <PendingListAlert onPress={handlePendingListAlertPress} />
 
           {displayMainItem && (
-          <>
-            <ListItem
-              ref={(el) => {
-                rowRefs.current[0] = el;
-              }}
-              item={displayMainItem}
-              setScrollEnabled={setScrollEnabled}
-              onPress={handlePressArticle}
-              onSwipeMenuOpen={() => {
-                handleSwipeMenuOpen(0);
-              }}
-              isMainCard
-            />
+            <>
+              <ListItem
+                ref={(el) => {
+                  rowRefs.current[0] = el;
+                }}
+                item={displayMainItem}
+                setScrollEnabled={setScrollEnabled}
+                onPress={handlePressArticle}
+                onSwipeMenuOpen={() => {
+                  handleSwipeMenuOpen(0);
+                }}
+                isMainCard
+              />
 
-            <View style={{ paddingTop: 16, paddingBottom: 8 }}>
-              <Line />
-            </View>
-          </>
+              <View style={{ paddingTop: 16, paddingBottom: 8 }}>
+                <Line />
+              </View>
+            </>
           )}
 
           <AddFromClipboard />
 
           {displayItems
-          && displayItems.map((item, i) => (
-            <ListItem
-              ref={(el) => {
-                rowRefs.current[i + 1] = el;
-              }}
-              key={item.article.id}
-              item={item}
-              setScrollEnabled={setScrollEnabled}
-              onPress={handlePressArticle}
-              onSwipeMenuOpen={() => {
-                handleSwipeMenuOpen(i + 1);
-              }}
-            />
-          ))}
+            && displayItems.map((item, i) => (
+              <ListItem
+                ref={(el) => {
+                  rowRefs.current[i + 1] = el;
+                }}
+                key={item.article.id}
+                item={item}
+                setScrollEnabled={setScrollEnabled}
+                onPress={handlePressArticle}
+                onSwipeMenuOpen={() => {
+                  handleSwipeMenuOpen(i + 1);
+                }}
+              />
+            ))}
         </HomeScrollView>
       </Container>
 

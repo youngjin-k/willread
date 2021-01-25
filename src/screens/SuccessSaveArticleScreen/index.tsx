@@ -35,6 +35,8 @@ function SuccessSaveArticleScreen(): React.ReactElement {
   const handlePressClose = () => {
     navigation.navigate('Home', {
       setScrollBottom: true,
+      setScrollTop: false,
+      openPendingList: false,
     });
   };
 

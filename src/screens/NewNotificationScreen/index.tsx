@@ -194,6 +194,8 @@ function NewNotificationScreen(): ReactElement {
     if (route.params.isNewArticle) {
       navigation.navigate('Home', {
         setScrollBottom: true,
+        setScrollTop: false,
+        openPendingList: false,
       });
       return;
     }
