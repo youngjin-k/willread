@@ -75,6 +75,12 @@ function SuccessSavePendingListScreen() {
         </Animatable.View>
       </Content>
       <Actions>
+        <HelpTextWrapper>
+          <HelpText>{'등록 대기 목록은 '}</HelpText>
+          <HelpText accent>{'7개가 넘으면 '}</HelpText>
+          <HelpText>더 이상 등록할 수 없어요.</HelpText>
+          <HelpText>윌리드와 함께 잠깐의 여유를 가져보시는건 어떨까요?</HelpText>
+        </HelpTextWrapper>
         <Button
           onPress={handlePressClose}
           label="완료"
@@ -118,7 +124,20 @@ const SubTitle = styled.Text`
   line-height: 20px;
   font-weight: 500;
   color: ${(props) => props.theme.colors.typography.secondary};
+`;
+
+const HelpTextWrapper = styled.View`
+  flex-direction: row;
   flex-wrap: wrap;
+  margin-bottom: 16px;
+  justify-content: center;
+`;
+
+const HelpText = styled.Text<{ accent?: boolean }>`
+  font-size: 13px;
+  color: ${(props) => (props.accent
+    ? props.theme.colors.typography.point
+    : props.theme.colors.typography.primary)};
 `;
 
 const Actions = styled.View`
