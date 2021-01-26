@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import webBrowser from '../../lib/utils/webBrowser';
+import willreadToast from '../../lib/willreadToast';
 import { RootState } from '../store';
 import {
   addArticle as addArticleAction,
@@ -163,17 +164,12 @@ function useArticle() {
         removeArticle(article);
       });
 
-    const liveArticles = articles
-      .filter((article) => now.isBefore(dayjs(article.expiredAt)));
+    const liveArticles = articles.filter((article) => now.isBefore(dayjs(article.expiredAt)));
 
     if (liveArticles.length < 14 && pendingList.length > 0) {
       pendingList.slice(0, 14 - liveArticles.length).forEach((article) => {
         const {
-          url,
-          title,
-          description = '',
-          image,
-          favicon,
+          url, title, description = '', image, favicon,
         } = article;
 
         addArticle({
@@ -185,6 +181,9 @@ function useArticle() {
         });
         removePendingList(article);
       });
+      willreadToast.showSimple(
+        '대기 목록에 있던 아티클이 자동으로 추가되었어요.',
+      );
     }
 
     const displayItems: DisplayItem[] = liveArticles.map((article) => {
