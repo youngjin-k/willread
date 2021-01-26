@@ -240,7 +240,7 @@ function useArticle() {
 
       return {
         article,
-        timeLeft: calculateTimeLeft(article.createdAt),
+        timeLeft: calculateTimeLeft(article.expiredAt),
         isSetNotification,
         notificationTagType,
       };

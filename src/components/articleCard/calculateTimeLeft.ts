@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
-function calculateTimeLeft(time: string) {
+function calculateTimeLeft(expiredAt: string) {
   const now = dayjs();
-  const deadline = dayjs(time).add(7, 'day');
+  const deadline = dayjs(expiredAt);
 
   const day = deadline.diff(now, 'day');
   const hour = deadline.diff(now, 'hour');
