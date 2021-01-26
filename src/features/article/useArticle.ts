@@ -4,19 +4,20 @@ import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
+import { MAX_ARTICLE_LIST_SPACE, MAX_PENDING_LIST_SPACE } from '../../constants';
 import webBrowser from '../../lib/utils/webBrowser';
 import willreadToast from '../../lib/willreadToast';
 import { RootState } from '../store';
 import {
   addArticle as addArticleAction,
+  addPendingList as addPendingListAction,
   addScheduledNotification as addScheduledNotificationAction,
   Article,
   ArticleDraft,
   removeArticle as removeArticleAction,
+  removePendingList as removePendingListAction,
   removeScheduledNotification as removeScheduledNotificationAction,
   updateArticle,
-  addPendingList as addPendingListAction,
-  removePendingList as removePendingListAction,
 } from './articles';
 
 export interface ArticleTimeLeft {
@@ -60,6 +61,15 @@ function useArticle() {
     scheduledNotifications,
     pendingList,
   } = useSelector((state: RootState) => state.articles);
+
+  const isArticleFull = useMemo(
+    () => articles.length === MAX_ARTICLE_LIST_SPACE,
+    [articles],
+  );
+  const isPendingListFull = useMemo(
+    () => pendingList.length === MAX_PENDING_LIST_SPACE,
+    [pendingList],
+  );
 
   const setLastReadAt = useCallback(
     (article: Article) => {
@@ -154,6 +164,26 @@ function useArticle() {
     [dispatch, setLastReadAt, scheduledNotifications],
   );
 
+  const addArticle = useCallback(
+    (draft: ArticleDraft) => {
+      if (isArticleFull) {
+        dispatch(addPendingListAction(draft));
+        return 'pendingList';
+      }
+
+      dispatch(addArticleAction(draft));
+      return 'articleList';
+    },
+    [dispatch, isArticleFull],
+  );
+
+  const removePendingList = useCallback(
+    (article: Article) => {
+      dispatch(removePendingListAction(article));
+    },
+    [dispatch],
+  );
+
   const getDisplayItems = useCallback(() => {
     let badgeCount = 0;
     const now = dayjs();
@@ -166,21 +196,26 @@ function useArticle() {
 
     const liveArticles = articles.filter((article) => now.isBefore(dayjs(article.expiredAt)));
 
-    if (liveArticles.length < 14 && pendingList.length > 0) {
-      pendingList.slice(0, 14 - liveArticles.length).forEach((article) => {
-        const {
-          url, title, description = '', image, favicon,
-        } = article;
+    if (
+      liveArticles.length < MAX_ARTICLE_LIST_SPACE
+      && pendingList.length > 0
+    ) {
+      pendingList
+        .slice(0, MAX_ARTICLE_LIST_SPACE - liveArticles.length)
+        .forEach((article) => {
+          const {
+            url, title, description = '', image, favicon,
+          } = article;
 
-        addArticle({
-          url,
-          title,
-          description,
-          image,
-          favicon,
+          addArticle({
+            url,
+            title,
+            description,
+            image,
+            favicon,
+          });
+          removePendingList(article);
         });
-        removePendingList(article);
-      });
       willreadToast.showSimple(
         '대기 목록에 있던 아티클이 자동으로 추가되었어요.',
       );
@@ -213,26 +248,14 @@ function useArticle() {
 
     Notifications.setBadgeCountAsync(badgeCount);
     return displayItems;
-  }, [articles, pendingList, scheduledNotifications, removeArticle]);
-
-  const isArticleFull = useMemo(() => articles.length === 14, [articles]);
-
-  const addArticle = useCallback(
-    (draft: ArticleDraft) => {
-      if (isArticleFull) {
-        dispatch(addPendingListAction(draft));
-        return 'pendingList';
-      }
-
-      dispatch(addArticleAction(draft));
-      return 'articleList';
-    },
-    [dispatch, isArticleFull],
-  );
-
-  const removePendingList = (article: Article) => {
-    dispatch(removePendingListAction(article));
-  };
+  }, [
+    articles,
+    pendingList,
+    removeArticle,
+    addArticle,
+    removePendingList,
+    scheduledNotifications,
+  ]);
 
   return {
     articles,
@@ -241,6 +264,7 @@ function useArticle() {
     scheduledNotifications,
     pendingList,
     isArticleFull,
+    isPendingListFull,
     addArticle,
     removeArticle,
     addScheduledNotification,

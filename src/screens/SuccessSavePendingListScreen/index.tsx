@@ -8,6 +8,7 @@ import styled from 'styled-components/native';
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import Button, { ButtonSize } from '../../components/Button';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
+import { MAX_PENDING_LIST_SPACE } from '../../constants';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 
@@ -77,7 +78,7 @@ function SuccessSavePendingListScreen() {
       <Actions>
         <HelpTextWrapper>
           <HelpText>{'등록 대기 목록은 '}</HelpText>
-          <HelpText accent>{'7개가 넘으면 '}</HelpText>
+          <HelpText accent>{`${MAX_PENDING_LIST_SPACE}개가 넘으면 `}</HelpText>
           <HelpText>더 이상 등록할 수 없어요.</HelpText>
           <HelpText>윌리드와 함께 잠깐의 여유를 가져보시는건 어떨까요?</HelpText>
         </HelpTextWrapper>
@@ -129,15 +130,16 @@ const SubTitle = styled.Text`
 const HelpTextWrapper = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
-  margin-bottom: 16px;
+  margin: 0 -16px 16px -16px;
   justify-content: center;
 `;
 
 const HelpText = styled.Text<{ accent?: boolean }>`
-  font-size: 13px;
+  font-size: 14px;
   color: ${(props) => (props.accent
     ? props.theme.colors.typography.point
     : props.theme.colors.typography.primary)};
+  text-align: center;
 `;
 
 const Actions = styled.View`

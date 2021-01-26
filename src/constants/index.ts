@@ -1,0 +1,4 @@
+export const MAX_ARTICLE_LIST_SPACE = 14;
+export const MAX_PENDING_LIST_SPACE = 7;
+export const ARTICLE_EXPIRE_DAYS = 7;
+export const PENDING_ARTICLE_EXPIRE_DAYS = 1;

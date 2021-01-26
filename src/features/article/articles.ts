@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
+import { ARTICLE_EXPIRE_DAYS, PENDING_ARTICLE_EXPIRE_DAYS } from '../../constants';
 
 export interface Article {
   id: string;
@@ -59,7 +60,7 @@ const slice = createSlice({
         ...action.payload,
         id: nanoid(),
         createdAt: now.format(),
-        expiredAt: now.add(7, 'day').format(),
+        expiredAt: now.add(ARTICLE_EXPIRE_DAYS, 'day').format(),
       };
       state.articles.push(article);
       state.lastAddedArticle = article;
@@ -100,7 +101,7 @@ const slice = createSlice({
         ...action.payload,
         id: nanoid(),
         createdAt: now.format(),
-        expiredAt: now.add(1, 'day').format(),
+        expiredAt: now.add(PENDING_ARTICLE_EXPIRE_DAYS, 'day').format(),
       };
       state.pendingList.push(article);
       state.lastAddedArticle = article;
