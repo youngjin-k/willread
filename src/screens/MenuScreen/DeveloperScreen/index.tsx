@@ -1,12 +1,13 @@
+import dayjs from 'dayjs';
+import * as Notifications from 'expo-notifications';
 import * as React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
-import * as Notifications from 'expo-notifications';
-
-import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
-import dayjs from 'dayjs';
-import useArticle from '../../../features/article/useArticle';
+import styled from 'styled-components/native';
+
 import { DEVforceUpdateArticles } from '../../../features/article/articles';
+import useArticle from '../../../features/article/useArticle';
+import willreadToast from '../../../lib/willreadToast';
 
 const styles = StyleSheet.create({
   container: {
@@ -156,6 +157,15 @@ function DeveloperScreen() {
         title="force update articles"
         onPress={() => {
           forceUpdateArticles();
+        }}
+      />
+
+      <Spacer />
+
+      <Button
+        title="show toast"
+        onPress={() => {
+          willreadToast.showSimple('대기 목록에 있던 아티클이 자동으로 추가되었어요.');
         }}
       />
     </View>

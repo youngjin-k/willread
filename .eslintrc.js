@@ -41,6 +41,7 @@ module.exports = {
         maximum: 1,
       },
     ],
+    'react/display-name': OFF,
 
     '@typescript-eslint/no-inferrable-types': OFF,
     '@typescript-eslint/explicit-function-return-type': OFF,

@@ -8,9 +8,11 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import * as Notifications from 'expo-notifications';
+import Toast from 'react-native-toast-message';
 import Navigation from './src/config/Navigation';
 import store, { persistor } from './src/features/store';
 import themes from './src/lib/styles/themes';
+import { toastConfig } from './src/lib/willreadToast/ToastTemplate';
 
 Icon.loadFont();
 
@@ -29,21 +31,25 @@ export default function App(): ReactElement {
   const statusBarStyle = isDark ? 'light-content' : 'dark-content';
 
   return (
-    <Provider store={store}>
-      <PersistGate
-        loading={null}
-        persistor={persistor}
-      >
-        <AppearanceProvider>
-          <StatusBar
-            backgroundColor={statusBarBackgroundColor}
-            barStyle={statusBarStyle}
-          />
-          <ThemeProvider theme={isDark ? themes.dark : themes.light}>
+    <ThemeProvider theme={isDark ? themes.dark : themes.light}>
+      <Provider store={store}>
+        <PersistGate
+          loading={null}
+          persistor={persistor}
+        >
+          <AppearanceProvider>
+            <StatusBar
+              backgroundColor={statusBarBackgroundColor}
+              barStyle={statusBarStyle}
+            />
             <Navigation />
-          </ThemeProvider>
-        </AppearanceProvider>
-      </PersistGate>
-    </Provider>
+          </AppearanceProvider>
+        </PersistGate>
+      </Provider>
+      <Toast
+        ref={(ref) => Toast.setRef(ref)}
+        config={toastConfig}
+      />
+    </ThemeProvider>
   );
 }
