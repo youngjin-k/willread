@@ -1,21 +1,15 @@
 import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import * as React from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
 
 import { DEVforceUpdateArticles } from '../../../features/article/articles';
 import useArticle from '../../../features/article/useArticle';
 import willreadToast from '../../../lib/willreadToast';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+import MenuItem from '../MenuItem';
+import MenuList from '../MenuList';
 
 const logAllNotifications = async () => {
   const result = await Notifications.getAllScheduledNotificationsAsync();
@@ -98,82 +92,82 @@ function DeveloperScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="log articles"
-        onPress={() => {
-          console.log(articles);
-        }}
-      />
+    <Container>
+      <ScrollView>
+        <MenuList title="log">
+          <MenuItem
+            title="log articles"
+            onPress={() => {
+              console.log(articles);
+            }}
+          />
+          <MenuItem
+            title="log pendingList"
+            onPress={() => {
+              console.log(pendingList);
+            }}
+          />
+          <MenuItem
+            title="log all notifications"
+            onPress={() => {
+              logAllNotifications();
+            }}
+          />
+          <MenuItem
+            title="log scheduledNotifications store data"
+            onPress={() => {
+              logScheduledNotifications();
+            }}
+          />
+        </MenuList>
 
-      <Button
-        title="log pendingList"
-        onPress={() => {
-          console.log(pendingList);
-        }}
-      />
+        <MenuList title="actions">
+          <MenuItem
+            title="clear pendingList"
+            onPress={() => {
+              clearPendingList();
+            }}
+          />
 
-      <Button
-        title="clear pendingList"
-        onPress={() => {
-          clearPendingList();
-        }}
-      />
+          <MenuItem
+            title="clear all notifications"
+            onPress={() => {
+              cancelAllNotifications();
+            }}
+          />
 
-      <Spacer />
+          <MenuItem
+            title="clear all scheduledNotifications store data"
+            onPress={() => {
+              clearAllScheduledNotifications();
+            }}
+          />
 
-      <Button
-        title="log all notifications"
-        onPress={() => {
-          logAllNotifications();
-        }}
-      />
+          <MenuItem
+            title="force update articles"
+            onPress={() => {
+              forceUpdateArticles();
+            }}
+          />
 
-      <Button
-        title="clear all notifications"
-        onPress={() => {
-          cancelAllNotifications();
-        }}
-      />
-
-      <Spacer />
-
-      <Button
-        title="log scheduledNotifications store data"
-        onPress={() => {
-          logScheduledNotifications();
-        }}
-      />
-      <Button
-        title="clear all scheduledNotifications store data"
-        onPress={() => {
-          clearAllScheduledNotifications();
-        }}
-      />
-
-      <Spacer />
-
-      <Button
-        title="force update articles"
-        onPress={() => {
-          forceUpdateArticles();
-        }}
-      />
-
-      <Spacer />
-
-      <Button
-        title="show toast"
-        onPress={() => {
-          willreadToast.showSimple('대기 목록에 있던 아티클이 자동으로 추가되었어요.');
-        }}
-      />
-    </View>
+          <MenuItem
+            title="show toast"
+            onPress={() => {
+              willreadToast.showSimple(
+                '대기 목록에 있던 아티클이 자동으로 추가되었어요.',
+              );
+            }}
+          />
+        </MenuList>
+      </ScrollView>
+    </Container>
   );
 }
 
-const Spacer = styled.View`
-  height: 20px;
+const Container = styled.SafeAreaView`
+  flex: 1;
 `;
+
+const ScrollView = styled.ScrollView``;
 
 export default DeveloperScreen;
