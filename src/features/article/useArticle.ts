@@ -4,7 +4,10 @@ import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
-import { MAX_ARTICLE_LIST_SPACE, MAX_PENDING_LIST_SPACE } from '../../constants';
+import {
+  MAX_ARTICLE_LIST_SPACE,
+  MAX_PENDING_LIST_SPACE,
+} from '../../constants';
 import webBrowser from '../../lib/utils/webBrowser';
 import willreadToast from '../../lib/willreadToast';
 import { RootState } from '../store';
@@ -194,13 +197,20 @@ function useArticle() {
         removeArticle(article);
       });
 
+    pendingList
+      .filter((article) => now.isAfter(dayjs(article.expiredAt)))
+      .forEach((article) => {
+        removePendingList(article);
+      });
+
     const liveArticles = articles.filter((article) => now.isBefore(dayjs(article.expiredAt)));
+    const livePendingList = pendingList.filter((article) => now.isBefore(dayjs(article.expiredAt)));
 
     if (
       liveArticles.length < MAX_ARTICLE_LIST_SPACE
-      && pendingList.length > 0
+      && livePendingList.length > 0
     ) {
-      pendingList
+      livePendingList
         .slice(0, MAX_ARTICLE_LIST_SPACE - liveArticles.length)
         .forEach((article) => {
           const {
