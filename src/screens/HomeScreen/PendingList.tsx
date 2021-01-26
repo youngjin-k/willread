@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 import Alert from '../../components/Alert';
 
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
+import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import BottomModal from '../../components/BottomModal';
 import Button, { ButtonVariant } from '../../components/Button';
 import Line from '../../components/Line';
@@ -51,6 +52,11 @@ function PendingList({ isVisible, onClose }: PendingListProps) {
     setVisibleRemoveConfirm(false);
   };
 
+  const displayItems = useMemo(() => pendingList.map((article) => ({
+    article,
+    timeLeft: calculateTimeLeft(article.expiredAt),
+  })), [pendingList]);
+
   return (
     <BottomModal
       isVisible={isVisible}
@@ -75,17 +81,18 @@ function PendingList({ isVisible, onClose }: PendingListProps) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingVertical: 8 }}
         >
-          {pendingList.map((article) => (
+          {displayItems.map(({ article, timeLeft }) => (
             <ArticleListCard
               key={article.id}
               article={article}
+              timeLeft={timeLeft}
               onPress={handlePress}
               selected={isSelected(article)}
             />
           ))}
         </List>
 
-        {pendingList.length === 0 && (
+        {displayItems.length === 0 && (
           <EmptyContent>
             <EmptyContentLabel>등록 대기 목록이 비어있어요.</EmptyContentLabel>
           </EmptyContent>
