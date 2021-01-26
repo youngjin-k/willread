@@ -1,13 +1,17 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { combineReducers, createStore } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
+import {
+  createMigrate, persistReducer, persistStore,
+} from 'redux-persist';
 
 import articlesReducer from './article/articles';
+import migrations from './migrations';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whiteList: [],
+  version: 2,
+  migrate: createMigrate(migrations),
 };
 
 const reducer = combineReducers({

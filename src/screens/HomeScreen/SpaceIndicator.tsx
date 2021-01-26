@@ -1,23 +1,22 @@
 import React from 'react';
 import styled, { css } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { MAX_ARTICLE_LIST_SPACE } from '../../constants';
 
 export interface SpaceIndicatorProps {
   usage: number;
 }
 
-const SPACE = 14;
-
 function SpaceIndicator({ usage }: SpaceIndicatorProps) {
-  const usableSpace = SPACE - usage;
-  const isOver = usage > SPACE;
+  const usableSpace = MAX_ARTICLE_LIST_SPACE - usage;
+  const isOver = usage > MAX_ARTICLE_LIST_SPACE;
 
   return (
     <SpaceIndicatorBlock>
       <BookmarkIcon name="bookmark" />
       <Usage isOver={isOver}>{usableSpace}</Usage>
       <Separator>/</Separator>
-      <Space>{SPACE}</Space>
+      <Space>{MAX_ARTICLE_LIST_SPACE}</Space>
       <HelpCircleIcon name="help-circle" />
     </SpaceIndicatorBlock>
   );

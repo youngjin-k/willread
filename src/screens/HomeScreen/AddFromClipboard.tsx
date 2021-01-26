@@ -17,7 +17,7 @@ function AddFromClipboard() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [clipboardData, setClipboardData] = useState('');
   const [clipboardURL, setClipboardURL] = useState('');
-  const { articles } = useArticle();
+  const { articles, pendingList } = useArticle();
   const viewRef = useRef<any>();
   const lastClipboardURL = useRef('');
 
@@ -57,7 +57,7 @@ function AddFromClipboard() {
         return;
       }
 
-      if (articles.some((article) => article.url === url)) {
+      if (articles.concat(pendingList).some((article) => article.url === url)) {
         setClipboardURL('');
         return;
       }
@@ -67,7 +67,7 @@ function AddFromClipboard() {
     };
 
     checkClipboard();
-  }, [clipboardData, articles]);
+  }, [clipboardData, articles, pendingList]);
 
   const handlePress = () => {
     navigation.navigate('NewArticle', {

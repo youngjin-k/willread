@@ -1,20 +1,15 @@
-import * as React from 'react';
-import { Button, StyleSheet, View } from 'react-native';
-import * as Notifications from 'expo-notifications';
-
-import styled from 'styled-components/native';
-import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import useArticle from '../features/article/useArticle';
-import { DEVforceUpdateArticles } from '../features/article/articles';
+import * as Notifications from 'expo-notifications';
+import * as React from 'react';
+import { Button } from 'react-native';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components/native';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+import { DEVforceUpdateArticles } from '../../../features/article/articles';
+import useArticle from '../../../features/article/useArticle';
+import willreadToast from '../../../lib/willreadToast';
+import MenuItem from '../MenuItem';
+import MenuList from '../MenuList';
 
 const logAllNotifications = async () => {
   const result = await Notifications.getAllScheduledNotificationsAsync();
@@ -26,12 +21,14 @@ const cancelAllNotifications = async () => {
   await Notifications.cancelAllScheduledNotificationsAsync();
 };
 
-function MyScreen(): JSX.Element {
+function DeveloperScreen() {
   const dispatch = useDispatch();
   const {
     articles,
+    pendingList,
     scheduledNotifications,
     removeScheduledNotification,
+    removePendingList,
   } = useArticle();
 
   const logScheduledNotifications = () => {
@@ -88,59 +85,89 @@ function MyScreen(): JSX.Element {
     dispatch(DEVforceUpdateArticles(data));
   };
 
+  const clearPendingList = () => {
+    pendingList.forEach((article) => {
+      removePendingList(article);
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <Button
-        title="log articles"
-        onPress={() => {
-          console.log(articles);
-        }}
-      />
+    <Container>
+      <ScrollView>
+        <MenuList title="log">
+          <MenuItem
+            title="log articles"
+            onPress={() => {
+              console.log(articles);
+            }}
+          />
+          <MenuItem
+            title="log pendingList"
+            onPress={() => {
+              console.log(pendingList);
+            }}
+          />
+          <MenuItem
+            title="log all notifications"
+            onPress={() => {
+              logAllNotifications();
+            }}
+          />
+          <MenuItem
+            title="log scheduledNotifications store data"
+            onPress={() => {
+              logScheduledNotifications();
+            }}
+          />
+        </MenuList>
 
-      <Spacer />
+        <MenuList title="actions">
+          <MenuItem
+            title="clear pendingList"
+            onPress={() => {
+              clearPendingList();
+            }}
+          />
 
-      <Button
-        title="log all notifications"
-        onPress={() => {
-          logAllNotifications();
-        }}
-      />
+          <MenuItem
+            title="clear all notifications"
+            onPress={() => {
+              cancelAllNotifications();
+            }}
+          />
 
-      <Button
-        title="clear all notifications"
-        onPress={() => {
-          cancelAllNotifications();
-        }}
-      />
+          <MenuItem
+            title="clear all scheduledNotifications store data"
+            onPress={() => {
+              clearAllScheduledNotifications();
+            }}
+          />
 
-      <Spacer />
+          <MenuItem
+            title="force update articles"
+            onPress={() => {
+              forceUpdateArticles();
+            }}
+          />
 
-      <Button
-        title="log scheduledNotifications store data"
-        onPress={() => {
-          logScheduledNotifications();
-        }}
-      />
-      <Button
-        title="clear all scheduledNotifications store data"
-        onPress={() => {
-          clearAllScheduledNotifications();
-        }}
-      />
-
-      <Spacer />
-      <Button
-        title="force update articles"
-        onPress={() => {
-          forceUpdateArticles();
-        }}
-      />
-    </View>
+          <MenuItem
+            title="show toast"
+            onPress={() => {
+              willreadToast.showSimple(
+                '대기 목록에 있던 아티클이 자동으로 추가되었어요.',
+              );
+            }}
+          />
+        </MenuList>
+      </ScrollView>
+    </Container>
   );
 }
 
-const Spacer = styled.View`
-  height: 20px;
+const Container = styled.SafeAreaView`
+  flex: 1;
 `;
 
-export default MyScreen;
+const ScrollView = styled.ScrollView``;
+
+export default DeveloperScreen;

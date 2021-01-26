@@ -72,6 +72,14 @@ function MenuScreen() {
             menuIconName="code"
             value="1.0.0"
           />
+          {__DEV__ && (
+          <MenuItem
+            title="DEVELOPER"
+            menuIconName="code"
+            onPress={() => navigation.navigate('DeveloperScreen')}
+            hasSubMenu
+          />
+          )}
         </MenuList>
       </MenuScrollView>
     </Container>
