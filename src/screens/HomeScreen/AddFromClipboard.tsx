@@ -7,6 +7,7 @@ import React, {
 import { AppState } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import styled from 'styled-components/native';
+import { throttle } from 'throttle-debounce';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
@@ -21,29 +22,31 @@ function AddFromClipboard() {
   const viewRef = useRef<any>();
   const lastClipboardURL = useRef('');
 
-  const getClipboardData = async (appState: string) => {
-    if (appState !== 'active') {
-      return;
-    }
+  const getClipboardData = useRef(
+    throttle(5000, true, async (appState: string) => {
+      if (appState !== 'active') {
+        return;
+      }
 
-    const data = await Clipboard.getString();
-    if (data) {
-      setClipboardData(data);
-    } else {
-      setClipboardData('');
-    }
-  };
+      const data = await Clipboard.getString();
+      if (data) {
+        setClipboardData(data);
+      } else {
+        setClipboardData('');
+      }
+    }),
+  );
 
   useEffect(() => {
-    getClipboardData('active');
+    getClipboardData.current('active');
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      AppState.addEventListener('change', getClipboardData);
+      AppState.addEventListener('change', getClipboardData.current);
 
       return () => {
-        AppState.removeEventListener('change', getClipboardData);
+        AppState.removeEventListener('change', getClipboardData.current);
       };
     }, []),
   );
