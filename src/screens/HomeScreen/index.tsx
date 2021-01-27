@@ -211,7 +211,7 @@ function HomeScreen(): React.ReactElement {
         <HomeScrollView
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 8 }}
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 8 }}
           scrollEnabled={scrollEnable}
           onScroll={handleScrollView}
           scrollEventThrottle={16}
