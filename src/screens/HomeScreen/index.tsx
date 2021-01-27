@@ -1,8 +1,5 @@
 import {
-  RouteProp,
-  useNavigation,
-  useRoute,
-  useScrollToTop,
+  RouteProp, useNavigation, useRoute, useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -10,14 +7,13 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  Image,
-  RefreshControl,
-  ScrollView,
-  useColorScheme,
-  View,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  RefreshControl, ScrollView, StyleSheet, useColorScheme, View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import ShareMenu from 'react-native-share-menu';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
@@ -25,14 +21,14 @@ import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle, { DisplayItem } from '../../features/article/useArticle';
+import useTheme from '../../lib/styles/useTheme';
 import extractUrl from '../../lib/utils/extractUrl';
 import webBrowser from '../../lib/utils/webBrowser';
 import AddFromClipboard from './AddFromClipboard';
 import ListItem from './ListItem';
-import SpaceIndicator from './SpaceIndicator';
-import useTheme from '../../lib/styles/useTheme';
-import PendingListAlert from './PendingListAlert';
 import PendingList from './PendingList';
+import PendingListAlert from './PendingListAlert';
+import SpaceIndicator from './SpaceIndicator';
 
 export interface SharedItem {
   mimeType: string;
@@ -58,6 +54,7 @@ function HomeScreen(): React.ReactElement {
   const [refreshing, setRefreshing] = React.useState(false);
   const theme = useTheme();
   const [visiblePendingList, setVisiblePendingList] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useScrollToTop(scrollViewRef);
 
@@ -113,7 +110,8 @@ function HomeScreen(): React.ReactElement {
     handleSwipeMenuOpen(null);
   };
 
-  const handleScrollView = () => {
+  const handleScrollView = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setIsScrolled(event.nativeEvent.contentOffset.y > 0);
     if (swipeMenuOpenRowIndex.current !== null) {
       closeOpenedSwipeMenu();
     }
@@ -195,13 +193,28 @@ function HomeScreen(): React.ReactElement {
   return (
     <>
       <Container>
+        <Header isScrolled={isScrolled}>
+          <FastImage
+            style={{ height: 32, width: 170 }}
+            resizeMode="contain"
+            source={scheme === 'dark' ? willreadDark : willreadLight}
+          />
+          <SpaceIndicator
+            usage={
+              // TODO 정리 필요
+              (displayItems ? displayItems.length : 0)
+              + (displayMainItem ? 1 : 0)
+            }
+          />
+        </Header>
+
         <HomeScrollView
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 8 }}
           scrollEnabled={scrollEnable}
           onScroll={handleScrollView}
-          scrollEventThrottle={1000}
+          scrollEventThrottle={16}
           refreshControl={(
             <RefreshControl
               onRefresh={handleRefresh}
@@ -212,21 +225,6 @@ function HomeScreen(): React.ReactElement {
             />
           )}
         >
-          <Header>
-            <Image
-              style={{ width: 160 }}
-              resizeMode="contain"
-              source={scheme === 'dark' ? willreadDark : willreadLight}
-            />
-            <SpaceIndicator
-              usage={
-                // TODO 정리 필요
-                (displayItems ? displayItems.length : 0)
-                + (displayMainItem ? 1 : 0)
-              }
-            />
-          </Header>
-
           <PendingListAlert onPress={handlePendingListAlertPress} />
 
           {displayMainItem && (
@@ -284,11 +282,18 @@ const Container = styled.SafeAreaView`
 
 const HomeScrollView = styled.ScrollView``;
 
-const Header = styled.View`
-  padding: 32px 16px 16px 16px;
+const Header = styled.View<{isScrolled: boolean}>`
+  background-color: ${(props) => props.theme.colors.background};
+  padding: 16px 16px 8px 16px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  border-bottom-width: ${StyleSheet.hairlineWidth}px;
+  border-bottom-color: ${(props) => props.theme.colors.background};
+
+  ${(props) => props.isScrolled && css`
+    border-bottom-color: ${props.theme.colors.border};
+  `}
 `;
 
 export default HomeScreen;
