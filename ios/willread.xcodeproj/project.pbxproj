@@ -19,6 +19,7 @@
 		3783F22B25583A8A00DB09FF /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3783F22125583A8A00DB09FF /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3783F24625583B9800DB09FF /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3783F24525583B9800DB09FF /* ShareViewController.swift */; };
 		3783F38D2558409600DB09FF /* ReactShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3783F38C2558409600DB09FF /* ReactShareViewController.swift */; };
+		3786931625C1AF2D0096EDDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		7B4E89661F5CF11775F04BF9 /* libPods-willread-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A035A40262BDC3299ECD925 /* libPods-willread-tvOS.a */; };
 		91604C9CC731134055CA6CC2 /* libPods-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2916869F41E5EB706764C79 /* libPods-ShareExtension.a */; };
 		99DE5395472F564E6BEA297C /* libPods-willread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80005D7E11F1B4939B9E7FDE /* libPods-willread.a */; };
@@ -489,6 +490,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				3786931625C1AF2D0096EDDB /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
