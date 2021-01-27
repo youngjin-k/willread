@@ -2,6 +2,10 @@ import urlRegexSafe from 'url-regex-safe';
 import VALID_URL from '../regex/validUrl';
 
 const extractUrl = (text: string) => {
+  if (!text) {
+    return null;
+  }
+
   const urls = text.match(urlRegexSafe());
 
   if (urls === null) {

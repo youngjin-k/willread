@@ -44,7 +44,7 @@ function PendingListAlert({ onPress }: PendingListAlertProps) {
 }
 
 const PendingListAlertBlock = styled.View`
-  margin: 16px 0 32px 0;
+  margin: 0 0 16px 0;
   padding: 0 16px;
 `;
 
