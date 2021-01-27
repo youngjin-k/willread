@@ -18,6 +18,7 @@ import styled, { css } from 'styled-components/native';
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
 import Line from '../../components/Line';
+import ScreenHeader from '../../components/ScreenHeader';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle, { DisplayItem } from '../../features/article/useArticle';
@@ -193,9 +194,8 @@ function HomeScreen(): React.ReactElement {
   return (
     <>
       <Container>
-        <Header isScrolled={isScrolled}>
-          <FastImage
-            style={{ height: 32, width: 170 }}
+        <ScreenHeader isScrolled={isScrolled}>
+          <TextLogo
             resizeMode="contain"
             source={scheme === 'dark' ? willreadDark : willreadLight}
           />
@@ -206,7 +206,7 @@ function HomeScreen(): React.ReactElement {
               + (displayMainItem ? 1 : 0)
             }
           />
-        </Header>
+        </ScreenHeader>
 
         <HomeScrollView
           ref={scrollViewRef}
@@ -282,18 +282,10 @@ const Container = styled.SafeAreaView`
 
 const HomeScrollView = styled.ScrollView``;
 
-const Header = styled.View<{isScrolled: boolean}>`
-  background-color: ${(props) => props.theme.colors.background};
-  padding: 16px 16px 8px 16px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom-width: ${StyleSheet.hairlineWidth}px;
-  border-bottom-color: ${(props) => props.theme.colors.background};
-
-  ${(props) => props.isScrolled && css`
-    border-bottom-color: ${props.theme.colors.border};
-  `}
+const TextLogo = styled(FastImage)`
+  margin: 0 0 4px 0;
+  width: 130px;
+  height: 24px;
 `;
 
 export default HomeScreen;

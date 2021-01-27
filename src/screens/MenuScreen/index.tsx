@@ -1,9 +1,10 @@
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
-import { useRef } from 'react';
-import { ScrollView } from 'react-native';
+import { useRef, useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
+import ScreenHeader, { ScreenHeaderTitle } from '../../components/ScreenHeader';
 
 import { MenuStackParamList } from '../../config/Navigation/Menu';
 import MenuItem from './MenuItem';
@@ -12,18 +13,25 @@ import MenuList from './MenuList';
 function MenuScreen() {
   const navigation = useNavigation<StackNavigationProp<MenuStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useScrollToTop(scrollViewRef);
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setIsScrolled(event.nativeEvent.contentOffset.y > 0);
+  };
+
   return (
     <Container>
+      <ScreenHeader isScrolled={isScrolled}>
+        <ScreenHeaderTitle style={{ marginLeft: 16 }}>더보기</ScreenHeaderTitle>
+      </ScreenHeader>
       <MenuScrollView
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
-        <Header>
-          <HeaderTitle>더보기</HeaderTitle>
-        </Header>
         <MenuList>
           <MenuItem
             title="자주 묻는 질문"
@@ -91,17 +99,5 @@ const Container = styled.SafeAreaView`
 `;
 
 const MenuScrollView = styled.ScrollView``;
-
-const Header = styled.View`
-  padding: 32px 16px 16px 16px;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const HeaderTitle = styled.Text`
-  font-weight: bold;
-  font-size: 28px;
-  color: ${(props) => props.theme.colors.typography.primary};
-`;
 
 export default MenuScreen;
