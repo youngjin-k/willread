@@ -1,32 +1,33 @@
 import React, { useEffect } from 'react';
-import {
-  StyleSheet, Text, View,
-} from 'react-native';
+import { ActivityIndicator, useColorScheme, View } from 'react-native';
 import { ShareMenuReactView } from 'react-native-share-menu';
+
 import themes from '../../lib/styles/themes';
 
-const ShareExtensionScreen = () => {
+function ShareExtensionScreen() {
+  const scheme = useColorScheme();
+  const appearance = scheme === 'dark' ? 'dark' : 'light';
+
   useEffect(() => {
-    ShareMenuReactView.continueInApp();
+    setTimeout(() => {
+      ShareMenuReactView.continueInApp();
+    }, 1000);
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>윌리드 여는 중</Text>
+    <View style={{
+      padding: 16,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: themes[appearance].colors.backgroundElevated,
+    }}
+    >
+      <ActivityIndicator
+        color={themes[appearance].colors.typography.point}
+      />
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: themes.dark.colors.background,
-  },
-  text: {
-    color: themes.dark.colors.typography.primary,
-  },
-});
+}
 
 export default ShareExtensionScreen;
