@@ -10,6 +10,7 @@ import Button, { ButtonVariant } from '../../components/Button';
 import Line from '../../components/Line';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
+import haptics from '../../lib/utils/haptics';
 
 export interface PendingListProps {
   isVisible: boolean;
@@ -22,6 +23,7 @@ function PendingList({ isVisible, onClose }: PendingListProps) {
   const [visibleRemoveConfirm, setVisibleRemoveConfirm] = useState(false);
 
   const toggleSelectedItem = (article: Article) => {
+    haptics.selection();
     setSelectedItems((oldList) => {
       if (oldList.some((_article) => _article === article)) {
         return oldList.filter((_article) => _article !== article);
@@ -62,6 +64,7 @@ function PendingList({ isVisible, onClose }: PendingListProps) {
       isVisible={isVisible}
       onClose={onClose}
       useSafeAreaView={false}
+      hapticOnVisible={false}
     >
       <PendingListBlock>
         <Header>

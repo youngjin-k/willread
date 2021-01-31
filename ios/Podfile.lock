@@ -11,6 +11,8 @@ PODS:
   - EXFileSystem (9.2.0):
     - UMCore
     - UMFileSystemInterface
+  - EXHaptics (9.0.0):
+    - UMCore
   - EXImageLoader (1.2.0):
     - React-Core
     - UMCore
@@ -383,6 +385,7 @@ DEPENDENCIES:
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
@@ -486,6 +489,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-constants/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
+  EXHaptics:
+    :path: "../node_modules/expo-haptics/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
   EXNotifications:
@@ -603,6 +608,7 @@ SPEC CHECKSUMS:
   EXApplication: c346c5ab7d1a4607f1863e93490b79fe838148b1
   EXConstants: f486f6b4a36b86e47ab258d4d2b7b2699786fdce
   EXFileSystem: afe9b1fd937d30270bf5108ba44e2f4a1d1ad694
+  EXHaptics: 685bcf63881af13bbd657ad148292db1f7370268
   EXImageLoader: 7153fb1307ac643299a9072b71da0d276f4c7789
   EXNotifications: 0a1152ef2bd0f1cdd72a46bb256523a6ce5fa6e5
   EXPermissions: 30cbe5b72bd209b65c00884180ad058a60bb413d
@@ -670,6 +676,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: c68814769a18241eac13153f64bf9e5698380d5e
+PODFILE CHECKSUM: 5d3176118342cefa53c739d70216b2746bd053bf
 
 COCOAPODS: 1.10.0

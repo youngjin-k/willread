@@ -25,6 +25,7 @@ import useArticle from '../../features/article/useArticle';
 import VALID_URL from '../../lib/regex/validUrl';
 import themes from '../../lib/styles/themes';
 import Alert from '../../components/Alert';
+import haptics from '../../lib/utils/haptics';
 
 export interface PreviewHTML {
   url: string;
@@ -182,6 +183,7 @@ function NewArticleFormScreen(): React.ReactElement {
         favicon: content.favicons.length > 0 ? content.favicons[0] : '',
       });
 
+      haptics.notification();
       if (addedAt === 'articleList') {
         navigation.replace('SuccessSaveArticle');
         return;

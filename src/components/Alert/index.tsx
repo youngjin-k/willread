@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
+import haptics from '../../lib/utils/haptics';
 import Button, { ButtonVariant } from '../Button';
 
 const buttonVariantByStyle = {
@@ -19,6 +20,7 @@ export interface AlertProps {
     onPress?: () => void;
   }[];
   onClose: () => void;
+  hapticOnVisible?: boolean;
 }
 
 function Alert({
@@ -27,7 +29,16 @@ function Alert({
   visible,
   buttons,
   onClose,
-}: AlertProps): React.ReactElement {
+  hapticOnVisible = true,
+}: AlertProps) {
+  useEffect(() => {
+    if (!visible || !hapticOnVisible) {
+      return;
+    }
+
+    haptics.selection();
+  }, [visible, hapticOnVisible]);
+
   return (
     <Modal
       isVisible={visible}

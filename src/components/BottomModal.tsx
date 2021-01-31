@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import { View } from 'react-native';
 import ModalHandle from './ModalHandle';
+import haptics from '../lib/utils/haptics';
 
 export interface BottomModalProps {
   isVisible: boolean;
   onClose: () => void;
   children: React.ReactNode | React.ReactNode[];
   useSafeAreaView?: boolean;
+  hapticOnVisible?: boolean;
 }
 
 function BottomModal({
@@ -16,7 +18,16 @@ function BottomModal({
   onClose,
   children,
   useSafeAreaView = true,
-}: BottomModalProps): React.ReactElement {
+  hapticOnVisible = true,
+}: BottomModalProps) {
+  useEffect(() => {
+    if (!isVisible || !hapticOnVisible) {
+      return;
+    }
+
+    haptics.selection();
+  }, [isVisible, hapticOnVisible]);
+
   return (
     <Modal
       isVisible={isVisible}
