@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLinkPreview } from 'link-preview-js';
+import { getPreviewFromContent } from 'link-preview-js';
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
+import fetch from 'cross-fetch';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import FormLabel from '../../components/FormLabel';
 import TextInput from '../../components/TextInput';
@@ -23,6 +24,29 @@ import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
 import VALID_URL from '../../lib/regex/validUrl';
 import themes from '../../lib/styles/themes';
+import Alert from '../../components/Alert';
+
+export interface PreviewHTML {
+  url: string;
+  title: string;
+  siteName: string;
+  description: string;
+  mediaType: string;
+  contentType: string | undefined;
+  images: string[];
+  videos: {
+    url: string;
+    secureUrl: string;
+    type: string;
+    width: string;
+    height: string;
+  }[];
+  favicons: string[];
+}
+
+type ThenArgRecursive<T> = T extends PromiseLike<infer U>
+  ? ThenArgRecursive<U>
+  : T;
 
 function NewArticleFormScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -35,6 +59,8 @@ function NewArticleFormScreen(): React.ReactElement {
   const [useExpandedLinkInput, setUseExpandedLinkInput] = useState(false);
   const linkInputRef = useRef<NativeTextInput>(null);
   const linkExpandInputRef = useRef<NativeTextInput>(null);
+  const [errorMessage, setErrorMessage] = useState<{title: string; message: string} | null>();
+  const [visibleErrorAlert, setVisibleErrorAlert] = useState(false);
 
   useEffect(() => {
     if (route?.params?.url) {
@@ -50,20 +76,35 @@ function NewArticleFormScreen(): React.ReactElement {
     setLink(url);
   };
 
+  const setFocus = useCallback(() => {
+    if (useExpandedLinkInput) {
+      setFocusExpandLinkInput();
+      return;
+    }
+
+    setFocusLinkInput();
+  }, [useExpandedLinkInput]);
+
   const setFocusLinkInput = () => {
-    setTimeout(() => {
-      if (linkInputRef.current) {
-        linkInputRef.current.focus();
-      }
-    }, Platform.OS === 'ios' ? 160 : 0);
+    setTimeout(
+      () => {
+        if (linkInputRef.current) {
+          linkInputRef.current.focus();
+        }
+      },
+      Platform.OS === 'ios' ? 160 : 0,
+    );
   };
 
   const setFocusExpandLinkInput = () => {
-    setTimeout(() => {
-      if (linkExpandInputRef.current) {
-        linkExpandInputRef.current.focus();
-      }
-    }, Platform.OS === 'ios' ? 160 : 0);
+    setTimeout(
+      () => {
+        if (linkExpandInputRef.current) {
+          linkExpandInputRef.current.focus();
+        }
+      },
+      Platform.OS === 'ios' ? 160 : 0,
+    );
   };
 
   useEffect(() => {
@@ -80,18 +121,65 @@ function NewArticleFormScreen(): React.ReactElement {
     setFocusLinkInput();
   };
 
+  const showErrorAlert = (title: string, message: string) => {
+    setErrorMessage({
+      title,
+      message,
+    });
+    setVisibleErrorAlert(true);
+  };
+
+  const hideErrorAlert = () => {
+    setVisibleErrorAlert(false);
+    setErrorMessage(null);
+    setTimeout(() => {
+      setFocus();
+    }, 400);
+  };
+
   const handleOnPress = useCallback(async () => {
     setLoading(true);
 
+    function isTextHtmlType(
+      response: ThenArgRecursive<ReturnType<typeof getPreviewFromContent>>,
+    ): response is PreviewHTML {
+      return response.contentType?.includes('text/html') === true;
+    }
+
     try {
-      const response = (await getLinkPreview(link)) as any;
+      const response = await fetch(link, {
+        redirect: 'follow',
+      });
+
+      if (response.status > 400) {
+        showErrorAlert('정보를 가져올 수 없어요.', '확인 후 다시 시도해주세요.');
+        setLoading(false);
+        return;
+      }
+
+      const headers: Record<string, string> = {};
+      response.headers.forEach((header: string, key: string) => {
+        headers[key] = header;
+      });
+
+      const content = await getPreviewFromContent({
+        data: await response.text(),
+        headers,
+        url: link,
+      });
+
+      if (!isTextHtmlType(content)) {
+        showErrorAlert('등록할 수 없는 유형의 링크에요.', '텍스트 형태의 콘텐츠만 등록할 수 있어요.');
+        setLoading(false);
+        return;
+      }
 
       const addedAt = addArticle({
         url: link,
-        title: response.title,
-        description: response.description,
-        image: response.images.length > 0 ? response.images[0] : '',
-        favicon: response.favicons.length > 0 ? response.favicons[0] : '',
+        title: content.title,
+        description: content.description,
+        image: content.images.length > 0 ? content.images[0] : '',
+        favicon: content.favicons.length > 0 ? content.favicons[0] : '',
       });
 
       if (addedAt === 'articleList') {
@@ -101,6 +189,7 @@ function NewArticleFormScreen(): React.ReactElement {
 
       navigation.replace('SuccessSavePendingList');
     } catch (e) {
+      showErrorAlert('정보를 가져올 수 없어요.', '확인 후 다시 시도해주세요.');
       setLoading(false);
     }
   }, [link, addArticle, navigation]);
@@ -146,8 +235,9 @@ function NewArticleFormScreen(): React.ReactElement {
                 ref={linkExpandInputRef}
                 placeholder="링크를 입력하세요"
                 placeholderTextColor={
-                    themes[scheme === 'dark' ? 'dark' : 'light'].colors.typography.secondary
-                  }
+                  themes[scheme === 'dark' ? 'dark' : 'light'].colors.typography
+                    .secondary
+                }
                 keyboardType="url"
                 onChangeText={handleChangeLink}
                 defaultValue={link}
@@ -197,6 +287,18 @@ function NewArticleFormScreen(): React.ReactElement {
           </Actions>
         </Content>
       </KeyboardAvoidingView>
+
+      <Alert
+        visible={visibleErrorAlert}
+        title={errorMessage?.title}
+        message={errorMessage?.message}
+        onClose={hideErrorAlert}
+        buttons={[{
+          text: '확인',
+          style: 'default',
+          onPress: hideErrorAlert,
+        }]}
+      />
     </Container>
   );
 }
