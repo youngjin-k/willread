@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ShareMenu from 'react-native-share-menu';
+import SplashScreen from 'react-native-splash-screen';
 import styled from 'styled-components/native';
 
 import willreadDark from '../../../assets/willread-dark.png';
@@ -63,6 +64,7 @@ function HomeScreen(): React.ReactElement {
   const theme = useTheme();
   const [visiblePendingList, setVisiblePendingList] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTop(scrollViewRef);
 
@@ -141,6 +143,7 @@ function HomeScreen(): React.ReactElement {
     const items = getDisplayItems();
     setDisplayMainItem(items.shift());
     setDisplayItems(items);
+    setIsLoading(false);
   }, [getDisplayItems]);
 
   const handleRefresh = useCallback(() => {
@@ -198,6 +201,16 @@ function HomeScreen(): React.ReactElement {
     rowRefs.current = rowRefs.current.slice(0, articles.length);
   }, [articles]);
 
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 500);
+  }, [isLoading]);
+
   const total = (displayItems ? displayItems.length : 0) + (displayMainItem ? 1 : 0);
 
   return (
@@ -230,9 +243,7 @@ function HomeScreen(): React.ReactElement {
         >
           <PendingListAlert onPress={handlePendingListAlertPress} />
 
-          {total === 0 && (
-            <EmptyArticleList />
-          )}
+          {total === 0 && <EmptyArticleList />}
 
           {displayMainItem && (
             <>
