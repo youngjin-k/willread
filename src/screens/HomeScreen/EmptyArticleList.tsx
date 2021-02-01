@@ -3,16 +3,19 @@ import FastImage from 'react-native-fast-image';
 import styled from 'styled-components/native';
 
 import bookshelfEmpty from '../../../assets/bookshelf-empty.png';
+import Line from '../../components/Line';
 
 function EmptyArticleList() {
   return (
     <EmptyArticleListBlock>
       <ImageWrapper>
-        <Image
-          source={bookshelfEmpty}
-        />
+        <Image source={bookshelfEmpty} />
       </ImageWrapper>
       <Title>목록이 비어있어요.</Title>
+      <Line
+        marginTop={40}
+        marginBottom={8}
+      />
     </EmptyArticleListBlock>
   );
 }
