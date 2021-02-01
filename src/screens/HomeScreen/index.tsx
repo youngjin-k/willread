@@ -18,6 +18,7 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import ShareMenu from 'react-native-share-menu';
 import SplashScreen from 'react-native-splash-screen';
 import styled from 'styled-components/native';
@@ -57,8 +58,7 @@ function HomeScreen(): React.ReactElement {
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
   const [displayMainItem, setDisplayMainItem] = useState<DisplayItem>();
-  const [scrollEnable, setScrollEnabled] = useState(true);
-  const rowRefs = useRef<any>([]);
+  const rowRefs = useRef<Swipeable[] | null[]>([]);
   const swipeMenuOpenRowIndex = useRef<number | null>(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const theme = useTheme();
@@ -110,7 +110,7 @@ function HomeScreen(): React.ReactElement {
     ) {
       const rowRef = rowRefs.current[swipeMenuOpenRowIndex.current];
       if (rowRef) {
-        rowRef.closeRow();
+        rowRef.close();
       }
     }
     swipeMenuOpenRowIndex.current = index;
@@ -228,7 +228,6 @@ function HomeScreen(): React.ReactElement {
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingTop: 16, paddingBottom: 8 }}
-          scrollEnabled={scrollEnable}
           onScroll={handleScrollView}
           scrollEventThrottle={16}
           refreshControl={(
@@ -252,7 +251,6 @@ function HomeScreen(): React.ReactElement {
                   rowRefs.current[0] = el;
                 }}
                 item={displayMainItem}
-                setScrollEnabled={setScrollEnabled}
                 onPress={handlePressArticle}
                 onSwipeMenuOpen={() => {
                   handleSwipeMenuOpen(0);
@@ -276,7 +274,6 @@ function HomeScreen(): React.ReactElement {
                 }}
                 key={item.article.id}
                 item={item}
-                setScrollEnabled={setScrollEnabled}
                 onPress={handlePressArticle}
                 onSwipeMenuOpen={() => {
                   handleSwipeMenuOpen(i + 1);

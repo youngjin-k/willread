@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
@@ -23,12 +23,11 @@ import RemoveConfirm from './RemoveConfirm';
 export interface ListItemProps {
   item: DisplayItem;
   onPress: (article: Article) => void;
-  setScrollEnabled: (enable: boolean) => void;
   onSwipeMenuOpen: () => void;
   isMainCard?: boolean;
 }
 
-const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
+const ListItem = forwardRef<Swipeable, ListItemProps>(({
   item: {
     article,
     timeLeft,
@@ -36,11 +35,10 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     notificationTagType,
   },
   onPress,
-  setScrollEnabled,
   onSwipeMenuOpen,
   isMainCard = false,
 }, ref) => {
-  const rootRef = useRef<SwipeRow<any>>(null);
+  const rootRef = useRef<Swipeable>(null);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [visibleArticleMenu, setVisibleArticleMenu] = useState(false);
   const [visibleRemoveAlert, setVisibleRemoveAlert] = useState(false);
@@ -147,11 +145,11 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
     });
   };
 
-  useImperativeHandle<SwipeRow<any> | null, SwipeRow<any> | null>(ref, () => rootRef.current);
+  useImperativeHandle<Swipeable | null, Swipeable | null>(ref, () => rootRef.current);
 
   const closeSwipeMenu = () => {
     if (rootRef.current) {
-      rootRef.current.closeRow();
+      rootRef.current.close();
     }
   };
 
@@ -162,50 +160,50 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
   return (
     <>
       <Animatable.View ref={animatableViewRef}>
-        <SwipeRow
+        <Swipeable
           ref={rootRef}
-          setScrollEnabled={setScrollEnabled}
-          rightOpenValue={-1 * ((64 * 3) + (16 * 2) + 1)}
-          disableRightSwipe
-          swipeGestureBegan={onSwipeMenuOpen}
+          onSwipeableRightWillOpen={onSwipeMenuOpen}
+          rightThreshold={40}
+          renderRightActions={() => (
+            <SwipeMenu>
+              <SwipeMenuButtons>
+                <SwipeMenuButton
+                  onPress={handleRemoveButtonPress}
+                  variant={ButtonVariant.DefaultText}
+                  size={ButtonSize.Large}
+                >
+                  <ListBehindViewIcon name="trash" />
+                </SwipeMenuButton>
+
+                {(isSetNotification && notificationTagType === 'default') ? (
+                  <SwipeMenuButton
+                    onPress={handleCancelNotificationButtonPress}
+                    variant={ButtonVariant.DefaultText}
+                    size={ButtonSize.Large}
+                  >
+                    <ListBehindViewIcon name="bell-off" />
+                  </SwipeMenuButton>
+                ) : (
+                  <SwipeMenuButton
+                    onPress={handleNewNotificationPress}
+                    variant={ButtonVariant.DefaultText}
+                    size={ButtonSize.Large}
+                  >
+                    <ListBehindViewIcon name="bell" />
+                  </SwipeMenuButton>
+                )}
+
+                <SwipeMenuButton
+                  onPress={handleMenuButtonPress}
+                  variant={ButtonVariant.DefaultText}
+                  size={ButtonSize.Large}
+                >
+                  <ListBehindViewIcon name="more-horizontal" />
+                </SwipeMenuButton>
+              </SwipeMenuButtons>
+            </SwipeMenu>
+          )}
         >
-          <SwipeMenu>
-            <SwipeMenuButtons>
-              <SwipeMenuButton
-                onPress={handleRemoveButtonPress}
-                variant={ButtonVariant.DefaultText}
-                size={ButtonSize.Large}
-              >
-                <ListBehindViewIcon name="trash" />
-              </SwipeMenuButton>
-
-              {(isSetNotification && notificationTagType === 'default') ? (
-                <SwipeMenuButton
-                  onPress={handleCancelNotificationButtonPress}
-                  variant={ButtonVariant.DefaultText}
-                  size={ButtonSize.Large}
-                >
-                  <ListBehindViewIcon name="bell-off" />
-                </SwipeMenuButton>
-              ) : (
-                <SwipeMenuButton
-                  onPress={handleNewNotificationPress}
-                  variant={ButtonVariant.DefaultText}
-                  size={ButtonSize.Large}
-                >
-                  <ListBehindViewIcon name="bell" />
-                </SwipeMenuButton>
-              )}
-
-              <SwipeMenuButton
-                onPress={handleMenuButtonPress}
-                variant={ButtonVariant.DefaultText}
-                size={ButtonSize.Large}
-              >
-                <ListBehindViewIcon name="more-horizontal" />
-              </SwipeMenuButton>
-            </SwipeMenuButtons>
-          </SwipeMenu>
           <ArticleCardWrapper>
             {isMainCard ? (
               <ArticleCard
@@ -227,7 +225,7 @@ const ListItem = forwardRef<SwipeRow<any>, ListItemProps>(({
               />
             )}
           </ArticleCardWrapper>
-        </SwipeRow>
+        </Swipeable>
       </Animatable.View>
 
       <RemoveConfirm
@@ -264,17 +262,15 @@ const ArticleCardWrapper = styled.View`
 `;
 
 const SwipeMenu = styled.View`
-  flex: 1;
+  width: ${64 * 3 + 16}px;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 `;
 
 const SwipeMenuButtons = styled.View`
-  padding: 0 16px;
+  padding: 0 16px 0 0;
   flex-direction: row;
-  border-left-width: 1px;
-  border-left-color: ${(props) => props.theme.colors.border};
 `;
 
 const SwipeMenuButton = styled(Button)`
