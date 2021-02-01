@@ -70,12 +70,34 @@ function DeveloperScreen() {
           'https://medium.com/enappd/refreshcontrol-pull-to-refresh-in-react-native-apps-dfe779118f75',
       },
       {
-        createdAt: '2021-01-20T23:21:38+09:00',
+        createdAt: dayjs().subtract(7, 'day').add(4, 'hour').format(),
         description:
           'This component is used inside a ScrollView or ListView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.',
-        expiredAt: '2021-01-27T23:21:38+09:00',
+        expiredAt: dayjs().add(4, 'hour').format(),
         favicon: 'https://reactnative.dev/img/favicon.ico',
-        id: 'R_CcMC4vc0ePZJQlDNJhV',
+        id: 'test',
+        image: 'https://reactnative.dev/img/logo-og.png',
+        title: 'RefreshControl · React Native',
+        url: 'https://reactnative.dev/docs/refreshcontrol',
+      },
+      {
+        createdAt: dayjs().subtract(7, 'day').add(4, 'hour').format(),
+        description:
+          'This component is used inside a ScrollView or ListView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.',
+        expiredAt: dayjs().add(4, 'hour').format(),
+        favicon: 'https://reactnative.dev/img/favicon.ico',
+        id: 'test1',
+        image: 'https://reactnative.dev/img/logo-og.png',
+        title: 'RefreshControl · React Native',
+        url: 'https://reactnative.dev/docs/refreshcontrol',
+      },
+      {
+        createdAt: dayjs().subtract(7, 'day').add(4, 'hour').format(),
+        description:
+          'This component is used inside a ScrollView or ListView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.',
+        expiredAt: dayjs().add(4, 'hour').format(),
+        favicon: 'https://reactnative.dev/img/favicon.ico',
+        id: 'test3',
         image: 'https://reactnative.dev/img/logo-og.png',
         title: 'RefreshControl · React Native',
         url: 'https://reactnative.dev/docs/refreshcontrol',
