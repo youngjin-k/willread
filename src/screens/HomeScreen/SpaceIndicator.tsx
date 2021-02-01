@@ -8,13 +8,12 @@ export interface SpaceIndicatorProps {
 }
 
 function SpaceIndicator({ usage }: SpaceIndicatorProps) {
-  const usableSpace = MAX_ARTICLE_LIST_SPACE - usage;
-  const isOver = usage > MAX_ARTICLE_LIST_SPACE;
+  const isDanger = usage > MAX_ARTICLE_LIST_SPACE * 0.7;
 
   return (
     <SpaceIndicatorBlock>
       <BookmarkIcon name="bookmark" />
-      <Usage isOver={isOver}>{usableSpace}</Usage>
+      <Usage isDanger={isDanger}>{usage}</Usage>
       <Separator>/</Separator>
       <Space>{MAX_ARTICLE_LIST_SPACE}</Space>
       <HelpCircleIcon name="help-circle" />
@@ -39,12 +38,12 @@ const BookmarkIcon = styled(Icon)`
   margin: 1px 6px 0 0;
 `;
 
-const Usage = styled.Text<{ isOver: boolean }>`
+const Usage = styled.Text<{ isDanger: boolean }>`
   color: ${(props) => props.theme.colors.typography.point};
   font-weight: 700;
   font-size: 12px;
 
-  ${(props) => props.isOver
+  ${(props) => props.isDanger
     && css`
       color: ${props.theme.colors.danger};
     `}
