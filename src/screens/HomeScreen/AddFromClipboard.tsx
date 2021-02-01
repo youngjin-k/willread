@@ -43,10 +43,12 @@ function AddFromClipboard() {
 
   useFocusEffect(
     useCallback(() => {
-      AppState.addEventListener('change', getClipboardData.current);
+      const handleFocusChange = getClipboardData.current;
+
+      AppState.addEventListener('change', handleFocusChange);
 
       return () => {
-        AppState.removeEventListener('change', getClipboardData.current);
+        AppState.removeEventListener('change', handleFocusChange);
       };
     }, []),
   );
