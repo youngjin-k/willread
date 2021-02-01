@@ -1,5 +1,8 @@
 import {
-  RouteProp, useNavigation, useRoute, useScrollToTop,
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -9,11 +12,14 @@ import React, {
 import {
   NativeScrollEvent,
   NativeSyntheticEvent,
-  RefreshControl, ScrollView, StyleSheet, useColorScheme, View,
+  RefreshControl,
+  ScrollView,
+  useColorScheme,
+  View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import ShareMenu from 'react-native-share-menu';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';
@@ -26,6 +32,7 @@ import useTheme from '../../lib/styles/useTheme';
 import extractUrl from '../../lib/utils/extractUrl';
 import webBrowser from '../../lib/utils/webBrowser';
 import AddFromClipboard from './AddFromClipboard';
+import EmptyArticleList from './EmptyArticleList';
 import ListItem from './ListItem';
 import PendingList from './PendingList';
 import PendingListAlert from './PendingListAlert';
@@ -191,6 +198,8 @@ function HomeScreen(): React.ReactElement {
     rowRefs.current = rowRefs.current.slice(0, articles.length);
   }, [articles]);
 
+  const total = (displayItems ? displayItems.length : 0) + (displayMainItem ? 1 : 0);
+
   return (
     <>
       <Container>
@@ -199,13 +208,7 @@ function HomeScreen(): React.ReactElement {
             resizeMode="contain"
             source={scheme === 'dark' ? willreadDark : willreadLight}
           />
-          <SpaceIndicator
-            usage={
-              // TODO 정리 필요
-              (displayItems ? displayItems.length : 0)
-              + (displayMainItem ? 1 : 0)
-            }
-          />
+          <SpaceIndicator usage={total} />
         </ScreenHeader>
 
         <HomeScrollView
@@ -226,6 +229,10 @@ function HomeScreen(): React.ReactElement {
           )}
         >
           <PendingListAlert onPress={handlePendingListAlertPress} />
+
+          {total === 0 && (
+            <EmptyArticleList />
+          )}
 
           {displayMainItem && (
             <>
