@@ -163,7 +163,6 @@ const ListItem = forwardRef<Swipeable, ListItemProps>(({
         <Swipeable
           ref={rootRef}
           onSwipeableRightWillOpen={onSwipeMenuOpen}
-          friction={2}
           rightThreshold={40}
           renderRightActions={() => (
             <SwipeMenu>
