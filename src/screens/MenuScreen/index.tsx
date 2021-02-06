@@ -4,9 +4,11 @@ import * as React from 'react';
 import { useRef, useState } from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
+import * as MailComposer from 'expo-mail-composer';
 import ScreenHeader, { ScreenHeaderTitle } from '../../components/ScreenHeader';
 
 import { MenuStackParamList } from '../../config/Navigation/Menu';
+import webBrowser from '../../lib/utils/webBrowser';
 import MenuItem from './MenuItem';
 import MenuList from './MenuList';
 
@@ -19,6 +21,20 @@ function MenuScreen() {
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     setIsScrolled(event.nativeEvent.contentOffset.y > 0);
+  };
+
+  const openBlog = () => {
+    webBrowser.open('https://www.willread.app/blog');
+  };
+
+  const openPrivacyPolicy = () => {
+    webBrowser.open('https://www.willread.app/policy/privacy');
+  };
+
+  const composeMail = () => {
+    MailComposer.composeAsync({
+      recipients: ['willreadteam@gmail.com'],
+    });
   };
 
   return (
@@ -34,33 +50,14 @@ function MenuScreen() {
       >
         <MenuList>
           <MenuItem
-            title="자주 묻는 질문"
-            menuIconName="help-circle"
-          />
-          <MenuItem
-            title="공지사항"
-            menuIconName="info"
+            title="새로운 소식"
+            menuIconName="bell"
+            onPress={openBlog}
           />
           <MenuItem
             title="의견 보내기"
             menuIconName="mail"
-          />
-        </MenuList>
-
-        <MenuList title="설정">
-          <MenuItem
-            title="화면"
-            menuIconName="sun"
-            value="시스템 설정에 맞춤"
-            hasSubMenu
-            onPress={() => navigation.navigate('ThemeScreen')}
-          />
-          <MenuItem
-            title="언어"
-            menuIconName="globe"
-            value="한국어"
-            hasSubMenu
-            onPress={() => navigation.navigate('LanguageScreen')}
+            onPress={composeMail}
           />
         </MenuList>
 
@@ -68,16 +65,11 @@ function MenuScreen() {
           <MenuItem
             title="개인정보 처리 방침"
             menuIconName="lock"
-            hasSubMenu
-          />
-          <MenuItem
-            title="오픈소스 라이선스"
-            menuIconName="book-open"
-            hasSubMenu
+            onPress={openPrivacyPolicy}
           />
           <MenuItem
             title="버전"
-            menuIconName="code"
+            menuIconName="flag"
             value="1.0.0"
           />
           {__DEV__ && (

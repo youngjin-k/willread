@@ -12,6 +12,7 @@ public class BasePackageList {
         new expo.modules.filesystem.FileSystemPackage(),
         new expo.modules.haptics.HapticsPackage(),
         new expo.modules.imageloader.ImageLoaderPackage(),
+        new expo.modules.mailcomposer.MailComposerPackage(),
         new expo.modules.notifications.NotificationsPackage(),
         new expo.modules.permissions.PermissionsPackage()
     );

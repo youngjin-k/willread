@@ -1,8 +1,5 @@
 /* eslint-disable react/display-name */
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -12,8 +9,6 @@ import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import themes from '../../lib/styles/themes';
 import MenuScreen from '../../screens/MenuScreen';
 import DeveloperScreen from '../../screens/MenuScreen/DeveloperScreen';
-import LanguageScreen from '../../screens/MenuScreen/LanguageScreen';
-import ThemeScreen from '../../screens/MenuScreen/ThemeScreen';
 
 const styles = {
   light: StyleSheet.create({
@@ -50,8 +45,6 @@ function HeaderBackButton({ onPress }: HeaderBackButtonProps) {
 
 export type MenuStackParamList = {
   MenuScreen: undefined;
-  ThemeScreen: undefined;
-  LanguageScreen: undefined;
   DeveloperScreen: undefined;
 };
 
@@ -68,32 +61,6 @@ function Menu() {
         options={{
           headerShown: false,
           title: '더보기',
-        }}
-      />
-      <MenuStack.Screen
-        name="ThemeScreen"
-        component={ThemeScreen}
-        options={{
-          title: '화면',
-          headerBackTitleVisible: false,
-          headerLeft: ({ onPress }) => <HeaderBackButton onPress={onPress} />,
-          headerTitleAlign: 'center',
-          headerBackground: () => <HeaderBackground />,
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          headerTitleStyle: styles[appearance].headerTitle,
-        }}
-      />
-      <MenuStack.Screen
-        name="LanguageScreen"
-        component={LanguageScreen}
-        options={{
-          title: '언어',
-          headerBackTitleVisible: false,
-          headerLeft: ({ onPress }) => <HeaderBackButton onPress={onPress} />,
-          headerTitleAlign: 'center',
-          headerBackground: () => <HeaderBackground />,
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-          headerTitleStyle: styles[appearance].headerTitle,
         }}
       />
 
