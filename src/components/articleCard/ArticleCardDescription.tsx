@@ -25,7 +25,7 @@ function ArticleCardDescription({
           <Separator>•</Separator>
         </>
       )}
-      <Url>{extractHostname(url)}</Url>
+      <Url numberOfLines={1}>{extractHostname(url)}</Url>
     </WillreadCardDescriptionBlock>
   );
 }
@@ -48,6 +48,7 @@ const TimeLeft = styled.Text<{accent: boolean}>`
 const Url = styled.Text`
   font-size: 11px;
   color: ${(props) => props.theme.colors.typography.secondary};
+  flex: 1;
 `;
 
 const Separator = styled.Text`
