@@ -50,6 +50,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': OFF,
     '@typescript-eslint/no-var-requires': OFF,
     '@typescript-eslint/no-shadow': ERROR,
+    '@typescript-eslint/no-explicit-any': OFF,
   },
   overrides: [
     {
