@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import * as React from 'react';
-import { Button } from 'react-native';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
 
