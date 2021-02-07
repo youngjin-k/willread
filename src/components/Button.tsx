@@ -172,7 +172,6 @@ function Button({
       <Pressable
         android_ripple={{
           color: buttonPressedColor(variant, isDark),
-          borderless: true,
         }}
         style={({ pressed }) => [
           {
