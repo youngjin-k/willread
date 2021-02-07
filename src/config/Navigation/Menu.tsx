@@ -1,5 +1,8 @@
 /* eslint-disable react/display-name */
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';

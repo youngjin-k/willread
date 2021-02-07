@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { useColorScheme } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { useColorScheme } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import styled from 'styled-components/native';
 
@@ -79,11 +79,8 @@ function SuccessSaveArticleScreen(): React.ReactElement {
             style={{ paddingHorizontal: 16 }}
           >
             <>
-              <NotificationButtonText>
-                알림 설정
-              </NotificationButtonText>
+              <NotificationButtonText>알림 설정</NotificationButtonText>
               <NotificationIconWrapper>
-
                 <Svg
                   width="20"
                   height="24"
@@ -163,9 +160,7 @@ const NotificationButtonText = styled.Text`
   margin: 0 8px 0 0;
 `;
 
-const NotificationIconWrapper = styled.View`
-
-`;
+const NotificationIconWrapper = styled.View``;
 
 const BellIconWrapper = styled(Animatable.View)`
   position: absolute;

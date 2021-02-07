@@ -1,8 +1,11 @@
 import React, { ReactElement } from 'react';
 import {
-  GestureResponderEvent, Platform, Pressable, View,
+  GestureResponderEvent,
+  Platform,
+  Pressable,
+  View,
+  useColorScheme,
 } from 'react-native';
-import { useColorScheme } from 'react-native-appearance';
 
 export interface PressableWrapperProps {
   children: ReactElement;

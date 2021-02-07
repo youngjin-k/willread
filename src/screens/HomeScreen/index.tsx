@@ -14,8 +14,8 @@ import {
   NativeSyntheticEvent,
   RefreshControl,
   ScrollView,
-  useColorScheme,
   View,
+  useColorScheme,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Swipeable from 'react-native-gesture-handler/Swipeable';

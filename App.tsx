@@ -2,8 +2,7 @@ import 'react-native-gesture-handler';
 
 import * as Notifications from 'expo-notifications';
 import React, { ReactElement } from 'react';
-import { StatusBar } from 'react-native';
-import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { StatusBar, useColorScheme } from 'react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather';
 import { Provider } from 'react-redux';
@@ -38,13 +37,11 @@ export default function App(): ReactElement {
           loading={null}
           persistor={persistor}
         >
-          <AppearanceProvider>
-            <StatusBar
-              backgroundColor={statusBarBackgroundColor}
-              barStyle={statusBarStyle}
-            />
-            <Navigation />
-          </AppearanceProvider>
+          <StatusBar
+            backgroundColor={statusBarBackgroundColor}
+            barStyle={statusBarStyle}
+          />
+          <Navigation />
         </PersistGate>
       </Provider>
       <Toast

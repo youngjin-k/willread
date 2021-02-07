@@ -1,14 +1,15 @@
 import React, { ReactElement } from 'react';
-import styled from 'styled-components/native';
 import {
   ActivityIndicator,
-  useColorScheme,
-  StyleProp,
-  ViewStyle,
+  Platform,
   Pressable,
   PressableProps,
-  Platform,
+  StyleProp,
+  useColorScheme,
+  ViewStyle,
 } from 'react-native';
+import styled from 'styled-components/native';
+
 import themes from '../lib/styles/themes';
 
 export enum ButtonVariant {
@@ -180,9 +181,11 @@ function Button({
             flexDirection: 'row',
             height: buttonHeight[size],
           },
-          Platform.OS === 'ios' && pressed ? {
-            backgroundColor: buttonPressedColor(variant, isDark),
-          } : null,
+          Platform.OS === 'ios' && pressed
+            ? {
+              backgroundColor: buttonPressedColor(variant, isDark),
+            }
+            : null,
           style,
         ]}
         disabled={isLoading}

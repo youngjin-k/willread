@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, useColorScheme, View } from 'react-native';
+import { ActivityIndicator, View, useColorScheme } from 'react-native';
 import { ShareMenuReactView } from 'react-native-share-menu';
 
 import themes from '../../lib/styles/themes';
@@ -15,17 +15,16 @@ function ShareExtensionScreen() {
   }, []);
 
   return (
-    <View style={{
-      padding: 16,
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: themes[appearance].colors.backgroundElevated,
-    }}
+    <View
+      style={{
+        padding: 16,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: themes[appearance].colors.backgroundElevated,
+      }}
     >
-      <ActivityIndicator
-        color={themes[appearance].colors.typography.point}
-      />
+      <ActivityIndicator color={themes[appearance].colors.typography.point} />
     </View>
   );
 }

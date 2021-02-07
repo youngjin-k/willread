@@ -1,5 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import fetch from 'cross-fetch';
 import { getPreviewFromContent } from 'link-preview-js';
 import React, {
   useCallback, useEffect, useRef, useState,
@@ -10,13 +11,13 @@ import {
   Platform,
   Text,
   TextInput as NativeTextInput,
-  useColorScheme,
   View,
+  useColorScheme,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
-import fetch from 'cross-fetch';
+import Alert from '../../components/Alert';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import FormLabel from '../../components/FormLabel';
 import TextInput from '../../components/TextInput';
@@ -24,7 +25,6 @@ import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
 import VALID_URL from '../../lib/regex/validUrl';
 import themes from '../../lib/styles/themes';
-import Alert from '../../components/Alert';
 import haptics from '../../lib/utils/haptics';
 
 export interface PreviewHTML {
@@ -60,7 +60,10 @@ function NewArticleFormScreen(): React.ReactElement {
   const [useExpandedLinkInput, setUseExpandedLinkInput] = useState(false);
   const linkInputRef = useRef<NativeTextInput>(null);
   const linkExpandInputRef = useRef<NativeTextInput>(null);
-  const [errorMessage, setErrorMessage] = useState<{title: string; message: string} | null>();
+  const [errorMessage, setErrorMessage] = useState<{
+    title: string;
+    message: string;
+  } | null>();
   const [visibleErrorAlert, setVisibleErrorAlert] = useState(false);
 
   useEffect(() => {
@@ -153,7 +156,10 @@ function NewArticleFormScreen(): React.ReactElement {
       });
 
       if (response.status > 400) {
-        showErrorAlert('정보를 가져올 수 없어요.', '확인 후 다시 시도해주세요.');
+        showErrorAlert(
+          '정보를 가져올 수 없어요.',
+          '확인 후 다시 시도해주세요.',
+        );
         setLoading(false);
         return;
       }
@@ -170,7 +176,10 @@ function NewArticleFormScreen(): React.ReactElement {
       });
 
       if (!isTextHtmlType(content)) {
-        showErrorAlert('등록할 수 없는 유형의 링크에요.', '텍스트 형태의 콘텐츠만 등록할 수 있어요.');
+        showErrorAlert(
+          '등록할 수 없는 유형의 링크에요.',
+          '텍스트 형태의 콘텐츠만 등록할 수 있어요.',
+        );
         setLoading(false);
         return;
       }
@@ -295,11 +304,13 @@ function NewArticleFormScreen(): React.ReactElement {
         title={errorMessage?.title}
         message={errorMessage?.message}
         onClose={hideErrorAlert}
-        buttons={[{
-          text: '확인',
-          style: 'default',
-          onPress: hideErrorAlert,
-        }]}
+        buttons={[
+          {
+            text: '확인',
+            style: 'default',
+            onPress: hideErrorAlert,
+          },
+        ]}
       />
     </Container>
   );

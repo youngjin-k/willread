@@ -1,10 +1,17 @@
 /* eslint-disable react/display-name */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import React, { ReactElement } from 'react';
-import { View } from 'react-native';
-import { useColorScheme } from 'react-native-appearance';
+import { View, useColorScheme } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Feather';
 
 import themes from '../../lib/styles/themes';
