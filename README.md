@@ -14,7 +14,9 @@
 - typescript
 - react-navigation
 - async-storage
-- redux / redux-toolkit / redux-persist
+- redux
+- redux-toolkit
+- redux-persist
 - react-native-share-menu
 - expo-notifications
 - ...
