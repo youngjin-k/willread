@@ -16,7 +16,6 @@ function SpaceIndicator({ usage }: SpaceIndicatorProps) {
       <Usage isDanger={isDanger}>{usage}</Usage>
       <Separator>/</Separator>
       <Space>{MAX_ARTICLE_LIST_SPACE}</Space>
-      <HelpCircleIcon name="help-circle" />
     </SpaceIndicatorBlock>
   );
 }
@@ -58,12 +57,6 @@ const Separator = styled.Text`
 const Space = styled.Text`
   color: ${(props) => props.theme.colors.typography.secondary};
   font-size: 12px;
-`;
-
-const HelpCircleIcon = styled(Icon)`
-  font-size: 14px;
-  color: ${(props) => props.theme.colors.typography.secondary};
-  margin: 0 0 0 6px;
 `;
 
 export default SpaceIndicator;
