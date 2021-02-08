@@ -2,6 +2,8 @@
 
 ![willread](https://www.willread.app/assets/images/og.png)
 
+![willread iphone](https://www.willread.app/assets/images/willread-home-iphone.png)
+
 ## Supported Platforms
 
 - Android
