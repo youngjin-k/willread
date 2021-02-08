@@ -14,8 +14,8 @@ import {
   NativeSyntheticEvent,
   RefreshControl,
   ScrollView,
-  View,
   useColorScheme,
+  View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -33,7 +33,9 @@ import useArticle, { DisplayItem } from '../../features/article/useArticle';
 import useTheme from '../../lib/styles/useTheme';
 import extractUrl from '../../lib/utils/extractUrl';
 import webBrowser from '../../lib/utils/webBrowser';
-import AddFromClipboard from './AddFromClipboard';
+import ClipboardContentAlert, {
+  ClipboardContentAlertHandle,
+} from './ClipboardContentAlert';
 import EmptyArticleList from './EmptyArticleList';
 import ListItem from './ListItem';
 import PendingList from './PendingList';
@@ -48,6 +50,7 @@ export interface SharedItem {
 function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
+  const ClipboardContentAlertRef = useRef<ClipboardContentAlertHandle>(null);
   const scheme = useColorScheme();
   const {
     articles,
@@ -146,9 +149,11 @@ function HomeScreen(): React.ReactElement {
     setIsLoading(false);
   }, [getDisplayItems]);
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
+
     setTimeout(() => {
+      ClipboardContentAlertRef.current?.syncClipboardText();
       updateDisplayItems();
       setRefreshing(false);
     }, 1000);
@@ -264,7 +269,7 @@ function HomeScreen(): React.ReactElement {
             </>
           )}
 
-          <AddFromClipboard />
+          <ClipboardContentAlert ref={ClipboardContentAlertRef} />
 
           {displayItems
             && displayItems.map((item, i) => (
