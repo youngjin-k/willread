@@ -1,14 +1,15 @@
 import 'react-native-gesture-handler';
 
 import * as Notifications from 'expo-notifications';
-import React, { ReactElement } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import React, { ReactElement, useEffect } from 'react';
+import { Platform, StatusBar, useColorScheme } from 'react-native';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components/native';
 
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import Navigation from './src/config/Navigation';
 import store, { persistor } from './src/features/store';
 import themes from './src/lib/styles/themes';
@@ -27,8 +28,14 @@ Notifications.setNotificationHandler({
 export default function App(): ReactElement {
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
-  const statusBarBackgroundColor = themes[isDark ? 'dark' : 'light'].colors.background;
+  const theme = themes[isDark ? 'dark' : 'light'];
   const statusBarStyle = isDark ? 'light-content' : 'dark-content';
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      changeNavigationBarColor(theme.colors.backgroundElevated, !theme.dark, true);
+    }
+  }, [theme]);
 
   return (
     <ThemeProvider theme={isDark ? themes.dark : themes.light}>
@@ -38,7 +45,7 @@ export default function App(): ReactElement {
           persistor={persistor}
         >
           <StatusBar
-            backgroundColor={statusBarBackgroundColor}
+            backgroundColor={theme.colors.background}
             barStyle={statusBarStyle}
           />
           <Navigation />
