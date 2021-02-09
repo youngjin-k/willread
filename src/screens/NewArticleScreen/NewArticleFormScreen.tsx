@@ -49,6 +49,12 @@ type ThenArgRecursive<T> = T extends PromiseLike<infer U>
   ? ThenArgRecursive<U>
   : T;
 
+function isTextHtmlType(
+  response: ThenArgRecursive<ReturnType<typeof getPreviewFromContent>>,
+): response is PreviewHTML {
+  return response.contentType?.includes('text/html') === true;
+}
+
 function NewArticleFormScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { addArticle } = useArticle();
@@ -144,12 +150,6 @@ function NewArticleFormScreen(): React.ReactElement {
   const handleOnPress = useCallback(async () => {
     setLoading(true);
 
-    function isTextHtmlType(
-      response: ThenArgRecursive<ReturnType<typeof getPreviewFromContent>>,
-    ): response is PreviewHTML {
-      return response.contentType?.includes('text/html') === true;
-    }
-
     try {
       const response = await fetch(link, {
         redirect: 'follow',
@@ -169,30 +169,45 @@ function NewArticleFormScreen(): React.ReactElement {
         headers[key] = header;
       });
 
-      const content = await getPreviewFromContent({
-        data: await response.text(),
-        headers,
-        url: link,
-      });
+      const html = await response.text();
 
-      if (!isTextHtmlType(content)) {
-        showErrorAlert(
-          '등록할 수 없는 유형의 링크에요.',
-          '텍스트 형태의 콘텐츠만 등록할 수 있어요.',
-        );
-        setLoading(false);
-        return;
+      let article = {
+        url: link,
+        title: link,
+        description: '',
+        image: '',
+        favicon: '',
+      };
+
+      if (html) {
+        const content = await getPreviewFromContent({
+          data: html,
+          headers,
+          url: link,
+        });
+
+        if (!isTextHtmlType(content)) {
+          showErrorAlert(
+            '등록할 수 없는 유형의 링크에요.',
+            '텍스트 형태의 콘텐츠만 등록할 수 있어요.',
+          );
+          setLoading(false);
+          return;
+        }
+
+        article = {
+          url: link,
+          title: content.title,
+          description: content.description,
+          image: content.images.length > 0 ? content.images[0] : '',
+          favicon: content.favicons.length > 0 ? content.favicons[0] : '',
+        };
       }
 
-      const addedAt = addArticle({
-        url: link,
-        title: content.title,
-        description: content.description,
-        image: content.images.length > 0 ? content.images[0] : '',
-        favicon: content.favicons.length > 0 ? content.favicons[0] : '',
-      });
+      const addedAt = addArticle(article);
 
       haptics.notification();
+
       if (addedAt === 'articleList') {
         navigation.replace('SuccessSaveArticle');
         return;
