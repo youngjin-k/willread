@@ -40,6 +40,7 @@ import EmptyArticleList from './EmptyArticleList';
 import ListItem from './ListItem';
 import PendingList from './PendingList';
 import PendingListAlert from './PendingListAlert';
+import RecommendedArticles from './RecommendedArticles';
 import SpaceIndicator from './SpaceIndicator';
 
 export interface SharedItem {
@@ -285,6 +286,8 @@ function HomeScreen(): React.ReactElement {
                 }}
               />
             ))}
+
+          {total === 0 && <RecommendedArticles />}
         </HomeScrollView>
       </Container>
 
