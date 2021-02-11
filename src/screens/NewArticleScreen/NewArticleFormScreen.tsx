@@ -197,7 +197,7 @@ function NewArticleFormScreen(): React.ReactElement {
 
         article = {
           url: link,
-          title: content.title,
+          title: content.title ? content.title : link,
           description: content.description,
           image: content.images.length > 0 ? content.images[0] : '',
           favicon: content.favicons.length > 0 ? content.favicons[0] : '',
