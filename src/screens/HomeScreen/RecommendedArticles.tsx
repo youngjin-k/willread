@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import { Article } from '../../features/article/articles';
 import webBrowser from '../../lib/utils/webBrowser';
@@ -13,9 +14,9 @@ const ARTICLE_LIST: Article[] = [{
   expiredAt: '',
 }, {
   id: '',
-  url: 'https://www.willread.app/blog/how-to-save-to-willread',
+  url: `https://www.willread.app/blog/how-to-save-to-willread${Platform.OS === 'ios' ? '-on-iphone' : ''}`,
   title: '새 아티클은 어떻게 등록하나요?',
-  image: 'https://www.willread.app/assets/posts/how-to-save-to-willread/main.png',
+  image: `https://www.willread.app/assets/posts/how-to-save-to-willread${Platform.OS === 'ios' ? '-on-iphone' : ''}/main.png`,
   createdAt: '',
   expiredAt: '',
 }];
