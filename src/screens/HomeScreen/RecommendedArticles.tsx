@@ -7,14 +7,14 @@ import webBrowser from '../../lib/utils/webBrowser';
 
 const ARTICLE_LIST: Article[] = [{
   id: '',
-  url: 'https://www.willread.app/blog/welcome',
+  url: 'https://www.willread.app/blog/welcome?webview=true',
   title: '윌리드에 오신걸 환영해요.',
   image: 'https://www.willread.app/assets/posts/welcome/main.png',
   createdAt: '',
   expiredAt: '',
 }, {
   id: '',
-  url: `https://www.willread.app/blog/how-to-save-to-willread${Platform.OS === 'ios' ? '-on-iphone' : ''}`,
+  url: `https://www.willread.app/blog/how-to-save-to-willread${Platform.OS === 'ios' ? '-on-iphone' : ''}?webview=true`,
   title: '새 아티클은 어떻게 등록하나요?',
   image: `https://www.willread.app/assets/posts/how-to-save-to-willread${Platform.OS === 'ios' ? '-on-iphone' : ''}/main.png`,
   createdAt: '',

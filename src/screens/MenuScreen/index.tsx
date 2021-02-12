@@ -2,7 +2,12 @@ import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView } from 'react-native';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import styled from 'styled-components/native';
 import * as MailComposer from 'expo-mail-composer';
 import ScreenHeader, { ScreenHeaderTitle } from '../../components/ScreenHeader';
@@ -24,11 +29,11 @@ function MenuScreen() {
   };
 
   const openBlog = () => {
-    webBrowser.open('https://www.willread.app/blog');
+    webBrowser.open('https://www.willread.app/blog?webview=true');
   };
 
   const openPrivacyPolicy = () => {
-    webBrowser.open('https://www.willread.app/policy/privacy');
+    webBrowser.open('https://www.willread.app/policy/privacy?webview=true');
   };
 
   const composeMail = () => {
@@ -49,11 +54,13 @@ function MenuScreen() {
         scrollEventThrottle={16}
       >
         <MenuList>
-          <MenuItem
-            title="새로운 소식"
-            menuIconName="bell"
-            onPress={openBlog}
-          />
+          {Platform.OS !== 'ios' && (
+            <MenuItem
+              title="새로운 소식"
+              menuIconName="bell"
+              onPress={openBlog}
+            />
+          )}
           <MenuItem
             title="의견 보내기"
             menuIconName="mail"
@@ -73,12 +80,12 @@ function MenuScreen() {
             value="1.0.0"
           />
           {__DEV__ && (
-          <MenuItem
-            title="DEVELOPER"
-            menuIconName="code"
-            onPress={() => navigation.navigate('DeveloperScreen')}
-            hasSubMenu
-          />
+            <MenuItem
+              title="DEVELOPER"
+              menuIconName="code"
+              onPress={() => navigation.navigate('DeveloperScreen')}
+              hasSubMenu
+            />
           )}
         </MenuList>
       </MenuScrollView>
