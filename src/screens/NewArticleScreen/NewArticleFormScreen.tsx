@@ -269,6 +269,7 @@ function NewArticleFormScreen(): React.ReactElement {
                 multiline
                 textAlignVertical="top"
                 editable={!loading}
+                autoCapitalize="none"
               />
             </>
           ) : (
@@ -285,6 +286,7 @@ function NewArticleFormScreen(): React.ReactElement {
                   onChangeText={handleChangeLink}
                   style={{ paddingRight: 60 }}
                   editable={!loading}
+                  autoCapitalize="none"
                 />
                 <ExpandButtonWrapper>
                   <Button
