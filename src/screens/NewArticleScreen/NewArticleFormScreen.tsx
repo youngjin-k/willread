@@ -86,34 +86,34 @@ function NewArticleFormScreen(): React.ReactElement {
     setLink(url);
   };
 
-  const setFocus = useCallback(() => {
+  const setFocus = useCallback((delay: number = 0) => {
     if (useExpandedLinkInput) {
-      setFocusExpandLinkInput();
+      setFocusExpandLinkInput(delay);
       return;
     }
 
-    setFocusLinkInput();
+    setFocusLinkInput(delay);
   }, [useExpandedLinkInput]);
 
-  const setFocusLinkInput = () => {
+  const setFocusLinkInput = (delay: number = 0) => {
     setTimeout(
       () => {
         if (linkInputRef.current) {
           linkInputRef.current.focus();
         }
       },
-      Platform.OS === 'ios' ? 160 : 0,
+      delay,
     );
   };
 
-  const setFocusExpandLinkInput = () => {
+  const setFocusExpandLinkInput = (delay: number = 0) => {
     setTimeout(
       () => {
         if (linkExpandInputRef.current) {
           linkExpandInputRef.current.focus();
         }
       },
-      Platform.OS === 'ios' ? 160 : 0,
+      delay,
     );
   };
 
@@ -123,12 +123,12 @@ function NewArticleFormScreen(): React.ReactElement {
 
   const handleExpandButtonClick = () => {
     setUseExpandedLinkInput(true);
-    setFocusExpandLinkInput();
+    setFocusExpandLinkInput(Platform.OS === 'ios' ? 160 : 0);
   };
 
   const handleContractButtonClick = () => {
     setUseExpandedLinkInput(false);
-    setFocusLinkInput();
+    setFocusLinkInput(Platform.OS === 'ios' ? 160 : 0);
   };
 
   const showErrorAlert = (title: string, message: string) => {
@@ -142,9 +142,7 @@ function NewArticleFormScreen(): React.ReactElement {
   const hideErrorAlert = () => {
     setVisibleErrorAlert(false);
     setErrorMessage(null);
-    setTimeout(() => {
-      setFocus();
-    }, 400);
+    setFocus(400);
   };
 
   const handleOnPress = useCallback(async () => {
