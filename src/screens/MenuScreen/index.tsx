@@ -29,7 +29,13 @@ function MenuScreen() {
   };
 
   const openBlog = () => {
-    webBrowser.open('https://www.willread.app/blog?webview=true');
+    let blogUrl = 'https://www.willread.app/blog';
+
+    if (Platform.OS === 'ios' || Platform.OS === 'android') {
+      blogUrl = `https://www.willread.app/webview/blog/${Platform.OS}`;
+    }
+
+    webBrowser.open(blogUrl);
   };
 
   const openPrivacyPolicy = () => {
@@ -54,13 +60,11 @@ function MenuScreen() {
         scrollEventThrottle={16}
       >
         <MenuList>
-          {Platform.OS !== 'ios' && (
-            <MenuItem
-              title="새로운 소식"
-              menuIconName="bell"
-              onPress={openBlog}
-            />
-          )}
+          <MenuItem
+            title="새로운 소식"
+            menuIconName="bell"
+            onPress={openBlog}
+          />
           <MenuItem
             title="의견 보내기"
             menuIconName="mail"
