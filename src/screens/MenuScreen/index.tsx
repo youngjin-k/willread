@@ -81,7 +81,7 @@ function MenuScreen() {
           <MenuItem
             title="버전"
             menuIconName="flag"
-            value="1.0.0"
+            value="1.0.1"
           />
           {__DEV__ && (
             <MenuItem
