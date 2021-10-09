@@ -45,11 +45,9 @@ function AddFromClipboard() {
     useCallback(() => {
       const handleFocusChange = getClipboardData.current;
 
-      AppState.addEventListener('change', handleFocusChange);
+      const { remove } = AppState.addEventListener('change', handleFocusChange);
 
-      return () => {
-        AppState.removeEventListener('change', handleFocusChange);
-      };
+      return remove;
     }, []),
   );
 

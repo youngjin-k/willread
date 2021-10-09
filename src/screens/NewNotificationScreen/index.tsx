@@ -149,11 +149,9 @@ function NewNotificationScreen(): ReactElement {
     };
 
     getPermissions();
-    AppState.addEventListener('change', getPermissions);
+    const { remove } = AppState.addEventListener('change', getPermissions);
 
-    return () => {
-      AppState.removeEventListener('change', getPermissions);
-    };
+    return remove;
   }, []);
 
   const openModal = () => {
