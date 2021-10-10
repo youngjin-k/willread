@@ -7,7 +7,7 @@ import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ThemeProvider } from 'styled-components/native';
+import { ThemeProvider } from '@emotion/react';
 
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import Navigation from './src/config/Navigation';

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styled, { css } from 'styled-components/native';
+import styled, { css } from '@emotion/native';
 import { URL } from 'react-native-url-polyfill';
 import { ArticleTimeLeft } from '../../features/article/useArticle';
 

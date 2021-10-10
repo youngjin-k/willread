@@ -102,15 +102,15 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - libevent (2.1.12)
-  - libwebp (1.1.0):
-    - libwebp/demux (= 1.1.0)
-    - libwebp/mux (= 1.1.0)
-    - libwebp/webp (= 1.1.0)
-  - libwebp/demux (1.1.0):
+  - libwebp (1.2.1):
+    - libwebp/demux (= 1.2.1)
+    - libwebp/mux (= 1.2.1)
+    - libwebp/webp (= 1.2.1)
+  - libwebp/demux (1.2.1):
     - libwebp/webp
-  - libwebp/mux (1.1.0):
+  - libwebp/mux (1.2.1):
     - libwebp/demux
-  - libwebp/webp (1.1.0)
+  - libwebp/webp (1.2.1)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -385,28 +385,29 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNFastImage (8.3.4):
+  - RNFastImage (8.5.11):
     - React-Core
-    - SDWebImage (~> 5.8)
-    - SDWebImageWebPCoder (~> 0.6.1)
-  - RNGestureHandler (1.9.0):
+    - SDWebImage (~> 5.11.1)
+    - SDWebImageWebPCoder (~> 0.8.4)
+  - RNGestureHandler (1.10.3):
     - React-Core
   - RNInAppBrowser (3.5.1):
     - React-Core
-  - RNScreens (2.15.2):
+  - RNScreens (3.8.0):
     - React-Core
-  - RNShareMenu (5.0.3):
+    - React-RCTImage
+  - RNShareMenu (5.0.5):
     - React
   - RNSVG (12.1.0):
     - React
-  - RNVectorIcons (7.1.0):
-    - React
-  - SDWebImage (5.10.2):
-    - SDWebImage/Core (= 5.10.2)
-  - SDWebImage/Core (5.10.2)
-  - SDWebImageWebPCoder (0.6.1):
+  - RNVectorIcons (8.1.0):
+    - React-Core
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.7)
+    - SDWebImage/Core (~> 5.10)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.9):
@@ -654,7 +655,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
+  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: e4a18a90004e0ed97bba9081099104fd0f658dc9
@@ -685,15 +686,15 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
-  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
+  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNInAppBrowser: 48b95ba7a4eaff5cc223bca338d3e319561dbd1b
-  RNScreens: 3d682bcaba69a4f8e55543d90818704f34338db1
-  RNShareMenu: 555df30344da0d60947ccc781b0447ee9e5cd48f
+  RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
+  RNShareMenu: c69282e50ac439737a86949a55c7b023b90027c8
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
-  SDWebImage: b969dcfc02c40a5da71eac0b03b8f1a0c794a86f
-  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
+  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: d03cefd0e4e4179ab8c490408589f1c8a6c8b785

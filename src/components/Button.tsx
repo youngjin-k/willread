@@ -8,7 +8,7 @@ import {
   useColorScheme,
   ViewStyle,
 } from 'react-native';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import themes from '../lib/styles/themes';
 

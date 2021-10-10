@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 const TextInput = styled.TextInput`
   height: 56px;

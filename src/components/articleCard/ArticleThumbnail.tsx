@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import styled, { css } from 'styled-components/native';
+import styled, { css } from '@emotion/native';
 import FastImage from 'react-native-fast-image';
 import fallbackImage from '../../../assets/fallback.png';
 

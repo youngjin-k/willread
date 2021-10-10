@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 export interface FormLabelProps {
     children: ReactElement | string;

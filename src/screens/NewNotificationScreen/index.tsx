@@ -6,7 +6,7 @@ import React, {
   ReactElement, useCallback, useEffect, useState,
 } from 'react';
 import { AppState, TouchableWithoutFeedback } from 'react-native';
-import styled, { css } from 'styled-components/native';
+import styled, { css } from '@emotion/native';
 
 import Button, { ButtonSize } from '../../components/Button';
 import DateTimePicker from './DateTimePicker';

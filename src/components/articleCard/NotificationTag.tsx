@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useColorScheme } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Svg, { Path } from 'react-native-svg';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import themes from '../../lib/styles/themes';
 import { DisplayItem } from '../../features/article/useArticle';

@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 import bookshelfFull from '../../../assets/bookshelf-full.png';
 
 import Button, { ButtonSize } from '../../components/Button';

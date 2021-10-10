@@ -6,7 +6,7 @@ import {
 import React from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import themes from '../../lib/styles/themes';

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import { Article } from '../../features/article/articles';
 import { DisplayItem } from '../../features/article/useArticle';

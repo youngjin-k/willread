@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 import { AppState } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';

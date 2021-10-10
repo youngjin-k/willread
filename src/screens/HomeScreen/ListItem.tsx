@@ -7,7 +7,7 @@ import { useWindowDimensions, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/Feather';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
