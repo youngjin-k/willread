@@ -2,7 +2,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';

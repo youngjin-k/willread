@@ -1,7 +1,7 @@
-import { DefaultTheme } from 'styled-components/native';
+import { Theme } from '@emotion/react';
 
-declare module 'styled-components' {
-  export interface DefaultTheme {
+declare module '@emotion/react' {
+  export interface Theme {
     dark: boolean;
     colors: {
       background: string;
@@ -23,7 +23,7 @@ declare module 'styled-components' {
   }
 }
 
-const light: DefaultTheme = {
+const light: Theme = {
   dark: false,
   colors: {
     background: '#ffffff',
@@ -44,7 +44,7 @@ const light: DefaultTheme = {
   },
 };
 
-const dark: DefaultTheme = {
+const dark: Theme = {
   dark: true,
   colors: {
     background: '#121214',

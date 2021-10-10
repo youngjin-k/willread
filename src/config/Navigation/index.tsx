@@ -64,14 +64,15 @@ function AppTabsScreen() {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false,
+      screenOptions={{
+        tabBarShowLabel: false,
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
+          headerShown: false,
           tabBarLabel: '홈',
           tabBarIcon: ({ color, size }) => (
             <Icon
@@ -115,6 +116,7 @@ function AppTabsScreen() {
         name="Menu"
         component={Menu}
         options={{
+          headerShown: false,
           tabBarLabel: '더보기',
           tabBarIcon: ({ color, size }) => (
             <Icon
@@ -152,14 +154,19 @@ export default function Navigation(): ReactElement {
       theme={scheme === 'dark' ? willreadDarkTheme : willreadLightTheme}
     >
       <RootStack.Navigator
-        headerMode="none"
-        mode="modal"
+        screenOptions={{
+          headerShown: false,
+        }}
+        // mode="modal"
         // initialRouteName="NewArticle"
         initialRouteName="AppTabsScreen"
       >
         <RootStack.Screen
           name="AppTabsScreen"
           component={AppTabsScreen}
+          options={{
+            headerShown: false,
+          }}
         />
         <RootStack.Screen
           name="NewArticle"

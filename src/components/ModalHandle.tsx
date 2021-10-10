@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 function ModalHandle(): React.ReactElement {
   return (

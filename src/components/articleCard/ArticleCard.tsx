@@ -1,5 +1,5 @@
 import React, { ReactElement, useMemo } from 'react';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import { Article } from '../../features/article/articles';
 import { DisplayItem } from '../../features/article/useArticle';

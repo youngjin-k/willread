@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet } from 'react-native';
-import styled, { css } from 'styled-components/native';
+import styled, { css } from '@emotion/native';
 
 export interface ScreenHeaderProps {
   isScrolled?: boolean;

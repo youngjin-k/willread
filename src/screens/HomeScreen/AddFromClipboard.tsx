@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { AppState } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 import { throttle } from 'throttle-debounce';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
@@ -45,11 +45,9 @@ function AddFromClipboard() {
     useCallback(() => {
       const handleFocusChange = getClipboardData.current;
 
-      AppState.addEventListener('change', handleFocusChange);
+      const { remove } = AppState.addEventListener('change', handleFocusChange);
 
-      return () => {
-        AppState.removeEventListener('change', handleFocusChange);
-      };
+      return remove;
     }, []),
   );
 

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styled, { css } from 'styled-components/native';
+import styled, { css } from '@emotion/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { GestureResponderEvent } from 'react-native';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';

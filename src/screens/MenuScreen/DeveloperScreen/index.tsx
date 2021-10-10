@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 
 import { DEVforceUpdateArticles } from '../../../features/article/articles';
 import useArticle from '../../../features/article/useArticle';
