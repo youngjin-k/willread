@@ -4,7 +4,7 @@ import React from 'react';
 import * as Animatable from 'react-native-animatable';
 import { useColorScheme } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';

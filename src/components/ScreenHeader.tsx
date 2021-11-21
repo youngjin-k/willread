@@ -1,7 +1,6 @@
-import React, { memo, ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
-import styled from '@emotion/native';
-import useTheme from '../lib/styles/useTheme';
+import React, { ReactNode } from 'react';
+import { StyleSheet } from 'react-native';
+import styled, { css } from 'styled-components/native';
 
 export interface ScreenHeaderProps {
   isScrolled?: boolean;
@@ -9,27 +8,26 @@ export interface ScreenHeaderProps {
 }
 
 function ScreenHeader({ isScrolled = false, children }: ScreenHeaderProps) {
-  const theme = useTheme();
-
   return (
-    <View
-      style={{
-        height: 56,
-        backgroundColor: theme.colors.background,
-        paddingTop: 0,
-        paddingBottom: 8,
-        paddingHorizontal: 16,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: isScrolled ? theme.colors.border : theme.colors.background,
-      }}
-    >
-      {children}
-    </View>
+    <ScreenHeaderBlock isScrolled={isScrolled}>{children}</ScreenHeaderBlock>
   );
 }
+
+const ScreenHeaderBlock = styled.View<{ isScrolled: boolean }>`
+  height: 56px;
+  background-color: ${(props) => props.theme.colors.background};
+  padding: 0 16px 8px 16px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom-width: ${StyleSheet.hairlineWidth}px;
+  border-bottom-color: ${(props) => props.theme.colors.background};
+
+  ${(props) => props.isScrolled
+    && css`
+      border-bottom-color: ${props.theme.colors.border};
+    `}
+`;
 
 export const ScreenHeaderTitle = styled.Text`
   font-weight: bold;
@@ -37,4 +35,4 @@ export const ScreenHeaderTitle = styled.Text`
   color: ${(props) => props.theme.colors.typography.primary};
 `;
 
-export default memo(ScreenHeader);
+export default ScreenHeader;

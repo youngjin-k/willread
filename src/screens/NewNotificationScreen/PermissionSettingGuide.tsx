@@ -1,6 +1,6 @@
 import { Linking } from 'react-native';
 import React from 'react';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import Button, { ButtonVariant } from '../../components/Button';
 import ScreenHeader from './ScreenHeader';

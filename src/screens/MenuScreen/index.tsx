@@ -8,7 +8,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import * as MailComposer from 'expo-mail-composer';
 import ScreenHeader, { ScreenHeaderTitle } from '../../components/ScreenHeader';
 

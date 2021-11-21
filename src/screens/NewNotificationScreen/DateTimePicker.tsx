@@ -10,8 +10,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { Theme } from '@emotion/react';
-import styled, { css } from '@emotion/native';
+import { DefaultTheme } from 'styled-components';
+import styled, { css } from 'styled-components/native';
 
 import Button from '../../components/Button';
 import Line from '../../components/Line';
@@ -351,7 +351,7 @@ const DateItem = styled.View`
   align-items: center;
 `;
 
-const getDayOfWeekLabelColor = (day: number, theme: Theme) => {
+const getDayOfWeekLabelColor = (day: number, theme: DefaultTheme) => {
   switch (day) {
     case 6:
       return theme.colors.typography.point;

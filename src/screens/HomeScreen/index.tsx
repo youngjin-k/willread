@@ -21,7 +21,7 @@ import FastImage from 'react-native-fast-image';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import ShareMenu from 'react-native-share-menu';
 import SplashScreen from 'react-native-splash-screen';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import willreadDark from '../../../assets/willread-dark.png';
 import willreadLight from '../../../assets/willread-light.png';

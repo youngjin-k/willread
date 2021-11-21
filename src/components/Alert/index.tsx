@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-native-modal';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import haptics from '../../lib/utils/haptics';
 import Button, { ButtonVariant } from '../Button';
 

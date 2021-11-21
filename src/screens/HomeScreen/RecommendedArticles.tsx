@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import { Article } from '../../features/article/articles';

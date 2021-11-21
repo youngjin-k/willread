@@ -1,7 +1,7 @@
 import React from 'react';
 import { GestureResponderEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import PressableWrapper from '../../components/articleCard/PressableWrapper';
 
 export interface MenuListProps {

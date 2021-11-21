@@ -1,18 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { useColorScheme } from 'react-native';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
-
+import styled, { css } from 'styled-components/native';
+import FastImage from 'react-native-fast-image';
 import fallbackImage from '../../../assets/fallback.png';
-
-const miniStyle: ImageStyle = {
-  width: 96,
-  height: 80,
-};
-
-const fullWidthStyle: ImageStyle = {
-  width: '100%',
-  aspectRatio: 1.9,
-};
 
 export interface ArticleThumbnailProps {
   size?: 'mini' | 'fullWidth';
@@ -21,8 +10,6 @@ export interface ArticleThumbnailProps {
 
 function ArticleThumbnail({ size = 'mini', uri }: ArticleThumbnailProps) {
   const [imageLoadError, setImageLoadError] = useState(false);
-  const scheme = useColorScheme();
-  const isDark = scheme === 'dark';
 
   const handleImageError = () => {
     setImageLoadError(true);
@@ -38,16 +25,32 @@ function ArticleThumbnail({ size = 'mini', uri }: ArticleThumbnailProps) {
   );
 
   return (
-    <FastImage
+    <ArticleThumbnailBlock
+      size={size}
       source={source}
       onError={handleImageError}
-      style={{
-        borderRadius: 16,
-        opacity: isDark ? 0.8 : 1,
-        ...size === 'mini' ? miniStyle : fullWidthStyle,
-      }}
     />
   );
 }
+
+const ArticleThumbnailBlock = styled(FastImage)<{
+  size: ArticleThumbnailProps['size'];
+}>`
+  ${(props) => (props.size === 'mini'
+    ? css`
+          width: 96px;
+          height: 80px;
+        `
+    : css`
+          width: 100%;
+          aspect-ratio: ${1.9 / 1};
+        `)}
+  border-radius: 16px;
+
+  ${(props) => props.theme.dark
+    && css`
+      opacity: 0.8;
+    `}
+`;
 
 export default ArticleThumbnail;

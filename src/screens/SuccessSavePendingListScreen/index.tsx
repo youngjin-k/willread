@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import * as Animatable from 'react-native-animatable';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import Button, { ButtonSize } from '../../components/Button';

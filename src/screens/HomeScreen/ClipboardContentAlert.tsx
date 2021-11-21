@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 import { AppState } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
@@ -46,9 +46,11 @@ const ClipboardContentAlert = forwardRef<ClipboardContentAlertHandle>((_, ref) =
 
   useFocusEffect(
     useCallback(() => {
-      const { remove } = AppState.addEventListener('change', syncClipboardText);
+      AppState.addEventListener('change', syncClipboardText);
 
-      return remove;
+      return () => {
+        AppState.removeEventListener('change', syncClipboardText);
+      };
     }, []),
   );
 

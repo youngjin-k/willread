@@ -1,6 +1,6 @@
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import bookshelfEmpty from '../../../assets/bookshelf-empty.png';
 import Line from '../../components/Line';

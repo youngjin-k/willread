@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import styled, { css } from '@emotion/native';
+import styled, { css } from 'styled-components/native';
 
 export interface LineProps {
   padding?: number;

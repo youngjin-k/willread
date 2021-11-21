@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Share } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import Button, { ButtonVariant } from '../../components/Button';

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import { View } from 'react-native';
 import ModalHandle from './ModalHandle';

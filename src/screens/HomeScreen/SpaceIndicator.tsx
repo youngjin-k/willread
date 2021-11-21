@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from '@emotion/native';
+import styled, { css } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { MAX_ARTICLE_LIST_SPACE } from '../../constants';
 
