@@ -46,10 +46,10 @@ const ClipboardContentAlert = forwardRef<ClipboardContentAlertHandle>((_, ref) =
 
   useFocusEffect(
     useCallback(() => {
-      AppState.addEventListener('change', syncClipboardText);
+      const subscription = AppState.addEventListener('change', syncClipboardText);
 
       return () => {
-        AppState.removeEventListener('change', syncClipboardText);
+        subscription.remove();
       };
     }, []),
   );

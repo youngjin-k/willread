@@ -1,47 +1,30 @@
 import {
-  RouteProp,
-  useNavigation,
-  useRoute,
-  useScrollToTop,
+  RouteProp, useNavigation, useRoute, useScrollToTop,
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react';
-import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  RefreshControl,
-  ScrollView,
-  useColorScheme,
-  View,
-} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import ShareMenu from 'react-native-share-menu';
 import SplashScreen from 'react-native-splash-screen';
 import styled from 'styled-components/native';
 
-import willreadDark from '../../../assets/willread-dark.png';
-import willreadLight from '../../../assets/willread-light.png';
 import Line from '../../components/Line';
-import ScreenHeader from '../../components/ScreenHeader';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle, { DisplayItem } from '../../features/article/useArticle';
 import useTheme from '../../lib/styles/useTheme';
 import extractUrl from '../../lib/utils/extractUrl';
 import webBrowser from '../../lib/utils/webBrowser';
-import ClipboardContentAlert, {
-  ClipboardContentAlertHandle,
-} from './ClipboardContentAlert';
+import ClipboardContentAlert, { ClipboardContentAlertHandle } from './ClipboardContentAlert';
 import EmptyArticleList from './EmptyArticleList';
 import ListItem from './ListItem';
 import PendingList from './PendingList';
 import PendingListAlert from './PendingListAlert';
 import RecommendedArticles from './RecommendedArticles';
-import SpaceIndicator from './SpaceIndicator';
 
 export interface SharedItem {
   mimeType: string;
@@ -52,7 +35,6 @@ function HomeScreen(): React.ReactElement {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const ClipboardContentAlertRef = useRef<ClipboardContentAlertHandle>(null);
-  const scheme = useColorScheme();
   const {
     articles,
     readArticle,
@@ -67,7 +49,6 @@ function HomeScreen(): React.ReactElement {
   const [refreshing, setRefreshing] = React.useState(false);
   const theme = useTheme();
   const [visiblePendingList, setVisiblePendingList] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTop(scrollViewRef);
@@ -124,8 +105,7 @@ function HomeScreen(): React.ReactElement {
     handleSwipeMenuOpen(null);
   };
 
-  const handleScrollView = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setIsScrolled(event.nativeEvent.contentOffset.y > 0);
+  const handleScrollView = () => {
     if (swipeMenuOpenRowIndex.current !== null) {
       closeOpenedSwipeMenu();
     }
@@ -222,14 +202,6 @@ function HomeScreen(): React.ReactElement {
   return (
     <>
       <Container>
-        <ScreenHeader isScrolled={isScrolled}>
-          <TextLogo
-            resizeMode="contain"
-            source={scheme === 'dark' ? willreadDark : willreadLight}
-          />
-          <SpaceIndicator usage={total} />
-        </ScreenHeader>
-
         <HomeScrollView
           ref={scrollViewRef}
           showsVerticalScrollIndicator={false}
@@ -304,11 +276,5 @@ const Container = styled.SafeAreaView`
 `;
 
 const HomeScrollView = styled.ScrollView``;
-
-const TextLogo = styled(FastImage)`
-  margin: 0 0 4px 0;
-  width: 130px;
-  height: 24px;
-`;
 
 export default HomeScreen;

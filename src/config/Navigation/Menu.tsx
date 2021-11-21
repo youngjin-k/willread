@@ -10,6 +10,7 @@ import styled from 'styled-components/native';
 
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import themes from '../../lib/styles/themes';
+import useTheme from '../../lib/styles/useTheme';
 import MenuScreen from '../../screens/MenuScreen';
 import DeveloperScreen from '../../screens/MenuScreen/DeveloperScreen';
 
@@ -54,16 +55,21 @@ export type MenuStackParamList = {
 const MenuStack = createStackNavigator<MenuStackParamList>();
 
 function Menu() {
-  const scheme = useColorScheme();
-  const appearance = scheme === 'dark' ? 'dark' : 'light';
+  const theme = useTheme();
   return (
     <MenuStack.Navigator>
       <MenuStack.Screen
         name="MenuScreen"
         component={MenuScreen}
         options={{
-          headerShown: false,
           title: '더보기',
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTitleStyle: {
+            color: theme.colors.typography.primary,
+          },
+          headerShadowVisible: false,
         }}
       />
 
@@ -74,11 +80,14 @@ function Menu() {
           options={{
             title: 'DEVELOPER',
             headerBackTitleVisible: false,
+            headerShadowVisible: false,
             headerLeft: ({ onPress }) => <HeaderBackButton onPress={onPress} />,
-            headerTitleAlign: 'center',
-            headerBackground: () => <HeaderBackground />,
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            headerTitleStyle: styles[appearance].headerTitle,
+            headerStyle: {
+              backgroundColor: theme.colors.background,
+            },
+            headerTitleStyle: {
+              color: theme.colors.typography.primary,
+            },
           }}
         />
       )}

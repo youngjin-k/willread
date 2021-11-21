@@ -23,6 +23,7 @@ import NewNotificationScreen from '../../screens/NewNotificationScreen';
 import SuccessSaveArticleScreen from '../../screens/SuccessSaveArticleScreen';
 import Menu from './Menu';
 import SuccessSavePendingListScreen from '../../screens/SuccessSavePendingListScreen';
+import WillreadLogoTitle from '../../components/WillreadLogoTItle';
 
 export type TabParamList = {
   Home: {
@@ -63,10 +64,16 @@ function AppTabsScreen() {
   const theme = useTheme();
 
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        showLabel: false,
-      }}
+    <Tab.Navigator screenOptions={{
+      tabBarShowLabel: false,
+      headerStyle: {
+        backgroundColor: theme.colors.background,
+      },
+      headerTitleStyle: {
+        color: theme.colors.typography.primary,
+      },
+      headerShadowVisible: false,
+    }}
     >
       <Tab.Screen
         name="Home"
@@ -80,6 +87,8 @@ function AppTabsScreen() {
               color={color}
             />
           ),
+          headerTitle: () => <WillreadLogoTitle />,
+          headerTitleAlign: 'left',
         }}
       />
       <Tab.Screen
@@ -115,6 +124,7 @@ function AppTabsScreen() {
         name="Menu"
         component={Menu}
         options={{
+          headerShown: false,
           tabBarLabel: '더보기',
           tabBarIcon: ({ color, size }) => (
             <Icon
@@ -152,8 +162,10 @@ export default function Navigation(): ReactElement {
       theme={scheme === 'dark' ? willreadDarkTheme : willreadLightTheme}
     >
       <RootStack.Navigator
-        headerMode="none"
-        mode="modal"
+        screenOptions={{
+          headerShown: false,
+          presentation: 'modal',
+        }}
         // initialRouteName="NewArticle"
         initialRouteName="AppTabsScreen"
       >

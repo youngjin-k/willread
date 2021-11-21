@@ -1,16 +1,13 @@
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   Platform,
   ScrollView,
 } from 'react-native';
 import styled from 'styled-components/native';
 import * as MailComposer from 'expo-mail-composer';
-import ScreenHeader, { ScreenHeaderTitle } from '../../components/ScreenHeader';
 
 import { MenuStackParamList } from '../../config/Navigation/Menu';
 import webBrowser from '../../lib/utils/webBrowser';
@@ -20,13 +17,8 @@ import MenuList from './MenuList';
 function MenuScreen() {
   const navigation = useNavigation<StackNavigationProp<MenuStackParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   useScrollToTop(scrollViewRef);
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setIsScrolled(event.nativeEvent.contentOffset.y > 0);
-  };
 
   const openBlog = () => {
     let blogUrl = 'https://www.willread.app/blog';
@@ -50,15 +42,7 @@ function MenuScreen() {
 
   return (
     <Container>
-      <ScreenHeader isScrolled={isScrolled}>
-        <ScreenHeaderTitle style={{ marginLeft: 16 }}>더보기</ScreenHeaderTitle>
-      </ScreenHeader>
-      <MenuScrollView
-        ref={scrollViewRef}
-        showsVerticalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-      >
+      <MenuScrollView showsVerticalScrollIndicator={false}>
         <MenuList>
           <MenuItem
             title="새로운 소식"
