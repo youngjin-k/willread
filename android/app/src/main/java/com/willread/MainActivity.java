@@ -1,4 +1,6 @@
 package com.willread;
+import expo.modules.ReactActivityDelegateWrapper;
+import com.facebook.react.ReactActivityDelegate;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
@@ -25,5 +27,12 @@ public class MainActivity extends ReactActivity {
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     getReactInstanceManager().onConfigurationChanged(this, newConfig);
+  }
+
+  @Override
+  protected ReactActivityDelegate createReactActivityDelegate() {
+    return new ReactActivityDelegateWrapper(this,
+      new ReactActivityDelegate(this, getMainComponentName())
+    );
   }
 }
