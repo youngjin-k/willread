@@ -149,10 +149,10 @@ function NewNotificationScreen(): ReactElement {
     };
 
     getPermissions();
-    AppState.addEventListener('change', getPermissions);
+    const subscription = AppState.addEventListener('change', getPermissions);
 
     return () => {
-      AppState.removeEventListener('change', getPermissions);
+      subscription.remove();
     };
   }, []);
 

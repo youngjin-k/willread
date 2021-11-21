@@ -45,10 +45,10 @@ function AddFromClipboard() {
     useCallback(() => {
       const handleFocusChange = getClipboardData.current;
 
-      AppState.addEventListener('change', handleFocusChange);
+      const subscription = AppState.addEventListener('change', handleFocusChange);
 
       return () => {
-        AppState.removeEventListener('change', handleFocusChange);
+        subscription.remove();
       };
     }, []),
   );
