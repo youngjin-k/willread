@@ -1,26 +1,20 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import dayjs from 'dayjs';
-import * as Notifications from 'expo-notifications';
 import React, {
   ReactElement, useCallback, useEffect, useState,
 } from 'react';
-import { AppState, TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
+import BottomModal from '../../components/BottomModal';
 import Button, { ButtonSize } from '../../components/Button';
-import DateTimePicker from './DateTimePicker';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
+import useArticle from '../../features/article/useArticle';
+import useNotificationPermission, { PermissionStatus } from '../../lib/hooks/useNotificationPermission';
+import DateTimePicker from './DateTimePicker';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
-import BottomModal from '../../components/BottomModal';
-import useArticle from '../../features/article/useArticle';
-
-export enum PermissionStatus {
-  GRANTED = 'granted',
-  UNDETERMINED = 'undetermined',
-  DENIED = 'denied',
-}
 
 export interface Step4Props {
   nextStep: () => void;
@@ -90,15 +84,6 @@ const formatTimeFromNow = (
   };
 };
 
-const requestPermissionsAsync = async () => Notifications.requestPermissionsAsync({
-  ios: {
-    allowAlert: true,
-    allowBadge: true,
-    allowSound: true,
-    allowAnnouncements: true,
-  },
-});
-
 const initialNotificationTime = {
   date: dayjs(),
   fromNow: '',
@@ -122,9 +107,9 @@ function NewNotificationScreen(): ReactElement {
   const [notificationDate, setNotificationDate] = useState<NotificationTime>(
     initialNotificationTime,
   );
-  const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
+  const { permissionStatus, requestPermissions } = useNotificationPermission();
   const [now] = useState(dayjs());
-  const { addScheduledNotification } = useArticle();
+  const { addCustomScheduledNotification } = useArticle();
 
   const { article } = route.params;
 
@@ -141,20 +126,6 @@ function NewNotificationScreen(): ReactElement {
   useEffect(() => {
     handlePressTime(2, 1);
   }, [handlePressTime]);
-
-  useEffect(() => {
-    const getPermissions = async () => {
-      const settings = await Notifications.getPermissionsAsync();
-      setPermissionStatus(settings.status);
-    };
-
-    getPermissions();
-    const subscription = AppState.addEventListener('change', getPermissions);
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   const openModal = () => {
     setModalVisible(true);
@@ -174,19 +145,18 @@ function NewNotificationScreen(): ReactElement {
     setLoading(true);
 
     if (permissionStatus === PermissionStatus.UNDETERMINED) {
-      const { status } = await requestPermissionsAsync();
+      const status = await requestPermissions();
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       // status의 type은 PermissionStatus 이지만 실제 값은 0/1이 반환 됨
       if (status === PermissionStatus.DENIED || status === 0) {
-        setPermissionStatus(status);
         setLoading(false);
         return;
       }
     }
 
-    await addScheduledNotification({
+    await addCustomScheduledNotification({
       article,
       date: notificationDate.date.toDate(),
     });
@@ -201,12 +171,13 @@ function NewNotificationScreen(): ReactElement {
     }
     navigation.pop();
   }, [
+    requestPermissions,
     permissionStatus,
     notificationDate,
     route,
     article,
     navigation,
-    addScheduledNotification,
+    addCustomScheduledNotification,
   ]);
 
   if (permissionStatus === PermissionStatus.DENIED) {
