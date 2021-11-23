@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import Modal from 'react-native-modal';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import haptics from '../../lib/utils/haptics';
 import Button, { ButtonVariant } from '../Button';
@@ -12,7 +13,7 @@ const buttonVariantByStyle = {
 
 export interface AlertProps {
   title?: string;
-  message?: string;
+  message?: string | ReactNode;
   visible: boolean;
   buttons: {
     text: string;
@@ -31,6 +32,8 @@ function Alert({
   onClose,
   hapticOnVisible = true,
 }: AlertProps) {
+  const insets = useSafeAreaInsets();
+
   useEffect(() => {
     if (!visible || !hapticOnVisible) {
       return;
@@ -58,11 +61,17 @@ function Alert({
             <TitleWrapper>
               <Title>{title}</Title>
             </TitleWrapper>
-            <MessageWrapper>
-              <Message>{message}</Message>
-            </MessageWrapper>
+            {typeof message === 'string' ? (
+              <MessageWrapper>
+                <Message>{message}</Message>
+              </MessageWrapper>
+            ) : (
+              <MessageWrapper>
+                {message}
+              </MessageWrapper>
+            )}
           </Main>
-          <Actions>
+          <Actions hasHomeBar={insets.bottom > 0}>
             {buttons.map(({ text, style, onPress }, index) => (
               <React.Fragment key={text}>
                 {index > 0 && <ActionSeparator />}
@@ -114,9 +123,9 @@ const Message = styled.Text`
   color: ${(props) => props.theme.colors.typography.primary};
 `;
 
-const Actions = styled.View`
+const Actions = styled.View<{hasHomeBar: boolean;}>`
   flex-direction: row;
-  padding: 0 16px 16px 16px;
+  padding: 0 16px ${(props) => (props.hasHomeBar ? '0' : '16px')} 16px;
 `;
 
 const ActionSeparator = styled.View`

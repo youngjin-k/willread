@@ -13,19 +13,28 @@ import {
   TextInput as NativeTextInput,
   View,
   useColorScheme,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
 import Alert from '../../components/Alert';
+import BottomCtaContainer from '../../components/BottomCtaContainer';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import FormLabel from '../../components/FormLabel';
 import TextInput from '../../components/TextInput';
 import { RootStackParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
+import useNotificationPermission, { PermissionStatus } from '../../lib/hooks/useNotificationPermission';
 import VALID_URL from '../../lib/regex/validUrl';
 import themes from '../../lib/styles/themes';
 import haptics from '../../lib/utils/haptics';
+import { getPreference, setPreference } from '../../lib/utils/preferences';
+import willreadToast from '../../lib/willreadToast';
+
+const openSettings = () => {
+  Linking.openSettings();
+};
 
 export interface PreviewHTML {
   url: string;
@@ -71,6 +80,12 @@ function NewArticleFormScreen(): React.ReactElement {
     message: string;
   } | null>();
   const [visibleErrorAlert, setVisibleErrorAlert] = useState(false);
+  const { permissionStatusRef, requestPermissions } = useNotificationPermission();
+  const [visibleNotificationAlert, setVisibleNotificationAlert] = useState(false);
+  const [
+    visibleNotificationPermissionAlert,
+    setVisibleNotificationPermissionAlert,
+  ] = useState(false);
 
   useEffect(() => {
     if (route?.params?.url) {
@@ -118,7 +133,7 @@ function NewArticleFormScreen(): React.ReactElement {
   };
 
   useEffect(() => {
-    setFocusLinkInput();
+    setFocusLinkInput(Platform.OS === 'ios' ? 160 : 0);
   }, []);
 
   const handleExpandButtonClick = () => {
@@ -149,6 +164,19 @@ function NewArticleFormScreen(): React.ReactElement {
     setLoading(true);
 
     try {
+      const allowExpireNotification = await getPreference('allowExpireNotification');
+      if (allowExpireNotification === 'true') {
+        if (permissionStatusRef.current === PermissionStatus.UNDETERMINED) {
+          setVisibleNotificationAlert(true);
+          return;
+        }
+
+        if (permissionStatusRef.current === PermissionStatus.DENIED) {
+          setVisibleNotificationPermissionAlert(true);
+          return;
+        }
+      }
+
       const response = await fetch(link, {
         redirect: 'follow',
         headers: {
@@ -219,7 +247,36 @@ function NewArticleFormScreen(): React.ReactElement {
       showErrorAlert('정보를 가져올 수 없어요.', '확인 후 다시 시도해주세요.');
       setLoading(false);
     }
-  }, [link, addArticle, navigation]);
+  }, [link, addArticle, navigation, permissionStatusRef]);
+
+  const handleDeninedExpireNotificationPress = () => {
+    setVisibleNotificationAlert(false);
+    setVisibleNotificationPermissionAlert(false);
+
+    setPreference('allowExpireNotification', 'false');
+
+    willreadToast.showSimple(
+      '설정은 더보기 메뉴에서 나중에 다시 변경할 수 있어요.',
+    );
+
+    handleOnPress();
+  };
+
+  const handleAcceptExpiredNotificationPress = async () => {
+    setVisibleNotificationAlert(false);
+    const status = await requestPermissions();
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // status의 type은 PermissionStatus 이지만 실제 값은 0/1이 반환 됨
+    if (status === PermissionStatus.DENIED || status === 0) {
+      return;
+    }
+
+    setTimeout(() => {
+      handleOnPress();
+    }, 300);
+  };
 
   const handleModalClosePress = () => {
     Keyboard.dismiss();
@@ -305,7 +362,7 @@ function NewArticleFormScreen(): React.ReactElement {
             </>
           )}
 
-          <Actions>
+          <BottomCtaContainer fixed>
             <Button
               onPress={handleOnPress}
               loading={loading}
@@ -313,7 +370,7 @@ function NewArticleFormScreen(): React.ReactElement {
               label="등록"
               size={ButtonSize.Large}
             />
-          </Actions>
+          </BottomCtaContainer>
         </Content>
       </KeyboardAvoidingView>
 
@@ -327,6 +384,63 @@ function NewArticleFormScreen(): React.ReactElement {
             text: '확인',
             style: 'default',
             onPress: hideErrorAlert,
+          },
+        ]}
+      />
+
+      <Alert
+        visible={visibleNotificationAlert}
+        title="알려드려요."
+        message={(
+          <>
+            <NotificationAlertText>
+              윌리드에 등록한 아티클은 7일이 경과되면 자동으로 삭제되며, 남은 시간이 24시간 미만일 때 보관 기간을 연장할 수 있어요.
+            </NotificationAlertText>
+            <NotificationAlertText>
+              잊지 않도록 알림을 보내드릴게요.
+            </NotificationAlertText>
+          </>
+        )}
+        onClose={() => {
+          setVisibleNotificationAlert(false);
+          setLoading(false);
+        }}
+        buttons={[
+          {
+            text: '안 받을래요',
+            style: 'cancel',
+            onPress: handleDeninedExpireNotificationPress,
+          },
+          {
+            text: '좋아요',
+            style: 'default',
+            onPress: handleAcceptExpiredNotificationPress,
+          },
+        ]}
+      />
+
+      <Alert
+        visible={visibleNotificationPermissionAlert}
+        title="알림 권한이 필요해요."
+        message="삭제되기 전 알림을 보내드리기 위해 알림 권한이 필요해요. 시스템 설정에서 알림 권한을 허용해주세요."
+        onClose={() => {
+          setVisibleNotificationPermissionAlert(false);
+          setLoading(false);
+        }}
+        buttons={[
+          {
+            text: '안 받을래요',
+            style: 'cancel',
+            onPress: handleDeninedExpireNotificationPress,
+          },
+          {
+            text: '설정으로 이동',
+            style: 'default',
+            onPress: () => {
+              setVisibleNotificationPermissionAlert(false);
+              setLoading(false);
+              openSettings();
+            },
           },
         ]}
       />
@@ -399,13 +513,10 @@ const MaximizeIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.typography.point};
 `;
 
-const Actions = styled.View`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  height: ${64 + 16 + 16}px;
+const NotificationAlertText = styled.Text`
+  font-size: 18px;
+  color: ${(props) => props.theme.colors.typography.primary};
+  margin-bottom: 8px;
 `;
 
 export default NewArticleFormScreen;
