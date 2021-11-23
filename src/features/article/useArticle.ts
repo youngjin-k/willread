@@ -4,21 +4,16 @@ import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
-import {
-  MAX_ARTICLE_LIST_SPACE,
-  MAX_PENDING_LIST_SPACE,
-} from '../../constants';
+import { ARTICLE_EXPIRE_DAYS, MAX_ARTICLE_LIST_SPACE } from '../../constants';
 import webBrowser from '../../lib/utils/webBrowser';
-import willreadToast from '../../lib/willreadToast';
 import { RootState } from '../store';
 import {
   addArticle as addArticleAction,
-  addPendingList as addPendingListAction,
   addScheduledNotification as addScheduledNotificationAction,
   Article,
   ArticleDraft,
+  NotificationType,
   removeArticle as removeArticleAction,
-  removePendingList as removePendingListAction,
   removeScheduledNotification as removeScheduledNotificationAction,
   updateArticle,
 } from './articles';
@@ -39,15 +34,16 @@ export interface DisplayItem {
   notificationTagType: 'default' | 'accent';
 }
 
-const setNotification = async (date: Date, article: Article) => {
+export const setNotification = async (
+  date: Date,
+  { data, title, body }: {data: Record<string, unknown>, title: string; body: string},
+) => {
   const id = await Notifications.scheduleNotificationAsync({
     content: {
-      title: '윌리드할 시간이에요!',
-      body: article.title,
+      title,
+      body,
       sound: 'default',
-      data: {
-        article,
-      },
+      data,
       badge: 1,
     },
     trigger: date,
@@ -62,16 +58,11 @@ function useArticle() {
     articleDraft,
     lastAddedArticle,
     scheduledNotifications,
-    pendingList,
   } = useSelector((state: RootState) => state.articles);
 
   const isArticleFull = useMemo(
     () => articles.length === MAX_ARTICLE_LIST_SPACE,
     [articles],
-  );
-  const isPendingListFull = useMemo(
-    () => pendingList.length === MAX_PENDING_LIST_SPACE,
-    [pendingList],
   );
 
   const setLastReadAt = useCallback(
@@ -95,10 +86,26 @@ function useArticle() {
     );
   };
 
-  const removeDeviceNotification = useCallback(
+  const removeDeviceNotificationAll = useCallback(
     async (article: Article) => {
+      scheduledNotifications
+        .filter((notification) => notification.articleId === article.id)
+        .forEach((notification) => {
+          Notifications.cancelScheduledNotificationAsync(
+            notification.id,
+          );
+          dispatch(removeScheduledNotificationAction(notification.id));
+        });
+    },
+    [dispatch, scheduledNotifications],
+  );
+
+  const removeDeviceNotification = useCallback(
+    async (article: Article, type?: NotificationType) => {
       const scheduledNotification = scheduledNotifications.find(
-        (notification) => notification.articleId === article.id,
+        (notification) => (type
+          ? notification.type === type && notification.articleId === article.id
+          : notification.articleId === article.id),
       );
 
       if (!scheduledNotification) {
@@ -115,10 +122,10 @@ function useArticle() {
 
   const removeArticle = useCallback(
     async (article: Article) => {
-      await removeDeviceNotification(article);
+      await removeDeviceNotificationAll(article);
       dispatch(removeArticleAction(article));
     },
-    [dispatch, removeDeviceNotification],
+    [dispatch, removeDeviceNotificationAll],
   );
 
   const removeScheduledNotification = useCallback(
@@ -129,17 +136,49 @@ function useArticle() {
     [dispatch],
   );
 
-  const addScheduledNotification = useCallback(
+  const addCustomScheduledNotification = useCallback(
     async ({ date, article }: { date: Date; article: Article }) => {
       await removeDeviceNotification(article);
 
-      const id = await setNotification(date, article);
+      const id = await setNotification(date, {
+        title: '윌리드할 시간이에요!',
+        body: article.title,
+        data: {
+          article,
+        },
+      });
 
       dispatch(
         addScheduledNotificationAction({
           id,
           articleId: article.id,
           date: dayjs(date).toString(),
+        }),
+      );
+    },
+    [dispatch, removeDeviceNotification],
+  );
+
+  const addExpireScheduledNotification = useCallback(
+    async ({ article }: { article: Article }) => {
+      await removeDeviceNotification(article, 'EXPIRE_ARTICLE');
+      const date = dayjs(article.createdAt).add(ARTICLE_EXPIRE_DAYS - 1, 'day').toDate();
+
+      const id = await setNotification(date, {
+        title: '24시간 후 삭제되는 아티클이 있어요. ⏰',
+        body: article.title,
+        data: {
+          type: 'EXPIRE_ARTICLE',
+          article,
+        },
+      });
+
+      dispatch(
+        addScheduledNotificationAction({
+          id,
+          articleId: article.id,
+          date: date.toString(),
+          type: 'EXPIRE_ARTICLE',
         }),
       );
     },
@@ -169,20 +208,7 @@ function useArticle() {
 
   const addArticle = useCallback(
     (draft: ArticleDraft) => {
-      if (isArticleFull) {
-        dispatch(addPendingListAction(draft));
-        return 'pendingList';
-      }
-
       dispatch(addArticleAction(draft));
-      return 'articleList';
-    },
-    [dispatch, isArticleFull],
-  );
-
-  const removePendingList = useCallback(
-    (article: Article) => {
-      dispatch(removePendingListAction(article));
     },
     [dispatch],
   );
@@ -197,43 +223,11 @@ function useArticle() {
         removeArticle(article);
       });
 
-    pendingList
-      .filter((article) => now.isAfter(dayjs(article.expiredAt)))
-      .forEach((article) => {
-        removePendingList(article);
-      });
-
     const liveArticles = articles.filter((article) => now.isBefore(dayjs(article.expiredAt)));
-    const livePendingList = pendingList.filter((article) => now.isBefore(dayjs(article.expiredAt)));
-
-    if (
-      liveArticles.length < MAX_ARTICLE_LIST_SPACE
-      && livePendingList.length > 0
-    ) {
-      livePendingList
-        .slice(0, MAX_ARTICLE_LIST_SPACE - liveArticles.length)
-        .forEach((article) => {
-          const {
-            url, title, description = '', image, favicon,
-          } = article;
-
-          addArticle({
-            url,
-            title,
-            description,
-            image,
-            favicon,
-          });
-          removePendingList(article);
-        });
-      willreadToast.showSimple(
-        '대기 목록에 있던 아티클이 자동으로 추가되었어요.',
-      );
-    }
 
     const displayItems: DisplayItem[] = liveArticles.map((article) => {
       const scheduledNotification = scheduledNotifications.find(
-        (notification) => notification.articleId === article.id,
+        (notification) => !notification.type && notification.articleId === article.id,
       );
 
       let isSetNotification = false;
@@ -258,32 +252,23 @@ function useArticle() {
 
     Notifications.setBadgeCountAsync(badgeCount);
     return displayItems;
-  }, [
-    articles,
-    pendingList,
-    removeArticle,
-    addArticle,
-    removePendingList,
-    scheduledNotifications,
-  ]);
+  }, [articles, removeArticle, scheduledNotifications]);
 
   return {
     articles,
     articleDraft,
     lastAddedArticle,
     scheduledNotifications,
-    pendingList,
     isArticleFull,
-    isPendingListFull,
     addArticle,
     removeArticle,
-    addScheduledNotification,
+    addCustomScheduledNotification,
+    addExpireScheduledNotification,
     removeScheduledNotification,
     setLastReadAt,
     resetLastReadAt,
     readArticle,
     getDisplayItems,
-    removePendingList,
   };
 }
 

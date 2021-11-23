@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
-import { ARTICLE_EXPIRE_DAYS, PENDING_ARTICLE_EXPIRE_DAYS } from '../../constants';
+import { ARTICLE_EXPIRE_DAYS } from '../../constants';
 
 export interface Article {
   id: string;
@@ -23,10 +23,12 @@ export interface ArticleDraft {
   favicon?: string;
 }
 
+export type NotificationType = 'EXPIRE_ARTICLE'
 export interface ScheduledNotification {
   id: string;
   articleId: string;
   date: string;
+  type?: NotificationType
 }
 
 export interface InitialState {
@@ -34,7 +36,6 @@ export interface InitialState {
   lastAddedArticle?: Article;
   articleDraft: ArticleDraft;
   scheduledNotifications: ScheduledNotification[];
-  pendingList: Article[];
 }
 
 const defaultArticleDraft = () => ({
@@ -47,7 +48,6 @@ const initialState: InitialState = {
   articles: [],
   articleDraft: defaultArticleDraft(),
   scheduledNotifications: [],
-  pendingList: [],
 };
 
 const slice = createSlice({
@@ -95,22 +95,6 @@ const slice = createSlice({
         (scheduledNotification) => scheduledNotification.id !== action.payload,
       );
     },
-    addPendingList: (state, action: PayloadAction<ArticleDraft>) => {
-      const now = dayjs();
-      const article: Article = {
-        ...action.payload,
-        id: nanoid(),
-        createdAt: now.format(),
-        expiredAt: now.add(PENDING_ARTICLE_EXPIRE_DAYS, 'day').format(),
-      };
-      state.pendingList.push(article);
-      state.lastAddedArticle = article;
-    },
-    removePendingList: (state, action: PayloadAction<Article>) => {
-      state.pendingList = state.pendingList.filter(
-        (article) => article.id !== action.payload.id,
-      );
-    },
     DEVforceUpdateArticles: (state, action: PayloadAction<Article[]>) => {
       state.articles = action.payload;
     },
@@ -124,7 +108,5 @@ export const {
   updateArticle,
   addScheduledNotification,
   removeScheduledNotification,
-  addPendingList,
-  removePendingList,
   DEVforceUpdateArticles,
 } = slice.actions;

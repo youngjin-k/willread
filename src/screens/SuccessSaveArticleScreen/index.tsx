@@ -13,6 +13,8 @@ import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import themes from '../../lib/styles/themes';
+import useMount from '../../lib/hooks/useMount';
+import { getPreference } from '../../lib/utils/preferences';
 
 const fadeInUp = {
   0: {
@@ -30,8 +32,19 @@ function SuccessSaveArticleScreen(): React.ReactElement {
     StackNavigationProp<RootStackParamList & TabParamList>
   >();
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const { lastAddedArticle } = useArticle();
+  const { lastAddedArticle, addExpireScheduledNotification } = useArticle();
   const iconColor = themes[scheme].colors.typography.point;
+
+  useMount(() => {
+    const registerNotification = async () => {
+      const allowExpireNotification = await getPreference('allowExpireNotification');
+
+      if (allowExpireNotification === 'true') {
+        addExpireScheduledNotification({ article: lastAddedArticle as Article });
+      }
+    };
+    registerNotification();
+  });
 
   const handlePressClose = () => {
     navigation.navigate('Home', {
@@ -168,10 +181,6 @@ const BellIconWrapper = styled(Animatable.View)`
   position: absolute;
   top: 0;
   left: 0;
-`;
-
-const Actions = styled.View`
-  padding: 16px;
 `;
 
 export default SuccessSaveArticleScreen;
