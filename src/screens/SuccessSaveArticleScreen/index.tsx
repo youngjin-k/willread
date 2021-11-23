@@ -8,6 +8,7 @@ import styled from 'styled-components/native';
 
 import ArticleCard from '../../components/articleCard/ArticleCard';
 import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
+import BottomCtaContainer from '../../components/BottomCtaContainer';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
@@ -68,10 +69,10 @@ function SuccessSaveArticleScreen(): React.ReactElement {
           animation={fadeInUp}
           delay={500}
         >
-          <ArticleCard article={lastAddedArticle} />
+          <ArticleCard article={lastAddedArticle as Article} />
         </Animatable.View>
       </Content>
-      <Actions>
+      <BottomCtaContainer topAccessory={(
         <NotificationButtonWrapper>
           <Button
             onPress={handlePressNewNotification}
@@ -112,12 +113,14 @@ function SuccessSaveArticleScreen(): React.ReactElement {
             </>
           </Button>
         </NotificationButtonWrapper>
+      )}
+      >
         <Button
           onPress={handlePressClose}
           label="완료"
           size={ButtonSize.Large}
         />
-      </Actions>
+      </BottomCtaContainer>
     </Container>
   );
 }

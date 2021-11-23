@@ -4,6 +4,7 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import styled from 'styled-components/native';
 import bookshelfFull from '../../../assets/bookshelf-full.png';
+import BottomCtaContainer from '../../components/BottomCtaContainer';
 
 import Button, { ButtonSize } from '../../components/Button';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
@@ -27,13 +28,13 @@ function NoSpaceScreen() {
         <SubTitle>모든 공간이 가득 찼어요.</SubTitle>
       </Content>
 
-      <Actions>
+      <BottomCtaContainer>
         <Button
           onPress={handlePressClose}
           label="확인"
           size={ButtonSize.Large}
         />
-      </Actions>
+      </BottomCtaContainer>
     </Container>
   );
 }
@@ -68,10 +69,6 @@ const SubTitle = styled.Text`
   font-size: 18px;
   font-weight: 500;
   color: ${(props) => props.theme.colors.typography.secondary};
-`;
-
-const Actions = styled.View`
-  padding: 16px;
 `;
 
 export default NoSpaceScreen;
