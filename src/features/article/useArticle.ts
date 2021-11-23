@@ -223,7 +223,9 @@ function useArticle() {
         removeArticle(article);
       });
 
-    const liveArticles = articles.filter((article) => now.isBefore(dayjs(article.expiredAt)));
+    const liveArticles = articles
+      .filter((article) => now.isBefore(dayjs(article.expiredAt)))
+      .sort((a, b) => dayjs(a.expiredAt).valueOf() - dayjs(b.expiredAt).valueOf());
 
     const displayItems: DisplayItem[] = liveArticles.map((article) => {
       const scheduledNotification = scheduledNotifications.find(
@@ -254,6 +256,15 @@ function useArticle() {
     return displayItems;
   }, [articles, removeArticle, scheduledNotifications]);
 
+  const extendExpiryDate = (article: Article) => {
+    dispatch(
+      updateArticle({
+        id: article.id,
+        article: { ...article, expiredAt: dayjs().add(ARTICLE_EXPIRE_DAYS, 'day').format() },
+      }),
+    );
+  };
+
   return {
     articles,
     articleDraft,
@@ -269,6 +280,7 @@ function useArticle() {
     resetLastReadAt,
     readArticle,
     getDisplayItems,
+    extendExpiryDate,
   };
 }
 
