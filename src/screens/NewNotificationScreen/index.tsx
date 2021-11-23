@@ -165,7 +165,6 @@ function NewNotificationScreen(): ReactElement {
       navigation.navigate('Home', {
         setScrollBottom: true,
         setScrollTop: false,
-        openPendingList: false,
       });
       return;
     }

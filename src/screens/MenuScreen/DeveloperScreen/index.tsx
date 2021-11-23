@@ -24,10 +24,8 @@ function DeveloperScreen() {
   const dispatch = useDispatch();
   const {
     articles,
-    pendingList,
     scheduledNotifications,
     removeScheduledNotification,
-    removePendingList,
   } = useArticle();
 
   const logScheduledNotifications = () => {
@@ -106,12 +104,6 @@ function DeveloperScreen() {
     dispatch(DEVforceUpdateArticles(data));
   };
 
-  const clearPendingList = () => {
-    pendingList.forEach((article) => {
-      removePendingList(article);
-    });
-  };
-
   return (
     <Container>
       <ScrollView>
@@ -120,12 +112,6 @@ function DeveloperScreen() {
             title="log articles"
             onPress={() => {
               console.log(articles);
-            }}
-          />
-          <MenuItem
-            title="log pendingList"
-            onPress={() => {
-              console.log(pendingList);
             }}
           />
           <MenuItem
@@ -143,13 +129,6 @@ function DeveloperScreen() {
         </MenuList>
 
         <MenuList title="actions">
-          <MenuItem
-            title="clear pendingList"
-            onPress={() => {
-              clearPendingList();
-            }}
-          />
-
           <MenuItem
             title="clear all notifications"
             onPress={() => {

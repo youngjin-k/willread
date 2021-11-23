@@ -37,7 +37,6 @@ function SuccessSaveArticleScreen(): React.ReactElement {
     navigation.navigate('Home', {
       setScrollBottom: true,
       setScrollTop: false,
-      openPendingList: false,
     });
   };
 

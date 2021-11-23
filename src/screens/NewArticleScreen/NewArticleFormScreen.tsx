@@ -233,16 +233,11 @@ function NewArticleFormScreen(): React.ReactElement {
         };
       }
 
-      const addedAt = addArticle(article);
+      addArticle(article);
 
       haptics.notification();
 
-      if (addedAt === 'articleList') {
-        navigation.replace('SuccessSaveArticle');
-        return;
-      }
-
-      navigation.replace('SuccessSavePendingList');
+      navigation.replace('SuccessSaveArticle');
     } catch (e) {
       showErrorAlert('정보를 가져올 수 없어요.', '확인 후 다시 시도해주세요.');
       setLoading(false);

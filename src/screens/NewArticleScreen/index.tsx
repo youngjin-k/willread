@@ -6,9 +6,9 @@ import NewArticleFormScreen from './NewArticleFormScreen';
 import NoSpaceScreen from './NoSpaceLeftScreen';
 
 function NewArticleScreen(): React.ReactElement {
-  const { isPendingListFull } = useArticle();
+  const { isArticleFull } = useArticle();
 
-  if (isPendingListFull) {
+  if (isArticleFull) {
     haptics.notification();
     return <NoSpaceScreen />;
   }

@@ -22,8 +22,6 @@ import webBrowser from '../../lib/utils/webBrowser';
 import ClipboardContentAlert, { ClipboardContentAlertHandle } from './ClipboardContentAlert';
 import EmptyArticleList from './EmptyArticleList';
 import ListItem from './ListItem';
-import PendingList from './PendingList';
-import PendingListAlert from './PendingListAlert';
 import RecommendedArticles from './RecommendedArticles';
 
 export interface SharedItem {
@@ -48,7 +46,6 @@ function HomeScreen(): React.ReactElement {
   const swipeMenuOpenRowIndex = useRef<number | null>(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const theme = useTheme();
-  const [visiblePendingList, setVisiblePendingList] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useScrollToTop(scrollViewRef);
@@ -60,10 +57,6 @@ function HomeScreen(): React.ReactElement {
 
     if (route.params?.setScrollTop && scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
-    }
-
-    if (route.params?.openPendingList) {
-      setTimeout(openPendingList, 300);
     }
   }, [navigation, route]);
 
@@ -153,22 +146,6 @@ function HomeScreen(): React.ReactElement {
     readArticle(article);
   };
 
-  const openPendingList = () => {
-    setVisiblePendingList(true);
-  };
-
-  const closePendingList = () => {
-    setVisiblePendingList(false);
-  };
-
-  const handlePendingListAlertPress = () => {
-    openPendingList();
-  };
-
-  const handlePendingListClose = () => {
-    closePendingList();
-  };
-
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
       async (response) => {
@@ -218,8 +195,6 @@ function HomeScreen(): React.ReactElement {
             />
           )}
         >
-          <PendingListAlert onPress={handlePendingListAlertPress} />
-
           {total === 0 && <EmptyArticleList />}
 
           {displayMainItem && (
@@ -262,11 +237,6 @@ function HomeScreen(): React.ReactElement {
           {total === 0 && <RecommendedArticles />}
         </HomeScrollView>
       </Container>
-
-      <PendingList
-        isVisible={visiblePendingList}
-        onClose={handlePendingListClose}
-      />
     </>
   );
 }

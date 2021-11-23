@@ -22,14 +22,12 @@ import NewArticleScreen from '../../screens/NewArticleScreen';
 import NewNotificationScreen from '../../screens/NewNotificationScreen';
 import SuccessSaveArticleScreen from '../../screens/SuccessSaveArticleScreen';
 import Menu from './Menu';
-import SuccessSavePendingListScreen from '../../screens/SuccessSavePendingListScreen';
 import WillreadLogoTitle from '../../components/WillreadLogoTItle';
 
 export type TabParamList = {
   Home: {
     setScrollTop?: boolean;
     setScrollBottom?: boolean;
-    openPendingList?: boolean;
   };
   Add: undefined;
   Menu: undefined;
@@ -149,7 +147,6 @@ export type RootStackParamList = {
     isNewArticle?: boolean;
   };
   SuccessSaveArticle: undefined;
-  SuccessSavePendingList: undefined;
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -183,14 +180,6 @@ export default function Navigation(): ReactElement {
         <RootStack.Screen
           name="SuccessSaveArticle"
           component={SuccessSaveArticleScreen}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            gestureDirection: 'horizontal',
-          }}
-        />
-        <RootStack.Screen
-          name="SuccessSavePendingList"
-          component={SuccessSavePendingListScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             gestureDirection: 'horizontal',
