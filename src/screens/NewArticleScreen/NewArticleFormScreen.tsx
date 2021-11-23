@@ -417,7 +417,7 @@ function NewArticleFormScreen(): React.ReactElement {
       <Alert
         visible={visibleNotificationPermissionAlert}
         title="알림 권한이 필요해요."
-        message="삭제되기 전 알림을 보내드리기 위해 알림 권한이 필요해요. 시스템 설정에서 알림 권한을 허용해주세요."
+        message="자동 삭제 하루 전 알림을 보내드리기 위해 알림 권한이 필요해요. 시스템 설정에서 알림 권한을 허용해주세요."
         onClose={() => {
           setVisibleNotificationPermissionAlert(false);
           setLoading(false);
