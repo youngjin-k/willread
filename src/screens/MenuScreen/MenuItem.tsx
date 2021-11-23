@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { GestureResponderEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
@@ -11,6 +11,7 @@ export interface MenuListProps {
   hasSubMenu?: boolean;
   onPress?: (event: GestureResponderEvent) => void;
   checked?: boolean;
+  right?: ReactNode;
 }
 
 function MenuItem({
@@ -20,15 +21,20 @@ function MenuItem({
   hasSubMenu,
   onPress,
   checked,
+  right,
 }: MenuListProps) {
   return (
-    <PressableWrapper onPress={onPress}>
+    <PressableWrapper
+      onPress={onPress}
+      pressable={Boolean(onPress)}
+    >
       <MenuItemBlock>
         {menuIconName && <MenuIcon name={menuIconName} />}
         <MenuName>{title}</MenuName>
         {value && <MenuValue>{value}</MenuValue>}
         {hasSubMenu && <SubMenuIcon name="chevron-right" />}
         {checked && <CheckIcon name="check" />}
+        {right}
       </MenuItemBlock>
     </PressableWrapper>
   );
