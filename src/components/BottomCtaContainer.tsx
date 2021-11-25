@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled, { css } from 'styled-components/native';
 import useKeyboardShown from '../lib/hooks/useKeyboardShown';
@@ -8,12 +8,14 @@ type BottomCtaContainerProps = {
   children: ReactNode;
   topAccessory?: ReactNode;
   fixed?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function BottomCtaContainer({
   children,
   topAccessory,
   fixed = false,
+  style,
 }: BottomCtaContainerProps) {
   const insets = useSafeAreaInsets();
   const keyboardShown = useKeyboardShown();
@@ -23,6 +25,7 @@ export default function BottomCtaContainer({
       keyboardShown={keyboardShown}
       hasHomeBar={insets.bottom > 0}
       fixed={fixed}
+      style={style as any}
     >
       <View>
         {topAccessory}

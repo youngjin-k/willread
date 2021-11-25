@@ -12,8 +12,9 @@ import {
 } from 'react-native';
 import { DefaultTheme } from 'styled-components';
 import styled, { css } from 'styled-components/native';
+import BottomCtaContainer from '../../components/BottomCtaContainer';
 
-import Button from '../../components/Button';
+import Button, { ButtonSize } from '../../components/Button';
 import Line from '../../components/Line';
 
 const ITEM_HEIGHT = 48;
@@ -101,14 +102,14 @@ const fixScrollPosition = (
 export interface DateTimePickerProps {
   initialDate?: Dayjs;
   setManualTime: (date: Dayjs) => void;
-  articleCreatedAt: string;
+  articleExpiryDate: string;
   visible: boolean;
 }
 
 function DateTimePicker({
   initialDate,
   setManualTime,
-  articleCreatedAt,
+  articleExpiryDate,
   visible,
 }: DateTimePickerProps): JSX.Element {
   const [time, setTime] = useState(
@@ -127,8 +128,8 @@ function DateTimePicker({
     `M월 D일 ${time.format('a') === 'am' ? '오전' : '오후'} h:mm`,
   );
 
-  const maxDate = useMemo(() => dayjs(articleCreatedAt).add(7, 'day'), [
-    articleCreatedAt,
+  const maxDate = useMemo(() => dayjs(articleExpiryDate), [
+    articleExpiryDate,
   ]);
 
   const setDate = (values: DateValue) => {
@@ -218,111 +219,110 @@ function DateTimePicker({
   }, [time, maxDate]);
 
   return (
-    <>
-      <Content>
-        <TimeView>
-          <Time>{displayTime}</Time>
-        </TimeView>
+    <Content>
+      <TimeView>
+        <Time>{displayTime}</Time>
+      </TimeView>
 
-        <DatePickerContainer>
-          <DatesScrollWrapper
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: 8 }}
+      <DatePickerContainer>
+        <DatesScrollWrapper
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 8 }}
+        >
+          {items.date.map(({ label, value }, index) => (
+            <TouchableWithoutFeedback
+              key={index}
+              onPress={() => setDate(value)}
+            >
+              <DateItem>
+                <DayOfWeekLabel day={value.dayOfWeek}>
+                  {value.dayOfWeekName}
+                </DayOfWeekLabel>
+                <DateLabelWrapper active={value.ymd === date}>
+                  <DateLabel active={value.ymd === date}>{label}</DateLabel>
+                </DateLabelWrapper>
+              </DateItem>
+            </TouchableWithoutFeedback>
+          ))}
+        </DatesScrollWrapper>
+      </DatePickerContainer>
+
+      <Line />
+
+      <TimePickerContainer>
+        <HoursScrollWrapper>
+          <Overlay
+            pointerEvents="none"
+            position="left"
+          />
+          <List
+            showsVerticalScrollIndicator={false}
+            onMomentumScrollEnd={(event) => {
+              handleScrollEnd(event, 'hour');
+            }}
+            snapToInterval={ITEM_HEIGHT}
+            decelerationRate="fast"
+            ref={hourScrollViewRef}
           >
-            {items.date.map(({ label, value }, index) => (
+            <ListSpacing />
+            {items.hour.map(({ label, value }) => (
               <TouchableWithoutFeedback
-                key={index}
-                onPress={() => setDate(value)}
+                key={value}
+                onPress={() => {
+                  handleHourItemPress(value);
+                }}
               >
-                <DateItem>
-                  <DayOfWeekLabel day={value.dayOfWeek}>
-                    {value.dayOfWeekName}
-                  </DayOfWeekLabel>
-                  <DateLabelWrapper active={value.ymd === date}>
-                    <DateLabel active={value.ymd === date}>{label}</DateLabel>
-                  </DateLabelWrapper>
-                </DateItem>
+                <Item>
+                  <ItemLabel active={value === hour}>{label}</ItemLabel>
+                </Item>
               </TouchableWithoutFeedback>
             ))}
-          </DatesScrollWrapper>
-        </DatePickerContainer>
+            <ListSpacing />
+          </List>
+        </HoursScrollWrapper>
 
-        <Line />
-
-        <TimePickerContainer>
-          <HoursScrollWrapper>
-            <Overlay
-              pointerEvents="none"
-              position="left"
-            />
-            <List
-              showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => {
-                handleScrollEnd(event, 'hour');
-              }}
-              snapToInterval={ITEM_HEIGHT}
-              decelerationRate="fast"
-              ref={hourScrollViewRef}
-            >
-              <ListSpacing />
-              {items.hour.map(({ label, value }) => (
-                <TouchableWithoutFeedback
-                  key={value}
-                  onPress={() => {
-                    handleHourItemPress(value);
-                  }}
-                >
-                  <Item>
-                    <ItemLabel active={value === hour}>{label}</ItemLabel>
-                  </Item>
-                </TouchableWithoutFeedback>
-              ))}
-              <ListSpacing />
-            </List>
-          </HoursScrollWrapper>
-
-          <MinutesScrollWrapper>
-            <Overlay
-              pointerEvents="none"
-              position="right"
-            />
-            <List
-              showsVerticalScrollIndicator={false}
-              onMomentumScrollEnd={(event) => {
-                handleScrollEnd(event, 'minute');
-              }}
-              snapToInterval={ITEM_HEIGHT}
-              decelerationRate="fast"
-              bouncesZoom
-              ref={minuteScrollViewRef}
-            >
-              <ListSpacing />
-              {items.minute.map(({ label, value }) => (
-                <TouchableWithoutFeedback
-                  key={value}
-                  onPress={() => {
-                    handleMinuteItemPress(value);
-                  }}
-                >
-                  <Item>
-                    <ItemLabel active={value === minute}>{label}</ItemLabel>
-                  </Item>
-                </TouchableWithoutFeedback>
-              ))}
-              <ListSpacing />
-            </List>
-          </MinutesScrollWrapper>
-        </TimePickerContainer>
-        <ButtonWrapper>
-          <Button
-            onPress={handlePressSubmit}
-            disabled={isInvalid}
-            label={isInvalid ? (errorMessage as string) : '완료'}
+        <MinutesScrollWrapper>
+          <Overlay
+            pointerEvents="none"
+            position="right"
           />
-        </ButtonWrapper>
-      </Content>
-    </>
+          <List
+            showsVerticalScrollIndicator={false}
+            onMomentumScrollEnd={(event) => {
+              handleScrollEnd(event, 'minute');
+            }}
+            snapToInterval={ITEM_HEIGHT}
+            decelerationRate="fast"
+            bouncesZoom
+            ref={minuteScrollViewRef}
+          >
+            <ListSpacing />
+            {items.minute.map(({ label, value }) => (
+              <TouchableWithoutFeedback
+                key={value}
+                onPress={() => {
+                  handleMinuteItemPress(value);
+                }}
+              >
+                <Item>
+                  <ItemLabel active={value === minute}>{label}</ItemLabel>
+                </Item>
+              </TouchableWithoutFeedback>
+            ))}
+            <ListSpacing />
+          </List>
+        </MinutesScrollWrapper>
+      </TimePickerContainer>
+      <BottomCtaContainer style={{ paddingTop: 0 }}>
+        <Button
+          onPress={handlePressSubmit}
+          disabled={isInvalid}
+          label={isInvalid ? (errorMessage as string) : '완료'}
+          size={ButtonSize.Large}
+        />
+      </BottomCtaContainer>
+    </Content>
   );
 }
 
@@ -449,10 +449,6 @@ const Overlay = styled.View<{ position: 'left' | 'right' }>`
       left: 0;
       right: 16px;
     `}
-`;
-
-const ButtonWrapper = styled.View`
-  padding: 0 16px;
 `;
 
 export default DateTimePicker;

@@ -6,12 +6,14 @@ import React, {
 } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import styled, { css } from 'styled-components/native';
+import BottomCtaContainer from '../../components/BottomCtaContainer';
 
 import BottomModal from '../../components/BottomModal';
 import Button, { ButtonSize } from '../../components/Button';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import useArticle from '../../features/article/useArticle';
 import useNotificationPermission, { PermissionStatus } from '../../lib/hooks/useNotificationPermission';
+import willreadToast from '../../lib/willreadToast';
 import DateTimePicker from './DateTimePicker';
 import PermissionSettingGuide from './PermissionSettingGuide';
 import ScreenHeader from './ScreenHeader';
@@ -161,6 +163,8 @@ function NewNotificationScreen(): ReactElement {
       date: notificationDate.date.toDate(),
     });
 
+    willreadToast.showSimple('알림이 설정되었어요.');
+
     if (route.params.isNewArticle) {
       navigation.navigate('Home', {
         setScrollBottom: true,
@@ -221,14 +225,14 @@ function NewNotificationScreen(): ReactElement {
           </TouchableWithoutFeedback>
         </TimeList>
 
-        <Actions>
+        <BottomCtaContainer fixed>
           <Button
             onPress={handlePressComplete}
             loading={loading}
             label="완료"
             size={ButtonSize.Large}
           />
-        </Actions>
+        </BottomCtaContainer>
       </Main>
 
       <BottomModal
@@ -242,7 +246,7 @@ function NewNotificationScreen(): ReactElement {
               : undefined
           }
           setManualTime={setManualTime}
-          articleCreatedAt={article.createdAt}
+          articleExpiryDate={article.expiredAt}
           visible={modalVisible}
         />
       </BottomModal>
@@ -300,15 +304,6 @@ const TimeItemLabel = styled.Text<{ active: boolean }>`
     && css`
       color: ${props.theme.colors.typography.point};
     `}
-`;
-
-const Actions = styled.View`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  height: ${64 + 16 + 16}px;
 `;
 
 export default NewNotificationScreen;

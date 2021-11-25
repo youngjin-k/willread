@@ -67,8 +67,6 @@ const SafeAreaView = styled.SafeAreaView`
   width: 100%;
 `;
 
-const Main = styled.View`
-  padding-bottom: 16px;
-`;
+const Main = styled.View``;
 
 export default BottomModal;
