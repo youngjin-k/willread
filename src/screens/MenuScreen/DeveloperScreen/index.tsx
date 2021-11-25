@@ -26,6 +26,8 @@ function DeveloperScreen() {
     articles,
     scheduledNotifications,
     removeScheduledNotification,
+    removeArticle,
+    addArticle,
   } = useArticle();
 
   const logScheduledNotifications = () => {
@@ -104,6 +106,23 @@ function DeveloperScreen() {
     dispatch(DEVforceUpdateArticles(data));
   };
 
+  const clearAllArticles = () => {
+    articles.forEach((article) => {
+      removeArticle(article);
+    });
+  };
+
+  const add100Articles = () => {
+    for (let i = 0; i < 100; i++) {
+      addArticle({
+        url: 'https://medium.com/enappd/refreshcontrol-pull-to-refresh-in-react-native-apps-dfe779118f75',
+        title: 'RefreshControl - Pull to Refresh in React Native Apps',
+        description: '',
+        image: 'https://miro.medium.com/max/1200/1*4rJ3Ex2gSvsQtXrZY619NQ.png',
+      });
+    }
+  };
+
   return (
     <Container>
       <ScrollView>
@@ -130,6 +149,13 @@ function DeveloperScreen() {
 
         <MenuList title="actions">
           <MenuItem
+            title="clear all articles"
+            onPress={() => {
+              clearAllArticles();
+            }}
+          />
+
+          <MenuItem
             title="clear all notifications"
             onPress={() => {
               cancelAllNotifications();
@@ -154,9 +180,14 @@ function DeveloperScreen() {
             title="show toast"
             onPress={() => {
               willreadToast.showSimple(
-                '대기 목록에 있던 아티클이 자동으로 추가되었어요.',
+                '토스트를 테스트하기 위한 토스트입니다.',
               );
             }}
+          />
+
+          <MenuItem
+            title="100 articles"
+            onPress={add100Articles}
           />
         </MenuList>
       </ScrollView>
