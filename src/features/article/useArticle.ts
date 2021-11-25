@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import calculateTimeLeft from '../../components/articleCard/calculateTimeLeft';
 import { ARTICLE_EXPIRE_DAYS, MAX_ARTICLE_LIST_SPACE } from '../../constants';
+import { getPreference } from '../../lib/utils/preferences';
 import webBrowser from '../../lib/utils/webBrowser';
 import { RootState } from '../store';
 import {
@@ -162,7 +163,7 @@ function useArticle() {
   const addExpireScheduledNotification = useCallback(
     async ({ article }: { article: Article }) => {
       await removeDeviceNotification(article, 'EXPIRE_ARTICLE');
-      const date = dayjs(article.createdAt).add(ARTICLE_EXPIRE_DAYS - 1, 'day').toDate();
+      const date = dayjs(article.expiredAt).subtract(1, 'day').toDate();
 
       const id = await setNotification(date, {
         title: '24시간 후 삭제되는 아티클이 있어요. ⏰',
@@ -256,14 +257,22 @@ function useArticle() {
     return displayItems;
   }, [articles, removeArticle, scheduledNotifications]);
 
-  const extendExpiryDate = (article: Article) => {
+  const extendExpiryDate = useCallback(async (article: Article) => {
+    const newArticle = { ...article, expiredAt: dayjs().add(ARTICLE_EXPIRE_DAYS, 'day').format() };
+
     dispatch(
       updateArticle({
         id: article.id,
-        article: { ...article, expiredAt: dayjs().add(ARTICLE_EXPIRE_DAYS, 'day').format() },
+        article: newArticle,
       }),
     );
-  };
+
+    const allowExpireNotification = await getPreference('allowExpireNotification');
+
+    if (allowExpireNotification === 'true') {
+      addExpireScheduledNotification({ article: newArticle });
+    }
+  }, [addExpireScheduledNotification, dispatch]);
 
   return {
     articles,
