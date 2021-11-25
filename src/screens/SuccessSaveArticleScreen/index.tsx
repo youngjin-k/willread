@@ -70,16 +70,10 @@ function SuccessSaveArticleScreen(): React.ReactElement {
           >
             <Title>새로운 아티클을 추가했어요</Title>
           </Animatable.View>
-          <Animatable.View
-            animation={fadeInUp}
-            delay={350}
-          >
-            <SubTitle>윌리드와 함께 성장해요! 🌱</SubTitle>
-          </Animatable.View>
         </Header>
         <Animatable.View
           animation={fadeInUp}
-          delay={500}
+          delay={350}
         >
           <ArticleCard article={lastAddedArticle as Article} />
         </Animatable.View>
@@ -155,12 +149,6 @@ const Title = styled.Text`
   font-weight: bold;
   color: ${(props) => props.theme.colors.typography.primary};
   margin-bottom: 8px;
-`;
-
-const SubTitle = styled.Text`
-  font-size: 18px;
-  font-weight: 500;
-  color: ${(props) => props.theme.colors.typography.secondary};
 `;
 
 const NotificationButtonWrapper = styled.View`
