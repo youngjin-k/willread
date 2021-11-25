@@ -10,7 +10,7 @@ import styled from 'styled-components/native';
 import ArticleListCard from '../../components/articleCard/ArticleListCard';
 import Button, { ButtonVariant } from '../../components/Button';
 import Line from '../../components/Line';
-import { RootStackParamList } from '../../config/Navigation';
+import { RootStackParamList, TabParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle from '../../features/article/useArticle';
 import useTheme from '../../lib/styles/useTheme';
@@ -29,7 +29,7 @@ function ArticleMenu({
   onClose,
   onRemove,
 }: ArticleMenuProps): React.ReactElement {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList & TabParamList>>();
   const {
     resetLastReadAt,
     scheduledNotifications,
@@ -123,8 +123,12 @@ function ArticleMenu({
   const handleExtendExpiryDatePress = useCallback(() => {
     onClose();
     extendExpiryDate(article);
-    willreadToast.showSimple('보관기간을 연장했어요.');
-  }, [article, extendExpiryDate, onClose]);
+    willreadToast.showSimple('보관 기간을 연장했어요.');
+    navigation.navigate('Home', {
+      setScrollBottom: true,
+      setScrollTop: false,
+    });
+  }, [article, extendExpiryDate, navigation, onClose]);
 
   return (
     <>
