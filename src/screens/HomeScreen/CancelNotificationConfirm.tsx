@@ -15,8 +15,8 @@ function CancelNotificationConfirm({
   return (
     <Alert
       visible={visible}
-      title="알림 해제"
-      message="설정된 알림을 해제할까요?"
+      title="알림 취소"
+      message="설정된 알림을 취소할까요?"
       onClose={onClose}
       buttons={[
         {

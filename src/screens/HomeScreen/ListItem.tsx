@@ -16,6 +16,7 @@ import Button, { ButtonSize, ButtonVariant } from '../../components/Button';
 import { RootStackParamList } from '../../config/Navigation';
 import { Article } from '../../features/article/articles';
 import useArticle, { DisplayItem } from '../../features/article/useArticle';
+import willreadToast from '../../lib/willreadToast';
 import ArticleMenu from './ArticleMenu';
 import CancelNotificationConfirm from './CancelNotificationConfirm';
 import RemoveConfirm from './RemoveConfirm';
@@ -131,6 +132,7 @@ const ListItem = forwardRef<Swipeable, ListItemProps>(({
     closeCancelNotificationAlert();
     setTimeout(() => {
       removeScheduledNotification(scheduledNotification.id);
+      willreadToast.showSimple('알림을 취소했어요.');
     }, 200);
   }, [scheduledNotification, removeScheduledNotification]);
 

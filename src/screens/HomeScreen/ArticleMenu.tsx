@@ -104,6 +104,7 @@ function ArticleMenu({
 
     setTimeout(() => {
       removeScheduledNotification(scheduledNotification.id);
+      willreadToast.showSimple('알림을 취소했어요.');
     }, 200);
   }, [scheduledNotification, removeScheduledNotification, onClose]);
 
@@ -115,6 +116,7 @@ function ArticleMenu({
 
   const handlePressSetUnread = useCallback(() => {
     resetLastReadAt(article);
+    willreadToast.showSimple('읽지 않은 상태로 변경했어요.');
     onClose();
   }, [article, onClose, resetLastReadAt]);
 
@@ -153,7 +155,7 @@ function ArticleMenu({
             >
               <ButtonContent>
                 <ButtonIcon name="bell-off" />
-                <ButtonText>알림 해제</ButtonText>
+                <ButtonText>알림 취소</ButtonText>
                 <ButtonSubText>{notificationDate}</ButtonSubText>
               </ButtonContent>
             </Button>
