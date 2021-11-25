@@ -28,6 +28,9 @@ export type TabParamList = {
   Home: {
     setScrollTop?: boolean;
     setScrollBottom?: boolean;
+    expiryDateArticleModal?: {
+      article: Article;
+    }
   };
   Add: undefined;
   Menu: undefined;

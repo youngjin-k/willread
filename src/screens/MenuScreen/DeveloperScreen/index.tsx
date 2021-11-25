@@ -1,11 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import dayjs from 'dayjs';
 import * as Notifications from 'expo-notifications';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
+import { RootStackParamList, TabParamList } from '../../../config/Navigation';
 
-import { DEVforceUpdateArticles } from '../../../features/article/articles';
-import useArticle from '../../../features/article/useArticle';
+import { addScheduledNotification, DEVforceUpdateArticles } from '../../../features/article/articles';
+import useArticle, { setNotification } from '../../../features/article/useArticle';
 import willreadToast from '../../../lib/willreadToast';
 import MenuItem from '../MenuItem';
 import MenuList from '../MenuList';
@@ -21,6 +24,7 @@ const cancelAllNotifications = async () => {
 };
 
 function DeveloperScreen() {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList & TabParamList>>();
   const dispatch = useDispatch();
   const {
     articles,
@@ -113,7 +117,7 @@ function DeveloperScreen() {
   };
 
   const add100Articles = () => {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 100; i += 1) {
       addArticle({
         url: 'https://medium.com/enappd/refreshcontrol-pull-to-refresh-in-react-native-apps-dfe779118f75',
         title: 'RefreshControl - Pull to Refresh in React Native Apps',
@@ -121,6 +125,60 @@ function DeveloperScreen() {
         image: 'https://miro.medium.com/max/1200/1*4rJ3Ex2gSvsQtXrZY619NQ.png',
       });
     }
+  };
+
+  const addExpiryNotification = async () => {
+    // const article = articles[0];
+    const article = {
+      createdAt: dayjs().subtract(7, 'day').add(4, 'hour').format(),
+      description:
+        'This component is used inside a ScrollView or ListView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.',
+      expiredAt: dayjs().add(4, 'hour').format(),
+      favicon: 'https://reactnative.dev/img/favicon.ico',
+      id: 'test3',
+      image: 'https://reactnative.dev/img/logo-og.png',
+      title: 'RefreshControl · React Native',
+      url: 'https://reactnative.dev/docs/refreshcontrol',
+    };
+
+    const date = dayjs().add(1, 'minutes').toDate();
+
+    const id = await setNotification(date, {
+      title: '24시간 후 삭제되는 아티클이 있어요. ⏰',
+      body: article.title,
+      data: {
+        type: 'EXPIRE_ARTICLE',
+        article,
+      },
+    });
+
+    dispatch(
+      addScheduledNotification({
+        id,
+        articleId: article.id,
+        date: date.toString(),
+        type: 'EXPIRE_ARTICLE',
+      }),
+    );
+  };
+
+  const showExpiryArticleModal = () => {
+    // const article = articles[0];
+    navigation.navigate('Home', {
+      expiryDateArticleModal: {
+        article: {
+          createdAt: dayjs().subtract(7, 'day').add(4, 'hour').format(),
+          description:
+            'This component is used inside a ScrollView or ListView to add pull to refresh functionality. When the ScrollView is at scrollY: 0, swiping down triggers an onRefresh event.',
+          expiredAt: dayjs().add(4, 'hour').format(),
+          favicon: 'https://reactnative.dev/img/favicon.ico',
+          id: 'test3',
+          image: 'https://reactnative.dev/img/logo-og.png',
+          title: 'RefreshControl · React Native',
+          url: 'https://reactnative.dev/docs/refreshcontrol',
+        },
+      },
+    });
   };
 
   return (
@@ -188,6 +246,16 @@ function DeveloperScreen() {
           <MenuItem
             title="100 articles"
             onPress={add100Articles}
+          />
+
+          <MenuItem
+            title="1분 후 삭제 알림"
+            onPress={addExpiryNotification}
+          />
+
+          <MenuItem
+            title="만료 알림 모달"
+            onPress={showExpiryArticleModal}
           />
         </MenuList>
       </ScrollView>

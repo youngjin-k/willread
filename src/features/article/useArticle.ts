@@ -189,9 +189,10 @@ function useArticle() {
   const readArticle = useCallback(
     async (article: Article) => {
       setLastReadAt(article);
+      webBrowser.close();
 
       const scheduledNotification = scheduledNotifications.find(
-        (notification) => notification.articleId === article.id,
+        (notification) => !notification.type && notification.articleId === article.id,
       );
 
       if (scheduledNotification) {
@@ -274,6 +275,11 @@ function useArticle() {
     }
   }, [addExpireScheduledNotification, dispatch]);
 
+  const getArticleById = useCallback(
+    (id: string) => articles.find((article) => article.id === id),
+    [articles],
+  );
+
   return {
     articles,
     articleDraft,
@@ -290,6 +296,7 @@ function useArticle() {
     readArticle,
     getDisplayItems,
     extendExpiryDate,
+    getArticleById,
   };
 }
 

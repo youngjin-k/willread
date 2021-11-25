@@ -14,13 +14,15 @@ import styled from 'styled-components/native';
 
 import Line from '../../components/Line';
 import { RootStackParamList, TabParamList } from '../../config/Navigation';
-import { Article } from '../../features/article/articles';
+import { Article, NotificationType } from '../../features/article/articles';
 import useArticle, { DisplayItem } from '../../features/article/useArticle';
 import useTheme from '../../lib/styles/useTheme';
 import extractUrl from '../../lib/utils/extractUrl';
 import webBrowser from '../../lib/utils/webBrowser';
+import willreadToast from '../../lib/willreadToast';
 import ClipboardContentAlert, { ClipboardContentAlertHandle } from './ClipboardContentAlert';
 import EmptyArticleList from './EmptyArticleList';
+import ExpiryDateArticleModal from './ExpiryDateArticleModal';
 import ListItem from './ListItem';
 import RecommendedArticles from './RecommendedArticles';
 
@@ -30,7 +32,7 @@ export interface SharedItem {
 }
 
 function HomeScreen(): React.ReactElement {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList & TabParamList>>();
   const scrollViewRef = useRef<ScrollView>(null);
   const ClipboardContentAlertRef = useRef<ClipboardContentAlertHandle>(null);
   const {
@@ -38,6 +40,7 @@ function HomeScreen(): React.ReactElement {
     readArticle,
     scheduledNotifications,
     getDisplayItems,
+    getArticleById,
   } = useArticle();
   const route = useRoute<RouteProp<TabParamList, 'Home'>>();
   const [displayItems, setDisplayItems] = useState<DisplayItem[]>();
@@ -47,6 +50,8 @@ function HomeScreen(): React.ReactElement {
   const [refreshing, setRefreshing] = React.useState(false);
   const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+  const [isVisibleExpiryDateArticleModal, setIsVisibleExpiryDateArticleModal] = useState(false);
+  const [expiryDateArticle, setExpiryDateArticle] = useState<Article>();
 
   useScrollToTop(scrollViewRef);
 
@@ -57,6 +62,11 @@ function HomeScreen(): React.ReactElement {
 
     if (route.params?.setScrollTop && scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    }
+
+    if (route.params?.expiryDateArticleModal) {
+      setIsVisibleExpiryDateArticleModal(true);
+      setExpiryDateArticle(route.params?.expiryDateArticleModal.article);
     }
   }, [navigation, route]);
 
@@ -149,16 +159,34 @@ function HomeScreen(): React.ReactElement {
   useEffect(() => {
     const subscription = Notifications.addNotificationResponseReceivedListener(
       async (response) => {
-        const { article } = response.notification.request.content.data as {
+        const { article: { id }, type } = response.notification.request.content.data as {
           article: Article;
+          type?: NotificationType;
         };
-        if (article) {
-          readArticle(article);
+
+        webBrowser.close();
+
+        const article = getArticleById(id);
+
+        if (!article) {
+          willreadToast.showSimple('이미 삭제 된 아티클이에요.');
+          return;
         }
+
+        if (type === 'EXPIRE_ARTICLE') {
+          navigation.navigate('Home', {
+            expiryDateArticleModal: {
+              article,
+            },
+          });
+          return;
+        }
+
+        readArticle(article);
       },
     );
     return () => subscription.remove();
-  }, [readArticle]);
+  }, [getArticleById, navigation, readArticle]);
 
   useEffect(() => {
     rowRefs.current = rowRefs.current.slice(0, articles.length);
@@ -237,6 +265,16 @@ function HomeScreen(): React.ReactElement {
           {total === 0 && <RecommendedArticles />}
         </HomeScrollView>
       </Container>
+
+      {expiryDateArticle && (
+        <ExpiryDateArticleModal
+          isVisible={isVisibleExpiryDateArticleModal}
+          onClose={() => {
+            setIsVisibleExpiryDateArticleModal(false);
+          }}
+          article={expiryDateArticle}
+        />
+      )}
     </>
   );
 }
