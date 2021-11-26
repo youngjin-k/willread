@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import Modal from 'react-native-modal';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ModalHandle from './ModalHandle';
 import haptics from '../lib/utils/haptics';
 
@@ -20,6 +21,8 @@ function BottomModal({
   useSafeAreaView = true,
   hapticOnVisible = true,
 }: BottomModalProps) {
+  const insets = useSafeAreaInsets();
+
   useEffect(() => {
     if (!isVisible || !hapticOnVisible) {
       return;
@@ -48,7 +51,7 @@ function BottomModal({
       <BottomModalContainerBlock>
         <SafeAreaView as={useSafeAreaView === false ? View : undefined}>
           <ModalHandle />
-          <Main>
+          <Main hasHomeBar={insets.bottom > 0}>
             {children}
           </Main>
         </SafeAreaView>
@@ -67,6 +70,8 @@ const SafeAreaView = styled.SafeAreaView`
   width: 100%;
 `;
 
-const Main = styled.View``;
+const Main = styled.View<{hasHomeBar: boolean;}>`
+  padding: 0 0 ${(props) => (props.hasHomeBar ? '0' : '16px')} 0;
+`;
 
 export default BottomModal;
