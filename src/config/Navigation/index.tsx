@@ -104,12 +104,14 @@ function AppTabsScreen() {
                 height: size,
                 backgroundColor: theme.colors.primary,
                 borderRadius: 6,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <Icon
                 name="plus"
-                size={size}
-                color={theme.colors.backgroundElevated}
+                size={20}
+                color="#ffffff"
               />
             </View>
           ),
