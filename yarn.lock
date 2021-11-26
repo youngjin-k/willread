@@ -8639,10 +8639,10 @@ react-native-screens@^3.9.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-share-menu@^5.0.2:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-share-menu/-/react-native-share-menu-5.0.3.tgz#c128e0dd12335f6e3c2eb8d5d6518ade9977310a"
-  integrity sha512-NtL/jLbcApe6WalXLFCNYo8yFfhLGIIbi9AJgSpRLaf1+V141d7vtoJnd1fYObSGxcZJcKLSW2bkeJrpfbmZnw==
+react-native-share-menu@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-share-menu/-/react-native-share-menu-5.0.5.tgz#0014cbfdff1d5f60ae7dc100ae63b5b41bcd01b7"
+  integrity sha512-AUetD75x2PKM1sgLqcEBeeI1LHVM4WgiY+SHTGbbSbrnPzjt9oadt8ZNw/ICNYM91toW4WQu+WktuXEIIarBQg==
 
 react-native-splash-screen@^3.2.0:
   version "3.2.0"

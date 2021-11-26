@@ -45,7 +45,7 @@
     "react-native-navigation-bar-color": "^2.0.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
-    "react-native-share-menu": "^5.0.2",
+    "react-native-share-menu": "^5.0.5",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.0",
     "react-native-toast-message": "^1.4.3",
