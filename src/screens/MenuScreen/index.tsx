@@ -92,9 +92,19 @@ function MenuScreen() {
             menuIconName="bell"
             right={(
               <Switch
-                trackColor={{
-                  true: theme.colors.primary,
-                }}
+                trackColor={
+                  Platform.OS === 'android'
+                    ? {
+                      true: theme.colors.primary,
+                      false: theme.colors.inputBackground,
+                    }
+                    : {
+                      true: theme.colors.primary,
+                    }
+                }
+                thumbColor={
+                  Platform.OS === 'android' ? theme.colors.background : undefined
+                }
                 value={allowExpireNotification === 'true'}
                 onValueChange={(value) => {
                   updateAllowExpireNotification(value);
